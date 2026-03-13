@@ -1,0 +1,111 @@
+// Usamos variables para que sea fácil cambiar los colores y estilos en el futuro.
+:host {
+  --card-bg-color: #f9f9f9;
+  --card-border-color: #eee;
+  --card-shadow-color: rgba(0, 0, 0, 0.1);
+  --button-bg-color: #e0e0e0;
+  --button-text-color: #333;
+  --button-primary-bg-color: #007bff;
+  --button-primary-text-color: #fff;
+  --text-color: #333;
+  --title-color: #111;
+}
+
+.project-showcase {
+  padding: 2rem;
+  font-family: sans-serif;
+  color: var(--text-color);
+
+  h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--title-color);
+  }
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--card-border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px var(--card-shadow-color);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    margin-top: 0;
+    color: var(--title-color);
+  }
+
+  p {
+    flex-grow: 1; // Para que la descripción ocupe el espacio disponible
+  }
+}
+
+.technologies-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+
+  li {
+    background-color: #e7e7e7;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+  }
+}
+
+.card-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto; // Empuja los botones al final de la tarjeta
+}
+
+.button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  border-radius: 4px;
+  text-align: center;
+  transition: background-color 0.2s;
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  border: 1px solid var(--button-bg-color);
+
+  &:hover {
+    background-color: #d0d0d0;
+  }
+
+  &.primary {
+    background-color: var(--button-primary-bg-color);
+    color: var(--button-primary-text-color);
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
+
+.no-projects {
+  text-align: center;
+  padding: 3rem;
+  color: #777;
+}
