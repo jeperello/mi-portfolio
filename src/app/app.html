@@ -1,6 +1,9 @@
 <main>
-  <app-project-showcase></app-project-showcase>
+  <!--
+    El router-outlet es el contenedor dinámico.
+    Angular mostrará aquí el componente que corresponda a la ruta activa.
+    Para la ruta '/', mostrará 'ProjectShowcaseComponent'.
+    Para la ruta '/show-api-reactive', mostrará 'ShowApiReactiveComponent'.
+  -->
+  <router-outlet></router-outlet>
 </main>
-
-<!-- El router-outlet se mantiene por si se añaden más rutas en el futuro -->
-<router-outlet />

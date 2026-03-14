@@ -1,0 +1,81 @@
+<section class="api-showcase">
+  <h1>Demostración de API Reactiva (WebFlux)</h1>
+  <p class="subtitle">
+    Los siguientes cuadrantes se conectan a endpoints de una API reactiva que emite eventos (Server-Sent Events).
+    <br>
+    Las tecnologías y ventajas se emiten cada 3 segundos y luego la conexión finaliza.
+    <br>
+    Las métricas de memoria se emiten continuamente para mostrar el estado del servidor en tiempo real.
+  </p>
+  <div class="showcase-grid">
+    <!-- Cuadrante de Métricas -->
+    <div class="showcase-card metrics-card">
+      <h3>Métricas de Memoria (Stream Infinito)</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Memoria Usada (MB)</th>
+              <th>Memoria Libre (MB)</th>
+              <th>Memoria Total (MB)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let metric of metrics">
+              <td>{{ metric.usedMemoryMB }}</td>
+              <td>{{ metric.freeMemoryMB }}</td>
+              <td>{{ metric.totalMemoryMB }}</td>
+            </tr>
+            <tr *ngIf="metrics.length === 0">
+              <td colspan="3" class="waiting-message">Esperando datos de métricas...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Cuadrante de Tecnologías -->
+    <div class="showcase-card">
+      <h3>Tecnologías (Stream Finito)</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tech of technologies">
+              <td>{{ tech.description }}</td>
+            </tr>
+             <tr *ngIf="technologies.length === 0">
+              <td class="waiting-message">Esperando datos de tecnologías...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Cuadrante de Ventajas -->
+    <div class="showcase-card">
+      <h3>Ventajas (Stream Finito)</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let advantage of advantages">
+              <td>{{ advantage.description }}</td>
+            </tr>
+            <tr *ngIf="advantages.length === 0">
+              <td class="waiting-message">Esperando datos de ventajas...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,107 @@
+:host {
+  display: block;
+  background-color: #f4f7f6;
+  min-height: 100vh;
+}
+
+.api-showcase {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+
+  .back-button {
+    display: inline-block;
+    margin-bottom: 2rem;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  h1 {
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  .subtitle {
+    margin-bottom: 3rem;
+    color: #555;
+    line-height: 1.6;
+  }
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "metrics metrics"
+      "tech advantages";
+  }
+}
+
+.showcase-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+}
+
+.metrics-card {
+  @media (min-width: 992px) {
+    grid-area: metrics;
+  }
+}
+
+.table-container {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  flex-grow: 1;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e7e7e7;
+  }
+
+  thead th {
+    background-color: #f9f9f9;
+    position: sticky;
+    top: 0;
+    font-weight: 600;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .waiting-message {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+  }
+}
