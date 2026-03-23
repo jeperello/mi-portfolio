@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { ReactiveApiService, ApiDescription, ApiMetrics } from '../project-showcase/reactive-api.service';
+import { ReactiveApiService, ApiDescription, ApiMetrics } from '../../core/services/reactive-api.service';
 
 @Component({
   selector: 'show-api-reactive',

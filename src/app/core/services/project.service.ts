@@ -23,10 +23,10 @@ export class ProjectService {
         'JUnit 5',
         'Docker',
         'GitHub Actions'
-      ]
-      // demoUrl: 'AQUÍ_IRÁ_EL_LINK_A_LA_DEMO'
+      ],
+      demoUrl: '/show-api-reactive'
     },
-      {
+    {
       name: 'Java 21 Virtual Threads vs Hilos Tradicionales',
       description: 'Este proyecto es un sistema de ingesta de logs de alta concurrencia diseñado para comparar el rendimiento de los Virtual Threads (Project Loom) frente a los hilos de plataforma tradicionales.',
       repositoryUrl: 'https://github.com/jeperello/log-ingestion-engin',
@@ -38,9 +38,9 @@ export class ProjectService {
         'Virtual Threads',
         'GitHub Actions: CI/CD',
         'Producer-Consumer Pattern',
-        
-      ]
-      // demoUrl: 'AQUÍ_IRÁ_EL_LINK_A_LA_DEMO'
+
+      ],
+      demoUrl: '/show-threads-api'
     }
   ];
 

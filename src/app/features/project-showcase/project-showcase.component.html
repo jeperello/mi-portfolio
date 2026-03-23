@@ -16,13 +16,14 @@
         <a [href]="project.repositoryUrl" target="_blank" rel="noopener noreferrer" class="button">
           Ver Repositorio
         </a>
-        <a  *ngIf="project.name == 'API Reactiva con Spring WebFlux'"  routerLink="/show-api-reactive" class="button">
+         <!-- Usamos *ngIf para mostrar el botón solo si existe demoUrl -->
+        <a  *ngIf="project.demoUrl"  routerLink="{{project.demoUrl}}" class="button">
           Probar API
         </a>
-        <!-- Usamos *ngIf para mostrar el botón solo si existe demoUrl -->
+        <!-- Usamos *ngIf para mostrar el botón solo si existe demoUrl 
         <a *ngIf="project.demoUrl" [href]="project.demoUrl" target="_blank" rel="noopener noreferrer" class="button primary">
           Ver Demo
-        </a>
+        </a>-->
       </div>
     </div>
   </div>

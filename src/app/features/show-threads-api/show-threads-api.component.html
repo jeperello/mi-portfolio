@@ -1,0 +1,31 @@
+<section class="api-showcase">
+  <div class="actions">
+   <!-- Botón para refrescar las métricas 
+     <button (click)="refreshMetrics()" class="button">Refrescar</button>-->
+  </div>
+  <div class="showcase-grid">
+    <!-- Cuadrante de Métricas -->
+    <div class="showcase-card metrics-card">
+      <h3>Métricas de Memoria (Threads API)</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Hilos Activos</th>
+              <th>Logs Pendientes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let metric of metrics">
+              <td>{{ metric.activeThreads }}</td>
+              <td>{{ metric.pendingLogs }}</td>
+            </tr>
+            <tr *ngIf="metrics.length === 0">
+              <td colspan="3" class="waiting-message">Esperando datos de métricas...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
