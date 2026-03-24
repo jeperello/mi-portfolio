@@ -27,7 +27,12 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
         switchMap(() => this.threadsService.getStats())
       ).subscribe({
         next: (stats) => {
-          this.metrics = [stats];
+          // Añadimos la nueva métrica al principio del array para que aparezca arriba en la tabla.
+          this.metrics = [stats, ...this.metrics];
+          // Para evitar que la lista crezca indefinidamente, la limitamos a los últimos 20 registros.
+          if (this.metrics.length > 20) {
+            this.metrics = this.metrics.slice(0, 20);
+          }
           this.cdr.detectChanges(); // Nos aseguramos de que la vista se actualice.
         },
         error: (err) => console.error('Error obteniendo métricas:', err)
@@ -37,5 +42,9 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // Es crucial desuscribirse para evitar fugas de memoria.
     this.metricsSubscription?.unsubscribe();
+  }
+
+  resetMetrics(): void {
+    this.metrics = [];
   }
 }

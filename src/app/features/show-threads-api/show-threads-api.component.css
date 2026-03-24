@@ -44,6 +44,8 @@
 
 .table-container {
   overflow-x: auto;
+  max-height: 50vh;
+  overflow-y: auto;
 }
 
 table {
@@ -55,6 +57,13 @@ th, td {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #eee;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
 }
 
 .waiting-message {

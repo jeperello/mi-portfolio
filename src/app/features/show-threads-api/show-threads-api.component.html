@@ -1,8 +1,4 @@
 <section class="api-showcase">
-  <div class="actions">
-   <!-- Botón para refrescar las métricas 
-     <button (click)="refreshMetrics()" class="button">Refrescar</button>-->
-  </div>
   <div class="showcase-grid">
     <!-- Cuadrante de Métricas -->
     <div class="showcase-card metrics-card">
@@ -27,5 +23,8 @@
         </table>
       </div>
     </div>
+  </div>
+  <div class="actions" style="text-align: right; margin-top: 1rem;">
+    <button (click)="resetMetrics()" class="button" style="background-color: red; color: white;">Reset</button>
   </div>
 </section>
