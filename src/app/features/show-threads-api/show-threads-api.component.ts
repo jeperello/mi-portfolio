@@ -16,8 +16,8 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
 
   metrics: ThreadStats[] = [];
   private metricsSubscription?: Subscription;
-  public isLoading: boolean = false;
   public errorMessage: string | null = null;
+  public successMessage: string | null = null; // Nueva propiedad para mensajes de éxito
 
   constructor(private threadsService: ThreadsApiService, private cdr: ChangeDetectorRef) { }
 
@@ -52,10 +52,12 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
 
   ingestLogs(countValue: string, engineType: 'virtual' | 'platform'): void {
     const count = Number(countValue);
-    this.errorMessage = null; // Limpiamos errores previos antes de validar
+    this.errorMessage = null;   // Limpiamos errores previos
+    this.successMessage = null; // Limpiamos mensajes de éxito previos
 
     if (isNaN(count) || count <= 0 || count > 5000) {
       this.errorMessage = 'La cantidad de logs debe ser un número positivo y no exceder los 5000.';
+      this.successMessage = null; // Aseguramos que no haya mensaje de éxito si hay error de validación
       console.error(this.errorMessage);
       return;
     }
@@ -65,15 +67,14 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
       engineType
     };
 
-    this.isLoading = true;
     this.threadsService.ingestLogs(payload).subscribe({
       next: (response) => {
-        console.log(`Carga de ${count} logs con ${engineType} iniciada con éxito:`, response);
-        this.isLoading = false;
+        this.successMessage = `Carga de ${count} logs con ${engineType} iniciada con éxito.`;
+        console.log(this.successMessage, response);
       },
       error: (error) => {
+        this.errorMessage = `Error al iniciar la carga de logs: ${error.error.error}`;
         console.error('Error al iniciar la carga de logs:', error);
-        this.isLoading = false;
       }
     });
   }

@@ -196,6 +196,12 @@ tbody tr:last-child td {
   padding: 2rem;
 }
 
+/* Alineación del botón de reset a la derecha */
+.actions {
+  display: flex;
+  justify-content: flex-end; /* Alinea los elementos al final del contenedor */
+}
+
 /* Estilos para el cartel de advertencia */
 .alert-container {
   background-color: #fff3cd;
@@ -209,6 +215,14 @@ tbody tr:last-child td {
   align-items: center;
   animation: fadeIn 0.3s ease-in-out;
 }
+
+/* Estilos para el cartel de éxito */
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
