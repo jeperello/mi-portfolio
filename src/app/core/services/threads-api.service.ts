@@ -7,15 +7,27 @@ export interface ThreadStats {
   pendingLogs: number;
 }
 
+export interface IngestPayload {
+  count: number;
+  engineType: 'virtual' | 'platform';
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ThreadsApiService {
-  private apiUrl = 'https://log-ingestion-engin.onrender.com/api/logs/stats';
+  private readonly baseUrl = 'https://log-ingestion-engin.onrender.com';
+  //private readonly baseUrl = 'http://localhost:8080';
+  private statsApiUrl = this.baseUrl+'/api/logs/stats';
+  private ingestApiUrl = this.baseUrl+'/api/logs/ingest';
 
   constructor(private http: HttpClient) { }
 
   getStats(): Observable<ThreadStats> {
-    return this.http.get<ThreadStats>(this.apiUrl);
+    return this.http.get<ThreadStats>(this.statsApiUrl);
+  }
+
+  ingestLogs(payload: IngestPayload): Observable<any> {
+    return this.http.post(this.ingestApiUrl, payload);
   }
 }

@@ -1,0 +1,130 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.api-showcase {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Enlace de volver */
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: transform 0.2s ease;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+  transform: translateX(-5px);
+}
+
+/* Título y subtítulo (ahora en la parte inferior) */
+.description-row {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: #6c757d;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Fila de métricas (ocupa todo el ancho) */
+.metrics-row {
+  margin-bottom: 2rem;
+}
+
+/* Grid para las tarjetas de información (tecnologías y ventajas) */
+.info-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Estilo general de las tarjetas */
+.showcase-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border: 1px solid #e9ecef;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.showcase-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.showcase-card h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  border-bottom: 2px solid #f1f3f5;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+/* Tabla de métricas */
+.table-container {
+  overflow-x: auto;
+  max-height: 22rem;
+  overflow-y: auto;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+th,
+td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.waiting-message {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 2rem;
+}
