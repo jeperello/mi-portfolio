@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -19,7 +19,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  constructor(private reactiveApiService: ReactiveApiService) {}
+  constructor(private reactiveApiService: ReactiveApiService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     // Suscripción al stream de métricas (infinito)
@@ -30,20 +30,23 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
         if (this.metrics.length > 20) {
           this.metrics.pop();
         }
+        this.cdr.detectChanges(); // Forzamos a Angular a revisar la vista
       })
     );
 
     // Suscripción al stream de tecnologías (finito)
     this.subscriptions.add(
       this.reactiveApiService.getTechnologiesStream().subscribe(tech => {
-        this.technologies.push(tech);
+        this.technologies = [...this.technologies, tech]; // Actualización inmutable
+        this.cdr.detectChanges();
       })
     );
 
     // Suscripción al stream de ventajas (finito)
     this.subscriptions.add(
       this.reactiveApiService.getAdvantagesStream().subscribe(advantage => {
-        this.advantages.push(advantage);
+        this.advantages = [...this.advantages, advantage]; // Actualización inmutable
+        this.cdr.detectChanges();
       })
     );
   }

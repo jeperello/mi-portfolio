@@ -24,10 +24,10 @@ export class ReactiveApiService {
     return new Observable<T>(observer => {
       const eventSource = new EventSource(url);
 
-      eventSource.onmessage = event => {
+      const handleMessage = (event: MessageEvent) => {
         const eventData = event.data;
 
-        // Un evento puede llegar sin datos (p.ej. un 'keep-alive' del servidor).
+        // Un evento puede llegar sin datos (p.ej. un 'keep-alive' o comentario del servidor).
         // Si no hay datos, no intentamos parsear para evitar errores.
         if (!eventData) {
           return;
@@ -43,13 +43,21 @@ export class ReactiveApiService {
         }
       };
 
+      // Escuchamos el evento genérico 'message'
+      eventSource.onmessage = handleMessage;
+
+      // OPCIONAL: Si tu API usa nombres de eventos específicos, descomenta estas líneas:
+      // eventSource.addEventListener('technologies', handleMessage as any);
+      // eventSource.addEventListener('advantages', handleMessage as any);
+      // eventSource.addEventListener('metrics', handleMessage as any);
+
       eventSource.onerror = error => {
-        // Si el estado es CONNECTING (0) o CLOSED (2), asumimos que el servidor terminó de enviar datos.
-        // Para streams finitos como este, cerramos para evitar bucles de reconexión y completamos.
-        if (eventSource.readyState === 0 || eventSource.readyState === 2) {
+        // El estado 2 es CLOSED. El estado 0 es CONNECTING (reintentando).
+        // Solo completamos el stream si realmente se cerró (2) o si hay un error crítico.
+        if (eventSource.readyState === 2) {
           eventSource.close();
           this.zone.run(() => observer.complete());
-        } else {
+        } else if (eventSource.readyState !== 0) {
           // Error real
           this.zone.run(() => observer.error(error));
         }
