@@ -9,6 +9,20 @@
   display: flex;
   align-items: center;
 }
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espacio entre la imagen y tu nombre */
+  text-decoration: none;
+}
+
+.navbar-profile-img {
+  width: 40px;  /* Ajusta el tamaño a tu gusto */
+  height: 40px;
+  border-radius: 50%; /* Esto crea la forma circular */
+  object-fit: cover;  /* Evita que la imagen se estire */
+  border: 2px solid var(--button-primary-bg-color, #007bff); /* Opcional: un pequeño borde */
+}
 
 .navbar-container {
   max-width: 1200px;
