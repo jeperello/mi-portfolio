@@ -1,0 +1,25 @@
+@if (isOpen()) {
+<div class="chat-container">
+  <div class="chat-header">
+    <span>Asistente Virtual</span>
+    <button class="close-btn" (click)="toggleChat()">✕</button>
+  </div>
+  <div class="history" #history>
+    @for (msg of chatService.messages(); track $index) {
+      @if (msg.role !== 'system') {
+        <div [class]="msg.role">
+          {{ msg.content }}
+        </div>
+      }
+    }
+    @if (chatService.isLoading()) {
+      <div class="assistant"><em>Escribiendo...</em></div>
+    }
+  </div>
+  <input #userInput [disabled]="chatService.isLoading()" (keyup.enter)="send(userInput.value); userInput.value=''" placeholder="Hazme una pregunta sobre mis proyectos...">
+</div>
+}
+
+<button class="chat-fab" (click)="toggleChat()" title="Abrir asistente">
+  {{ isOpen() ? '✕' : '💬' }}
+</button>
