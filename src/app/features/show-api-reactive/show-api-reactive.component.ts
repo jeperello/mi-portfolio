@@ -7,7 +7,7 @@ import { ReactiveApiService, ApiMetrics, ApiDescription } from '../../core/servi
 @Component({
   selector: 'app-show-api-reactive',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './show-api-reactive.component.html',
   styleUrls: ['./show-api-reactive.component.css']
 })

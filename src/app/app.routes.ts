@@ -18,5 +18,10 @@ export const routes: Routes = [
     path: 'show-threads-api',
     loadComponent: () => import('./features/show-threads-api/show-threads-api.component').then(m => m.ShowThreadsApiComponent),
     title: 'Demo API de Hilos'
+  },
+  {
+    path: 'about',
+    loadComponent: () => import('./features/about-me/about-me.component').then(m => m.AboutMeComponent),
+    title: 'Sobre Mí'
   }
 ];

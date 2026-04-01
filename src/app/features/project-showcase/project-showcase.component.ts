@@ -21,5 +21,4 @@ export class ProjectShowcaseComponent {
   constructor(private projectService: ProjectService) {
     this.projects$ = this.projectService.getProjects();
   }
-
 }

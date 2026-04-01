@@ -8,7 +8,7 @@ import { switchMap } from 'rxjs/operators';
 @Component({
   selector: 'show-threads-api',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './show-threads-api.component.html',
   styleUrls: ['./show-threads-api.component.css']
 })
