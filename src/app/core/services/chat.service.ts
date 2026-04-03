@@ -1,74 +1,69 @@
 import { Injectable, signal } from '@angular/core';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
+
+// Interfaces para tipar la comunicación con el backend
+interface ChatBackendRequest {
+  userPrompt: string;
+  conversationHistory: { role: 'user' | 'assistant', content: string }[];
+}
+
+interface ChatBackendResponse {
+  assistantReply: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-  // Reemplaza con tu API Key de Google AI Studio (https://aistudio.google.com/)
-  private genAI = new GoogleGenerativeAI('AIzaSyCQDejUNEA2GRWv2NyLEAFS_B51gVO5E9U');
-  private model = this.genAI.getGenerativeModel({ 
-    model: "gemini-3-flash-preview"
-  });
+  private backendChatUrl = 'https://proxi-ia.onrender.com/api/chat';
 
   // Use Signals for a reactive and efficient state
   messages = signal<{ role: 'system' | 'user' | 'assistant', content: string }[]>([]);
   isLoading = signal(false);
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.messages.set([
-      { 
-        role: 'system', 
-        content: `Eres el asistente virtual del portfolio de un Desarrollador Fullstack. 
-        Tu misión es explicar los proyectos del autor de forma técnica pero accesible.
-        
-        Información clave de los proyectos:
-        1. API Reactiva con Spring WebFlux: Desarrollada con Java 21 y Spring Boot 3. Utiliza programación funcional y no bloqueante. La demo en el portfolio usa Server-Sent Events (SSE) para transmitir en tiempo real métricas de memoria del servidor, tecnologías y ventajas. Usa Spring Data R2DBC para persistencia reactiva.
-        2. Java 21 Virtual Threads vs Hilos Tradicionales: Es un motor de ingesta de logs de alta concurrencia. Compara el rendimiento de Virtual Threads (Project Loom) contra hilos de plataforma tradicionales usando el patrón Productor-Consumidor.
-        
-        Habilidades del autor: Java 21, Spring Boot, Angular, Docker, Microservicios y arquitecturas reactivas.
-        Responde de forma concisa y profesional.`
+      {
+        role: 'assistant',
+        content: '¡Hola! Soy tu asistente virtual. Estoy aquí para ayudarte a conocer los proyectos de Jorge Perello. ¿Qué te gustaría saber?'
       }
-    ,
-    {
-      role: 'assistant',
-      content: '¡Hola! Soy tu asistente virtual. Estoy aquí para ayudarte a conocer los proyectos de Jorge Perello, como la API Reactiva con Spring WebFlux o el motor de logs con Virtual Threads. ¿Tienes alguna pregunta técnica sobre ellos?'
-    }]);
+    ]);
   }
 
   async sendMessage(prompt: string) {
     if (this.isLoading() || !prompt.trim()) return;
 
-    // 1. Add user message to the list
-    this.messages.update(prev => [...prev, { role: 'user', content: prompt }]);
+    // 1. Añadimos el mensaje del usuario a la UI
+    const userMsg = { role: 'user' as const, content: prompt };
+    this.messages.update(prev => [...prev, userMsg]);
     this.isLoading.set(true);
 
     try {
-      const systemMsg = this.messages().find(m => m.role === 'system')?.content;
-      
-      // Obtenemos los mensajes anteriores sin incluir el mensaje de sistema ni el actual
-      const previousMessages = this.messages()
-        .filter(m => m.role !== 'system')
-        .slice(0, -1);
-
-      // Gemini exige que el historial comience siempre con un mensaje del rol 'user'
-      const firstUserIndex = previousMessages.findIndex(m => m.role === 'user');
-      const chatHistory = (firstUserIndex === -1 ? [] : previousMessages.slice(firstUserIndex))
+      // 2. Preparamos el historial (solo user y assistant)
+      // Excluimos el ÚLTIMO mensaje (el prompt actual) porque va en 'userPrompt'
+      const history = this.messages()
+        .filter(m => m.content !== prompt)
         .map(m => ({
-          role: (m.role === 'user' ? 'user' : 'model') as 'user' | 'model',
-          parts: [{ text: m.content }]
+          role: m.role as 'user' | 'assistant',
+          content: m.content
         }));
 
-      const chat = this.model.startChat({
-        history: chatHistory,
-        systemInstruction: systemMsg ? { role: 'system', parts: [{ text: systemMsg }] } : undefined
-      });
+      const requestBody: ChatBackendRequest = {
+        userPrompt: prompt,
+        conversationHistory: history
+      };
 
-      const result = await chat.sendMessage(prompt);
-      const botReply = result.response.text();
+      // 3. Petición al Proxy
+      const response = await lastValueFrom(
+        this.http.post<ChatBackendResponse>(this.backendChatUrl, requestBody)
+      );
 
-      // 2. Add AI response
+      // 4. Añadimos la respuesta del bot
+      const botReply = response?.assistantReply || 'Lo siento, no pude obtener respuesta.';
       this.messages.update(prev => [...prev, { role: 'assistant', content: botReply }]);
+
     } catch (error) {
-      console.error('Error in AI:', error);
+      console.error('Error:', error);
+      this.messages.update(prev => [...prev, { role: 'assistant', content: 'Hubo un error de conexión.' }]);
     } finally {
       this.isLoading.set(false);
     }
