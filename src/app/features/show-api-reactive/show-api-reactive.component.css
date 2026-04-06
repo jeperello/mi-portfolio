@@ -1,130 +1,122 @@
-:host {
-  display: block;
-  min-height: 100vh;
-  background-color: #f4f6f9;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+/* Paleta de colores Dark Mode */
+:root {
+  --bg-color: #0f172a; /* Fondo principal muy oscuro */
+  --card-bg: #1e293b; /* Fondo de tarjeta ligeramente más claro */
+  --text-primary: #f8fafc; /* Texto principal blanco azulado */
+  --text-secondary: #94a3b8; /* Texto secundario gris azulado */
+  --accent-color: #38bdf8; /* Cian brillante para acentos */
+  --accent-hover: #0ea5e9; /* Cian más oscuro para hover */
+  --border-color: #334155; /* Borde sutil */
+  --table-header-bg: #334155; /* Fondo para encabezados de tabla */
+  --table-border: #475569; /* Borde de tabla */
+  --table-row-hover: #2d3a4b; /* Fondo de fila al pasar el ratón */
 }
 
 .api-showcase {
-  max-width: 1200px;
-  margin: 0 auto;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
   padding: 2rem;
+  min-height: 100vh; /* Asegura que ocupe al menos toda la altura de la ventana */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* Espacio entre las filas */
 }
 
-/* Enlace de volver */
-.back-link {
-  display: inline-block;
-  margin-bottom: 1.5rem;
-  color: #007bff;
-  text-decoration: none;
-  font-weight: 500;
-  transition: transform 0.2s ease;
-}
-
-.back-link:hover {
-  text-decoration: underline;
-  transform: translateX(-5px);
-}
-
-/* Título y subtítulo (ahora en la parte inferior) */
-.description-row {
-  margin-top: 2.5rem;
+.api-showcase h1 {
+  color: var(--text-primary);
   text-align: center;
+  margin-bottom: 0.5rem;
 }
 
-h1 {
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 1rem;
-}
-
-.subtitle {
-  color: #6c757d;
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-/* Fila de métricas (ocupa todo el ancho) */
-.metrics-row {
+.api-showcase .subtitle {
+  color: var(--text-secondary);
+  text-align: center;
+  font-size: 1.1rem;
   margin-bottom: 2rem;
 }
 
-/* Grid para las tarjetas de información (tecnologías y ventajas) */
-.info-grid {
-  display: grid;
-  gap: 2rem;
-}
-
-@media (min-width: 768px) {
-  .info-grid {
-    grid-template-columns: 1fr 1fr;
+/* Animaciones de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Estilo general de las tarjetas */
 .showcase-card {
-  background: #ffffff;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  border: 1px solid #e9ecef;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil para elevación */
+
+  /* Animación de entrada */
+  opacity: 0; /* Inicia invisible */
+  animation: fadeIn 0.6s ease-out forwards; /* Aplica la animación */
 }
 
 .showcase-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
+
+/* Retraso escalonado para cada tarjeta (ajusta según la cantidad de tarjetas que tengas) */
+.showcase-card:nth-child(1) { animation-delay: 0.1s; }
+.showcase-card:nth-child(2) { animation-delay: 0.2s; }
+.showcase-card:nth-child(3) { animation-delay: 0.3s; }
+.showcase-card:nth-child(4) { animation-delay: 0.4s; }
+.showcase-card:nth-child(5) { animation-delay: 0.5s; }
 
 .showcase-card h3 {
+  color: var(--accent-color);
   margin-top: 0;
-  color: #2c3e50;
-  border-bottom: 2px solid #f1f3f5;
-  padding-bottom: 1rem;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-/* Tabla de métricas */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
 .table-container {
-  overflow-x: auto;
-  max-height: 22rem;
-  overflow-y: auto;
-  border-radius: 6px;
-  border: 1px solid #dee2e6;
+  overflow-x: auto; /* Permite scroll horizontal en tablas grandes */
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
+  margin-top: 1rem;
 }
 
-th,
-td {
-  padding: 1rem;
+th, td {
+  border: 1px solid var(--table-border);
+  padding: 0.75rem;
   text-align: left;
-  border-bottom: 1px solid #dee2e6;
+  color: var(--text-primary);
 }
 
 th {
-  background-color: #f8f9fa;
+  background-color: var(--table-header-bg);
+  color: var(--text-primary);
   font-weight: 600;
-  color: #495057;
-  position: sticky;
-  top: 0;
-  z-index: 1;
 }
 
-tbody tr:last-child td {
-  border-bottom: none;
+tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.1); /* Ligero sombreado para filas pares */
+}
+
+tbody tr:hover {
+  background-color: var(--table-row-hover);
 }
 
 .waiting-message {
   text-align: center;
-  color: #6c757d;
   font-style: italic;
-  padding: 2rem;
+  color: var(--text-secondary);
 }
