@@ -5,7 +5,7 @@ export const routes: Routes = [
     // Ruta principal que muestra el showcase de proyectos
     path: '',
     loadComponent: () => import('./features/project-showcase/project-showcase.component').then(m => m.ProjectShowcaseComponent),
-    title: 'Portafolio'
+    title: 'Portafolio de Jorge'
   },
   {
     // Ruta para la demostración de la API reactiva

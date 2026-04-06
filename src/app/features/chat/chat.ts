@@ -12,7 +12,7 @@ import { ChatService } from '../../core/services/chat.service';
 export class ChatComponent {
   chatService = inject(ChatService);
   historyElement = viewChild<ElementRef>('history');
-  isOpen = signal(true);
+  isOpen = signal(false);
 
   constructor() {
     // Efecto para hacer scroll automático al final cuando llegan mensajes nuevos

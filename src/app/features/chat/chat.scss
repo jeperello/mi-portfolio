@@ -22,10 +22,22 @@
   justify-content: center;
   z-index: 1001;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: slowBlink 4s infinite ease-in-out;
 
   &:hover {
     transform: scale(1.1);
     background: #0056b3;
+  }
+}
+
+@keyframes slowBlink {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    background-color: #007bff;
+  }
+  50% {
+    box-shadow: 0 0 25px 10px rgba(0, 123, 255, 0.6);
+    background-color: #3395ff; /* Un azul más claro para simular que se 'ilumina' */
   }
 }
 
@@ -34,10 +46,10 @@
   position: fixed;
   bottom: 100px;
   right: 25px;
-  width: 350px;
+  width: 320px; /* Reducido */
   max-width: calc(100vw - 50px);
-  height: 500px;
-  max-height: calc(100vh - 150px);
+  height: 450px; /* Reducido */
+  max-height: calc(100vh - 120px); /* Ajustado para la nueva altura */
   background: white;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -56,7 +68,7 @@
 .chat-header {
   background: #007bff;
   color: white;
-  padding: 15px 20px;
+  padding: 12px 15px; /* Reducido */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -68,14 +80,14 @@
   border: none;
   color: white;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 18px; /* Reducido */
   opacity: 0.8;
   &:hover { opacity: 1; }
 }
 
 .history {
   flex: 1;
-  padding: 20px;
+  padding: 15px; /* Reducido */
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -87,8 +99,8 @@
 .user, .assistant {
   max-width: 85%;
   padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 14px;
+  border-radius: 10px; /* Ligeramente reducido */
+  font-size: 13px; /* Ligeramente reducido */
   line-height: 1.5;
   word-wrap: break-word;
 }
@@ -97,21 +109,21 @@
   align-self: flex-end;
   background: #007bff;
   color: white;
-  border-bottom-right-radius: 2px;
+  border-bottom-right-radius: 4px; /* Ajustado para ser menos abrupto */
 }
 
 .assistant {
   align-self: flex-start;
   background: #e9ecef;
   color: #212529;
-  border-bottom-left-radius: 2px;
+  border-bottom-left-radius: 4px; /* Ajustado para ser menos abrupto */
 }
 
 input {
   border: none;
   border-top: 1px solid #eee;
-  padding: 18px 20px;
+  padding: 12px 15px; /* Reducido */
   outline: none;
-  font-size: 14px;
+  font-size: 13px; /* Reducido */
   &:disabled { background: #fdfdfd; }
 }
