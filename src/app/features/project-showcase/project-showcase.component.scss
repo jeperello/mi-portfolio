@@ -170,3 +170,31 @@
   padding: 3rem;
   color: #777;
 }
+
+@media (max-width: 768px) {
+  .project-showcase {
+    padding: 2rem 1rem; /* Reduce horizontal padding on small screens */
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr; /* Stack cards in a single column on small screens */
+  }
+
+  .project-card {
+    padding: 1.5rem; /* Adjust card padding for smaller screens */
+  }
+
+  .project-card h3 {
+    font-size: 1.15rem; /* Slightly smaller title font for small screens */
+  }
+
+  .technologies-list li {
+    padding: 0.25rem 0.6rem; /* Smaller badges */
+    font-size: 0.7rem;
+  }
+
+  .button {
+    padding: 0.5rem 0.8rem; /* Smaller buttons */
+    font-size: 0.8rem;
+  }
+}

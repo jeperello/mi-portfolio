@@ -27,7 +27,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
       this.reactiveApiService.getMetricsStream().subscribe(metric => {
         this.metrics = [metric, ...this.metrics];
         // Limitamos el array para que no crezca indefinidamente en la UI
-        if (this.metrics.length > 20) {
+        if (this.metrics.length > 10) {
           this.metrics.pop();
         }
         this.cdr.detectChanges(); // Forzamos a Angular a revisar la vista
@@ -36,17 +36,33 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
 
     // Suscripción al stream de tecnologías (finito)
     this.subscriptions.add(
-      this.reactiveApiService.getTechnologiesStream().subscribe(tech => {
-        this.technologies = [...this.technologies, tech]; // Actualización inmutable
-        this.cdr.detectChanges();
+      this.reactiveApiService.getTechnologiesStream().subscribe({
+        next: tech => {
+          this.technologies = [...this.technologies, tech]; // Actualización inmutable
+        },
+        error: err => {
+          console.log('End connection technologies stream:', err);
+          // Potentially set a flag for UI to show a message
+        },
+        complete: () => {
+          console.log('Technologies stream completed.');
+        }
       })
     );
 
     // Suscripción al stream de ventajas (finito)
     this.subscriptions.add(
-      this.reactiveApiService.getAdvantagesStream().subscribe(advantage => {
-        this.advantages = [...this.advantages, advantage]; // Actualización inmutable
-        this.cdr.detectChanges();
+      this.reactiveApiService.getAdvantagesStream().subscribe({
+        next: advantage => {
+          this.advantages = [...this.advantages, advantage]; // Actualización inmutable
+        },
+        error: err => {
+          console.log('End connection advantages stream:', err);
+          // Potentially set a flag for UI to show a message
+        },
+        complete: () => {
+          console.log('Advantages stream completed.');
+        }
       })
     );
   }

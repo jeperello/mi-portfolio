@@ -64,3 +64,9 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .full-title-suffix {
+    display: none;
+  }
+}

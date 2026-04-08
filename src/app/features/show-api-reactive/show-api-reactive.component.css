@@ -7,9 +7,9 @@
   --accent-color: #38bdf8; /* Cian brillante para acentos */
   --accent-hover: #0ea5e9; /* Cian más oscuro para hover */
   --border-color: #334155; /* Borde sutil */
-  --table-header-bg: #334155; /* Fondo para encabezados de tabla */
-  --table-border: #475569; /* Borde de tabla */
-  --table-row-hover: #2d3a4b; /* Fondo de fila al pasar el ratón */
+  --table-header-bg: #475569; /* Fondo para encabezados de tabla más claro */
+  --table-border: #64748b; /* Borde de tabla más claro */
+  --table-row-hover: #334155; /* Fondo de fila al pasar el ratón más claro */
 }
 
 .api-showcase {
@@ -88,6 +88,12 @@
   overflow-x: auto; /* Permite scroll horizontal en tablas grandes */
 }
 
+.metrics-row .table-container {
+  max-height: 300px; /* Adjust as needed */
+  overflow-y: auto;
+  border: 1px solid var(--border-color); /* For better visualization of scroll area */
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -102,17 +108,17 @@ th, td {
 }
 
 th {
-  background-color: var(--table-header-bg);
+  background-color: var(--card-bg); /* Usar el color de fondo de las tarjetas */
   color: var(--text-primary);
   font-weight: 600;
 }
 
 tbody tr:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.1); /* Ligero sombreado para filas pares */
+  background-color: #1a2535; /* Un tono ligeramente más oscuro que card-bg para filas pares */
 }
 
 tbody tr:hover {
-  background-color: var(--table-row-hover);
+  background-color: #223043; /* Un tono ligeramente más claro que card-bg para hover */
 }
 
 .waiting-message {
