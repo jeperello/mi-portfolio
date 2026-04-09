@@ -1,0 +1,137 @@
+:root {
+  --bg-color: #0f172a; /* Fondo principal muy oscuro */
+  --card-bg: #1e293b; /* Fondo de tarjeta ligeramente más claro */
+  --text-primary: #f8fafc; /* Texto principal blanco azulado */
+  --text-secondary: #94a3b8; /* Texto secundario gris azulado */
+  --accent-color: #38bdf8; /* Cian brillante para acentos */
+  --accent-hover: #0ea5e9; /* Cian más oscuro para hover */
+  --border-color: #334155; /* Borde sutil */
+  --table-border: #64748b; /* Borde de tabla más claro */
+  --success-color: #28a745;
+  --error-color: #dc3545;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px); /* Optional: blur effect */
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  width: 90%;
+  max-width: 800px; /* Adjust max width as needed */
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* To handle scrolling for table */
+  border: 1px solid var(--border-color);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: #1a2535; /* Slightly darker than card-bg */
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: var(--accent-color);
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto; /* Enable scrolling for the body content */
+  flex-grow: 1; /* Allow body to take available space */
+}
+
+.modal-body p {
+  margin-bottom: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.modal-body strong {
+  color: var(--text-primary);
+}
+
+.results-table-container {
+  margin-top: 1rem;
+  max-height: 400px; /* Max height for table with scroll */
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.results-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table-container th,
+.results-table-container td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--table-border);
+  color: var(--text-primary);
+}
+
+.results-table-container th {
+  background-color: var(--card-bg);
+  color: var(--accent-color);
+  font-weight: 600;
+  position: sticky; /* Keep header visible on scroll */
+  top: 0;
+  z-index: 1;
+}
+
+.results-table-container tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03); /* Subtle stripe */
+}
+
+.results-table-container tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.08); /* Lighter on hover */
+}
+
+.waiting-message {
+  text-align: center;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.success {
+  color: var(--success-color);
+  font-weight: 500;
+}
+
+.error {
+  color: var(--error-color);
+  font-weight: 500;
+}

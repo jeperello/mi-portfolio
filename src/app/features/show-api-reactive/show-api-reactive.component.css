@@ -6,6 +6,7 @@
   --text-secondary: #94a3b8; /* Texto secundario gris azulado */
   --accent-color: #38bdf8; /* Cian brillante para acentos */
   --accent-hover: #0ea5e9; /* Cian más oscuro para hover */
+  --accent-color-rgb: 56, 189, 248; /* Valores RGB de --accent-color */
   --border-color: #334155; /* Borde sutil */
   --table-header-bg: #475569; /* Fondo para encabezados de tabla más claro */
   --table-border: #64748b; /* Borde de tabla más claro */
@@ -125,4 +126,135 @@ tbody tr:hover {
   text-align: center;
   font-style: italic;
   color: var(--text-secondary);
+}
+
+/* --- Load Test Controls Styling --- */
+.load-test-controls {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center; /* Center items horizontally */
+  margin-top: 2rem; /* Add some space from elements above */
+}
+
+.load-test-controls h2 {
+  color: var(--accent-color);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.load-test-controls .input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  justify-content: center;
+}
+
+.load-test-controls label {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.load-test-controls input[type="number"] {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  width: 90px; /* Fixed width for the input */
+  text-align: center;
+  font-size: 1rem;
+  -moz-appearance: textfield; /* Hide arrows on Firefox */
+}
+
+/* Hide arrows on Chrome, Safari, Edge */
+.load-test-controls input[type="number"]::-webkit-outer-spin-button,
+.load-test-controls input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.load-test-controls .button-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+  justify-content: center;
+}
+
+.load-test-controls .button {
+  /* Inherits button styles from global or similar component, but ensure it looks good */
+  min-width: 180px; /* Give buttons a consistent width */
+}
+
+.load-test-status {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(var(--accent-color-rgb), 0.1); /* Light accent background */
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  text-align: center;
+  width: 100%;
+  max-width: 400px; /* Limit width of status box */
+}
+
+.load-test-status p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Estilos personalizados para los botones */
+.button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.button-group-full {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.button-group-full .button {
+  flex: 1; /* Esto hace que cada botón ocupe el mismo espacio (50% menos el gap) */
+  font-weight: 600;
+}
+
+.button-tech {
+  background-color: #059669; /* Un verde esmeralda que encaja mejor con el modo oscuro */
+}
+
+.button-tech:hover {
+  background-color: #10b981;
+}
+
+.button.primary {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+}
+
+.button.primary:hover {
+  background-color: var(--accent-hover);
 }

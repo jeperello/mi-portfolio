@@ -28,10 +28,14 @@
       </div>
     </div>
   </div>
-
+  <div class="button-group-full">
+    <button (click)="simulateTechnologiesLoad()" class="button button-tech">Simular Carga en Tecnologías</button>
+    <button (click)="simulateAdvantagesLoad()" class="button primary">Simular Carga en Ventajas</button>
+  </div>
   <!-- Grid para las tarjetas de información -->
-  <div class="info-grid">
-    <div class="showcase-card">
+  <div class="info-grid"> 
+  
+    <div class="showcase-card">    
       <h3>Tecnologías Utilizadas</h3>
       <div class="table-container">
         <table>
@@ -73,6 +77,16 @@
     </div>
   </div>
 
+  <!-- New: Load Test Controls
+  <div class="load-test-controls">
+    <h2>Simulación de Carga</h2>
+    <div *ngIf="isLoading" class="load-test-status">
+      <p>Estado: {{ loadTestStatus }}</p>
+      <p>Progreso: {{ requestsCompleted }} / {{ numberOfConcurrentRequests }}</p>
+      <p *ngIf="loadTestElapsedTime > 0">Tiempo transcurrido: {{ loadTestElapsedTime }} ms</p>
+    </div>
+  </div>
+ -->
   <!-- Fila inferior para la descripción -->
   <div class="description-row">
     <h1>Demostración de API Reactiva (WebFlux)</h1>

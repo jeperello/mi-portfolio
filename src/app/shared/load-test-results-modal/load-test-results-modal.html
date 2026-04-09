@@ -1,0 +1,37 @@
+<div class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Simulación de Carga Reactiva</h2>
+      <button class="close-button" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p><strong>Tipo de Prueba:</strong> {{ testType }}</p>
+      <p><strong>Solicitudes Enviadas:</strong> {{ totalRequests }}</p>
+      <div class="results-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+              <th>Tiempo (ms)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of results; trackBy: trackByFn">
+              <td>{{ result.requestIndex + 1 }}</td>
+              <td [class.success]="result.status === 'success'" [class.error]="result.status === 'error'">
+                {{ result.status === 'success' ? 'Éxito' : 'En espera' }}
+              </td>
+              <td>{{ result.description || 'N/A' }}</td>
+              <td>{{ result.timeElapsed | number:'1.0-2' }}</td>
+            </tr>
+            <tr *ngIf="results.length === 0">
+              <td colspan="4" class="waiting-message">Esperando resultados...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

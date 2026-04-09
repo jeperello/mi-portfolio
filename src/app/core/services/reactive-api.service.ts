@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 // Interfaces para tipar los datos que recibimos de la API
 export interface ApiDescription {
@@ -25,9 +25,11 @@ private createStream<T>(url: string): Observable<T> {
     const eventSource = new EventSource(url);
 
     eventSource.onmessage = (event: MessageEvent) => {
+      console.log(`Received message for ${url}:`, event.data); // Log received data
       if (!event.data) return;
       try {
         const parsedData = JSON.parse(event.data);
+        console.log(`Emitting data for ${url}:`, parsedData); // Log data before emitting
         this.zone.run(() => observer.next(parsedData));
       } catch (error) {
         console.error('Error parseando SSE:', error);
@@ -54,11 +56,11 @@ private createStream<T>(url: string): Observable<T> {
 
 
   getTechnologiesStream(): Observable<ApiDescription> {
-    return this.createStream<ApiDescription>(`${this.baseUrl}/technologies`);
+    return this.createStream<ApiDescription>(`${this.baseUrl}/technologies`); // Ensure it completes after 1 emission
   }
 
   getAdvantagesStream(): Observable<ApiDescription> {
-    return this.createStream<ApiDescription>(`${this.baseUrl}/advantages`);
+    return this.createStream<ApiDescription>(`${this.baseUrl}/advantages`); // Ensure it completes after 1 emission
   }
 
   getMetricsStream(): Observable<ApiMetrics> {
