@@ -1,44 +1,175 @@
-<section id="about-me" class="about-container">
-  <div class="about-grid">
-    <!-- Columna 1: Biografía -->
-    <div class="bio-card">
-      <h2>Sobre Mí</h2>
-      <p>
-        Soy un Desarrollador Fullstack enfocado en crear soluciones robustas y escalables. 
-        Mi pasión reside en el ecosistema de **Java** y las arquitecturas modernas como los 
-        Microservicios y la programación reactiva con **Spring WebFlux**.
-      </p>
-      <p>
-        Me especializo en optimizar el rendimiento de las aplicaciones, explorando 
-        tecnologías de vanguardia como los **Virtual Threads** de Java 21 para el manejo 
-        eficiente de la concurrencia.
-      </p>
+<!DOCTYPE html>
+<html lang="es">
 
-      <div class="tech-stack">
-        <h4>Tech Stack Principal</h4>
-        <div class="skills-grid">
-          <span class="skill-tag">Java 21</span>
-          <span class="skill-tag">Spring Boot 3</span>
-          <span class="skill-tag">Angular</span>
-          <span class="skill-tag">Docker</span>
-          <span class="skill-tag">Reactive Programming</span>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jorge Perelló - Full Stack Developer</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- HERO -->
+    <section class="hero fade-in">
+      <h1 class="animate">Jorge Perelló</h1>
+      <div class="subtitle animate animate-delay-1">Full Stack Developer (Java + Spring Boot + Angular)</div>
+      <div class="tagline animate animate-delay-2">Construyo aplicaciones escalables y procesos backend eficientes</div>
+    </section>
+
+    <!-- SOBRE MI -->
+    <section class="section reveal">
+      <h2>Sobre mí</h2>
+      <p>
+        Soy desarrollador Full Stack con fuerte orientación al backend utilizando Java y Spring Boot,
+        complementado con desarrollo frontend en Angular.
+      </p>
+      <p>
+        Trabajo en sistemas donde la performance, estabilidad y escalabilidad son clave,
+        especialmente en procesos batch y servicios backend.
+      </p>
+    </section>
+
+    <!-- ACTUALIDAD -->
+    <section class="section reveal">
+      <h2>Actualidad</h2>
+      <div class="grid">
+        <div class="card">
+          <p>
+            Soy un Desarrollador Fullstack enfocado en crear soluciones robustas y escalables.
+            Mi pasión reside en el ecosistema de <strong>Java</strong> y las arquitecturas modernas
+            como los Microservicios y la programación reactiva con <strong>Spring WebFlux</strong>.
+          </p>
+          <p>
+            Me especializo en optimizar el rendimiento de las aplicaciones, explorando tecnologías
+            de vanguardia como los <strong>Virtual Threads</strong> de Java 21 para el manejo eficiente
+            de la concurrencia.
+          </p>
+        </div>
+
+        <div class="card"
+          style="display:flex; flex-direction:column; justify-content:center; align-items:center; gap:15px;">
+          <h3>Trayectoria Profesional</h3>
+          <p style="text-align:center;">Podés ver mi experiencia, formación y certificaciones.</p>
+          <a href="assets/docs/CV Perello Jorge .pdf" target="_blank" class="btn primary">👁 Ver
+            CV Online</a>
+          <a href="assets/docs/CV Perello Jorge .pdf" download="CV_Jorge_Perello.pdf" class="btn secondary">📄
+            Descargar CV</a>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Columna 2: CV y Skills Rápidas -->
-    <div class="cv-card">
-      <h3>Trayectoria Profesional</h3>
-      <p>Puedes ver mi experiencia detallada, formación y certificaciones en mi currículum.</p>
-      
-      <div class="cv-actions">
-        <a href="assets/docs/CV Perello Jorge .pdf" target="_blank" class="btn-cv primary">
-          <span>👁️</span> Ver CV Online
+    <!-- STACK -->
+    <section class="section reveal">
+      <h2>Stack Tecnológico</h2>
+      <div class="grid">
+
+        <div class="card">
+          <h3>Backend</h3>
+          <ul>
+            <li>Java 21</li>
+            <li>Spring Boot</li>
+            <li>Spring Batch</li>
+            <li>JPA / Hibernate</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Frontend</h3>
+          <ul>
+            <li>Angular</li>
+            <li>TypeScript</li>
+            <li>HTML / CSS</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Testing</h3>
+          <ul>
+            <li>JUnit</li>
+            <li>Mockito</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Herramientas</h3>
+          <ul>
+            <li>Git</li>
+            <li>SQL</li>
+            <li>Linux</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PROYECTOS -->
+    <section class="section reveal">
+      <h2>Proyectos</h2>
+
+      <div class="card project">
+        <h3>Sistema Full Stack de Gestión de Tareas</h3>
+        <p>Aplicación completa con backend en Spring Boot y frontend en Angular.</p>
+        <ul>
+          <li>CRUD completo</li>
+          <li>Validaciones y manejo de errores</li>
+          <li>Arquitectura escalable</li>
+        </ul>
+      </div>
+
+      <div class="card project">
+        <h3>API REST para Gestión de Recursos</h3>
+        <p>Backend robusto con Spring Boot.</p>
+        <ul>
+          <li>Endpoints RESTful</li>
+          <li>Validación de datos</li>
+          <li>Manejo de excepciones</li>
+        </ul>
+      </div>
+
+      <div class="card project">
+        <h3>Simulación de Procesamiento Batch</h3>
+        <p>Procesamiento de datos por lotes.</p>
+        <ul>
+          <li>Reintentos automáticos</li>
+          <li>Manejo de estados</li>
+          <li>Logging estructurado</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="section reveal">
+      <h2>Contacto</h2>
+      <p>¿Buscás un desarrollador Full Stack con fuerte base en backend?</p>
+
+      <div class="contact-buttons">
+        <a href="mailto:jorgeperello2020@gmail.com" class="btn primary">📧 Email</a>
+
+        <a href="https://www.linkedin.com/in/jorge-perello-sw-developer/" target="_blank" class="btn secondary">
+          💼 LinkedIn
         </a>
-        <a href="assets/docs/CV Perello Jorge .pdf" download="CV_Jorge_Perello.pdf" class="btn-cv secondary">
-          <span>📥</span> Descargar PDF
+
+        <a href="https://github.com/jeperello" target="_blank" class="btn secondary">
+          💻 GitHub
         </a>
       </div>
+
+
+    </section>
+
+    <div class="footer">
+      © 2026 Jorge Perelló
     </div>
+
   </div>
-</section>
+
+</body>
+
+</html>
