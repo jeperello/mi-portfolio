@@ -41,6 +41,22 @@ export class ProjectService {
 
       ],
       demoUrl: '/show-threads-api'
+    },
+    {
+      name: 'Batch de Reprocesamiento Inteligente',
+      description: 'Sistema backend de alto rendimiento desarrollado con Java 21, Spring Boot 3.4 y Spring Batch 5, diseñado para el procesamiento masivo de operaciones con resiliencia, manejo de estados e idempotencia.',
+      repositoryUrl: 'https://github.com/jeperello/smart-reprocessing-batch',
+      technologies: [
+        'Java 21',
+        'Lombok',
+        'JUnit 5',
+        'Docker',
+        'Spring Batch', 'Spring Data JPA',
+        'GitHub Actions: CI/CD',
+        'DB H2 en memoria',
+
+      ],
+      demoUrl: ''
     }
   ];
 
