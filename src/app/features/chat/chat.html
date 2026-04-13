@@ -20,6 +20,13 @@
 </div>
 }
 
+@if (showTooltip() && !isOpen()) {
+<div class="chat-tooltip" (click)="toggleChat()">
+  ¿En qué puedo ayudarte?
+  <div class="tooltip-arrow"></div>
+</div>
+}
+
 <button class="chat-fab" (click)="toggleChat()" title="Abrir asistente">
   {{ isOpen() ? '✕' : '💬' }}
 </button>

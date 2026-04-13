@@ -1,4 +1,4 @@
-import { Component, inject, viewChild, ElementRef, effect, signal } from '@angular/core';
+import { Component, inject, viewChild, ElementRef, effect, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../core/services/chat.service';
 
@@ -9,10 +9,11 @@ import { ChatService } from '../../core/services/chat.service';
   standalone: true,
   imports: [CommonModule]
 })
-export class ChatComponent {
+export class ChatComponent implements OnInit {
   chatService = inject(ChatService);
   historyElement = viewChild<ElementRef>('history');
   isOpen = signal(false);
+  showTooltip = signal(false);
 
   constructor() {
     // Efecto para hacer scroll automático al final cuando llegan mensajes nuevos
@@ -24,8 +25,20 @@ export class ChatComponent {
     });
   }
 
+  ngOnInit() {
+    // Mostrar el tooltip después de 2 segundos
+    setTimeout(() => {
+      if (!this.isOpen()) {
+        this.showTooltip.set(true);
+      }
+    }, 2000);
+  }
+
   toggleChat() {
     this.isOpen.update(open => !open);
+    if (this.isOpen()) {
+      this.showTooltip.set(false);
+    }
   }
 
   send(text: string) {

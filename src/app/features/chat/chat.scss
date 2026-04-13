@@ -3,6 +3,51 @@
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Tooltip */
+.chat-tooltip {
+  position: fixed;
+  bottom: 95px;
+  right: 25px;
+  background: white;
+  color: #333;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  cursor: pointer;
+  animation: fadeInRight 0.5s ease-out;
+  border: 1px solid #e0e0e0;
+  white-space: nowrap;
+
+  &:hover {
+    background: #f8f9fa;
+  }
+}
+
+.tooltip-arrow {
+  position: absolute;
+  bottom: -8px;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid white;
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* Botón Flotante (FAB) */
 .chat-fab {
   position: fixed;
