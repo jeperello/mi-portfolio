@@ -1,5 +1,5 @@
 <section class="api-showcase">
-    <!--<a routerLink="/" class="back-link">&larr; Volver a Proyectos</a>-->
+  <!--<a routerLink="/" class="back-link">&larr; Volver a Proyectos</a>-->
 
   <!-- Fila superior para la tabla de métricas -->
   <div class="metrics-row">
@@ -39,9 +39,9 @@
     <button (click)="simulateAdvantagesLoad()" class="button primary">Simular Carga en Ventajas</button>
   </div>
   <!-- Grid para las tarjetas de información -->
-  <div class="info-grid"> 
-  
-    <div class="showcase-card">    
+  <div class="info-grid">
+
+    <div class="showcase-card">
       <h3>Tecnologías Utilizadas</h3>
       <div class="table-container">
         <table>
@@ -54,7 +54,7 @@
             <tr *ngFor="let tech of technologies">
               <td>{{ tech.description }}</td>
             </tr>
-             <tr *ngIf="technologies.length === 0">
+            <tr *ngIf="technologies.length === 0">
               <td class="waiting-message">Esperando datos de tecnologías...</td>
             </tr>
           </tbody>
@@ -99,7 +99,13 @@
     <p class="subtitle">
       Los cuadrantes se conectan a endpoints de una API reactiva que emite eventos (Server-Sent Events).
       <br>
-      Las tecnologías y ventajas se emiten cada 3 segundos y luego la conexión finaliza. Las métricas de memoria se emiten continuamente para mostrar el estado del servidor en tiempo real.
+      Las tecnologías y ventajas se emiten cada 3 segundos y luego la conexión finaliza. Las métricas de memoria se
+      emiten continuamente para mostrar el estado del servidor en tiempo real.
+
+      <a href="https://github.com/jeperello/reactive-api" target="_blank" rel="noopener noreferrer"
+        class="repo-button">
+        Ver Repositorio
+      </a>
     </p>
   </div>
 </section>

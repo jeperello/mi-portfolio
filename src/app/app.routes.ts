@@ -17,7 +17,7 @@ export const routes: Routes = [
     // Ruta para la demostración de la API de hilos
     path: 'show-threads-api',
     loadComponent: () => import('./features/show-threads-api/show-threads-api.component').then(m => m.ShowThreadsApiComponent),
-    title: 'Demo API de Hilos'
+    title: 'Hilos virtuales VS Hilos de plataformas'
   },
   {
     path: 'about',

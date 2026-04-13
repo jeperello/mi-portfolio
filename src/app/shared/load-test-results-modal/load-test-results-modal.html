@@ -1,7 +1,7 @@
 <div class="modal-backdrop" (click)="closeModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h2>Simulación de Carga Reactiva</h2>
+      <h2>Simulación de {{ totalRequests }} requests en simultaneo</h2>
       <button class="close-button" (click)="closeModal()">&times;</button>
     </div>
     <div class="modal-body">

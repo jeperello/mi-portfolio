@@ -1,5 +1,13 @@
 <section class="api-showcase">
- <!-- <a routerLink="/" class="back-link">&larr; Volver a Proyectos</a> -->
+  <div class="description-row">
+    <h1>Virtual Threads vs Hilos Tradicionales</h1>
+    <p>Este proyecto es un sistema de ingesta de logs de alta concurrencia diseñado para comparar el rendimiento de los Virtual Threads (Project Loom) frente a los hilos de plataforma tradicionales, implementando el patrón Producer-Consumer.
+      <a href="https://github.com/jeperello/log-ingestion-engin" target="_blank" rel="noopener noreferrer"
+        class="repo-button">
+        Ver Repositorio
+      </a>
+    </p>
+  </div>
   <div class="showcase-grid">
     <!-- Panel de Control de Estrés -->
     <div class="showcase-card stress-panel">
@@ -9,7 +17,7 @@
       </p>
       <div class="form-group">
         <label for="log-amount">Cantidad de logs a generar (Ej: 100, 200, 5000):</label>
-        <input #logCountInput id="log-amount" type="number" value="5000" class="log-input" placeholder="5000" min="1">
+        <input #logCountInput id="log-amount" type="number" value="500" class="log-input" placeholder="500" min="1">
       </div>
       <!-- Cartel de advertencia visual -->
       <div *ngIf="successMessage" class="alert-container alert-success">
@@ -40,8 +48,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let metric of metrics">
-              <td>{{ metric.activeThreads }}</td>
-              <td>{{ metric.pendingLogs }}</td>
+              <td><span class="live-number">{{ metric.activeThreads }}</span></td>
+              <td><span class="live-number">{{ metric.pendingLogs }}</span></td>
             </tr>
             <tr *ngIf="metrics.length === 0">
               <td colspan="3" class="waiting-message">Esperando datos de métricas...</td>

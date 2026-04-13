@@ -1,4 +1,5 @@
-:root {
+:host {
+  display: block;
   --bg-color: #0f172a;
   --card-bg: #1e293b;
   --text-primary: #f1f5f9;
@@ -9,14 +10,13 @@
   --border-color: #334155;
   --table-header-bg: #1e293b;
   --table-row-hover: #2d3e54;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 .api-showcase {
-  background-color: var(--bg-color);
-  color: var(--text-primary);
   padding: 3rem 2rem;
-  min-height: 100vh;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -47,19 +47,45 @@
   margin: 0 auto;
 }
 
+.repo-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.7rem;
+  background-color: rgba(56, 189, 248, 0.1);
+  color: var(--accent-color);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.75rem;
+  transition: all 0.3s ease;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.repo-button:hover {
+  background-color: var(--accent-color);
+  color: #0f172a;
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+}
+
 /* Tarjetas */
 .showcase-card {
-  background-color: var(--card-bg);
+  background-color: rgba(30, 41, 59, 0.7); /* Efecto semi-transparente */
+  backdrop-filter: blur(12px);             /* Desenfoque tipo cristal */
   border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 1.5rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .showcase-card:hover {
   border-color: var(--accent-color);
   transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
 .showcase-card h3 {
@@ -84,7 +110,8 @@
 
 /* Tablas Modernas */
 .table-container {
-  border-radius: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
   overflow: hidden;
 }
 
@@ -95,7 +122,7 @@ table {
 }
 
 th {
-  background-color: rgba(15, 23, 42, 0.5);
+  background-color: rgba(15, 23, 42, 0.8);
   color: var(--accent-color);
   font-weight: 600;
   font-size: 0.75rem;
@@ -106,6 +133,7 @@ th {
 td {
   padding: 14px 16px;
   font-size: 0.9rem;
+  color: var(--text-primary);
   border-bottom: 1px solid rgba(51, 65, 85, 0.5);
 }
 
@@ -261,4 +289,3 @@ tbody tr:hover {
   border-radius: 4px;
   vertical-align: middle;
 }
-
