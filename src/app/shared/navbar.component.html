@@ -7,7 +7,8 @@
     
     <ul class="navbar-links">
       <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Proyectos</a></li>
-      <li><a routerLink="/about" routerLinkActive="active">Sobre Mí</a></li>
+      <li><a routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Sobre Mí</a></li>
+      <li><a routerLink="/about" fragment="contact">Contacto</a></li>
     </ul>
   </div>
 </nav>
