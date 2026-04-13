@@ -44,7 +44,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
       this.reactiveApiService.getMetricsStream().subscribe(metric => {
         this.metrics = [metric, ...this.metrics];
         // Limitamos el array para que no crezca indefinidamente en la UI
-        if (this.metrics.length > 10) {
+        if (this.metrics.length > 5) {
           this.metrics.pop();
         }
         this.cdr.detectChanges(); // Re-introduce change detection
@@ -137,7 +137,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       requestObservables.subscribe({
         next: result => {
-          console.log('Emitting result to modal:', result); // Added log
+          //console.log('Emitting result to modal:', result); // Added log
           resultsSubject.next(result); // Emit result live to modal
           completedRequestsCount++;
           this.requestsCompleted = completedRequestsCount;

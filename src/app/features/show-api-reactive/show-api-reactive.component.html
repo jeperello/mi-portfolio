@@ -9,16 +9,22 @@
         <table>
           <thead>
             <tr>
-              <th>Memoria Usada (MB)</th>
-              <th>Memoria Libre (MB)</th>
-              <th>Memoria Total (MB)</th>
+              <th class="text-right">Memoria Usada (MB)</th>
+              <th class="text-right">Memoria Libre (MB)</th>
+              <th class="text-right">Memoria Total (MB)</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let metric of metrics">
-              <td>{{ metric.usedMemoryMB }}</td>
-              <td>{{ metric.freeMemoryMB }}</td>
-              <td>{{ metric.totalMemoryMB }}</td>
+              <td class="text-right">
+                <span class="live-number">{{ metric.usedMemoryMB }}</span>
+              </td>
+              <td class="text-right">
+                <span class="live-number">{{ metric.freeMemoryMB }}</span>
+              </td>
+              <td class="text-right">
+                <span class="live-number">{{ metric.totalMemoryMB }}</span>
+              </td>
             </tr>
             <tr *ngIf="metrics.length === 0">
               <td colspan="3" class="waiting-message">Esperando datos de métricas...</td>
@@ -91,7 +97,7 @@
   <div class="description-row">
     <h1>Demostración de API Reactiva (WebFlux)</h1>
     <p class="subtitle">
-      Los cuadrantes anteriores se conectan a endpoints de una API reactiva que emite eventos (Server-Sent Events).
+      Los cuadrantes se conectan a endpoints de una API reactiva que emite eventos (Server-Sent Events).
       <br>
       Las tecnologías y ventajas se emiten cada 3 segundos y luego la conexión finaliza. Las métricas de memoria se emiten continuamente para mostrar el estado del servidor en tiempo real.
     </p>

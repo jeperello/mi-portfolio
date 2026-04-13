@@ -25,11 +25,11 @@ private createStream<T>(url: string): Observable<T> {
     const eventSource = new EventSource(url);
 
     eventSource.onmessage = (event: MessageEvent) => {
-      console.log(`Received message for ${url}:`, event.data); // Log received data
+      //console.log(`Received message for ${url}:`, event.data); // Log received data
       if (!event.data) return;
       try {
         const parsedData = JSON.parse(event.data);
-        console.log(`Emitting data for ${url}:`, parsedData); // Log data before emitting
+        ///console.log(`Emitting data for ${url}:`, parsedData); // Log data before emitting
         this.zone.run(() => observer.next(parsedData));
       } catch (error) {
         console.error('Error parseando SSE:', error);

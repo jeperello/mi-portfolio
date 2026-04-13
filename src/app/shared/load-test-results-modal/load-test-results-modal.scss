@@ -68,7 +68,7 @@
 }
 
 .modal-body {
-  padding: 1.5rem;
+  //padding: 1.5rem;
   overflow-y: auto; /* Enable scrolling for the body content */
   flex-grow: 1; /* Allow body to take available space */
 }
@@ -134,4 +134,131 @@
 .error {
   color: var(--error-color);
   font-weight: 500;
+}
+/* --- ESTILOS DEL MODAL --- */
+
+/* Fondo oscurecido con desenfoque */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(4px); /* Efecto de desenfoque moderno */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+/* Caja del Modal */
+.modal-backdrop .modal-content {
+  background-color: var(--card-bg);
+  width: 100%;
+  max-width: 800px;
+  max-height: 85vh;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Cabecera del Modal */
+.modal-header {
+  padding: 1.25rem 2rem;
+  background-color: rgba(15, 23, 42, 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+ line-height: 1.2;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: white;
+}
+
+/* Cuerpo del Modal */
+.modal-body {
+ // padding: 2rem;
+  overflow-y: auto;
+}
+
+.modal-body p {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.modal-body p strong {
+  color: var(--text-primary);
+  margin-right: 8px;
+}
+
+/* Contenedor de la tabla interna */
+.results-table-container {
+  //margin-top: 1.5rem;
+  background-color: rgba(15, 23, 42, 0.3);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Estilos específicos de la tabla del modal */
+.results-table-container table th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #1e293b; /* Evita transparencia al hacer scroll */
+}
+
+/* Colores de estado */
+.success {
+  color: var(--success-color) !important;
+  font-weight: 600;
+}
+
+.error {
+  color: #ef4444 !important; /* Rojo para errores */
+}
+
+/* Scrollbar estilizado para el modal */
+.results-table-container::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.results-table-container::-webkit-scrollbar-thumb,
+.modal-body::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 10px;
+}
+
+/* Alineación de tiempo */
+.modal-body td:last-child {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  color: #818cf8;
+  text-align: right;
 }
