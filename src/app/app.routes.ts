@@ -20,6 +20,12 @@ export const routes: Routes = [
     title: 'Hilos virtuales VS Hilos de plataformas'
   },
   {
+    // Ruta para el Smart Batch Reprocessing
+    path: 'smart-batch',
+    loadComponent: () => import('./features/show-smart-batch/show-smart-batch.component').then(m => m.ShowSmartBatchComponent),
+    title: 'Smart Batch Reprocessing'
+  },
+  {
     path: 'about',
     loadComponent: () => import('./features/about-me/about-me.component').then(m => m.AboutMeComponent),
     title: 'Sobre Mí'
