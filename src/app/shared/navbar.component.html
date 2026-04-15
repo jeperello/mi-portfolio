@@ -7,6 +7,18 @@
     
     <ul class="navbar-links">
       <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Proyectos</a></li>
+      <li class="nav-item-relative">
+        <a routerLink="/blog" routerLinkActive="active" 
+           (mouseenter)="hideTooltip()" (click)="hideTooltip()">
+          Mi Blog
+        </a>
+        @if (showBlogTooltip()) {
+          <div class="nav-tooltip">
+            ¡Nueva Sección! ✍️
+            <div class="tooltip-arrow"></div>
+          </div>
+        }
+      </li>
       <li><a routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Sobre Mí</a></li>
       <li><a routerLink="/about" fragment="contact">Contacto</a></li>
     </ul>

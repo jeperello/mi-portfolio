@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -9,6 +9,26 @@ import { RouterModule } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
-  // Puedes añadir lógica para un menú móvil (hamburguesa) aquí
+export class NavbarComponent implements OnInit {
+  public showBlogTooltip = signal(false);
+
+  ngOnInit(): void {
+    // Mostramos el tooltip después de 2.5 segundos
+    setTimeout(() => {
+      this.showBlogTooltip.set(true);
+
+      // Lo ocultamos automáticamente tras 8 segundos
+      setTimeout(() => {
+        if (this.showBlogTooltip()) {
+          this.showBlogTooltip.set(false);
+        }
+      }, 8000);
+    }, 2500);
+  }
+
+  hideTooltip(): void {
+    if (this.showBlogTooltip()) {
+      this.showBlogTooltip.set(false);
+    }
+  }
 }

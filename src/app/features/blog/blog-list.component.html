@@ -1,0 +1,36 @@
+<section class="blog-list">
+  <div style="margin-bottom: 2rem;">
+    <h3>Gracias por venir!!! Aqui agregare mis pensamientos sobre desarrollo de software, arquitectura y nuevas tecnologías.</h3>
+    
+  </div>
+
+  <div class="blog-grid">
+    @if (blogs$ | async; as blogs) {
+      @for (blog of blogs; track blog.id) {
+        <article class="blog-card">
+          <div class="blog-header">
+            <span class="blog-date">{{ blog.date }}</span>
+          </div>
+          <h3>{{ blog.title }}</h3>
+          <p>{{ blog.excerpt }}</p>
+
+          <div class="blog-tags">
+            @for (tag of blog.tags; track tag) {
+              <span class="tag">{{ tag }}</span>
+            }
+          </div>
+
+          <div class="card-actions">
+            <a [routerLink]="['/blog', blog.id]" class="button">
+              Leer más
+            </a>
+          </div>
+        </article>
+      } @empty {
+        <div class="no-blogs">
+          <p>Aún no hay entradas en el blog. ¡Pronto habrá contenido interesante!</p>
+        </div>
+      }
+    }
+  </div>
+</section>

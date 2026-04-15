@@ -29,5 +29,15 @@ export const routes: Routes = [
     path: 'about',
     loadComponent: () => import('./features/about-me/about-me.component').then(m => m.AboutMeComponent),
     title: 'Sobre Mí'
+  },
+  {
+    path: 'blog',
+    loadComponent: () => import('./features/blog/blog-list.component').then(m => m.BlogListComponent),
+    title: 'Mi Blog'
+  },
+  {
+    path: 'blog/:id',
+    loadComponent: () => import('./features/blog/blog-post.component').then(m => m.BlogPostComponent),
+    title: 'Post del Blog'
   }
 ];

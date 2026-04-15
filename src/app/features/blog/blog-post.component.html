@@ -1,0 +1,34 @@
+<article class="blog-post-container">
+  @if (blog$ | async; as blog) {
+    <header class="blog-post-header">
+      <a routerLink="/blog" class="back-link">← Volver al blog</a>
+      <h1>{{ blog.title }}</h1>
+      <div class="blog-meta">
+        <span>Por <strong>{{ blog.author }}</strong></span>
+        <span class="separator">|</span>
+        <span>{{ blog.date }}</span>
+      </div>
+      <div class="blog-tags">
+        @for (tag of blog.tags; track tag) {
+          <span class="tag">{{ tag }}</span>
+        }
+      </div>
+    </header>
+
+    <div class="blog-post-content" [innerHTML]="blog.content"></div>
+
+    <footer class="blog-post-footer">
+      <hr>
+      <div class="share-section">
+        <p>¿Te ha gustado este post? ¡Compártelo!</p>
+      </div>
+      <a routerLink="/blog" class="button">Volver al listado</a>
+    </footer>
+  } @else {
+    <div class="not-found">
+      <h2>Post no encontrado</h2>
+      <p>Lo sentimos, el artículo que buscas no existe o ha sido movido.</p>
+      <a routerLink="/blog" class="button">Volver al blog</a>
+    </div>
+  }
+</article>
