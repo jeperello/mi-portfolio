@@ -1,11 +1,11 @@
-<div class="batch-container">
-  <div class="header">
+<div class="api-showcase batch-view">
+  <div class="description-row">
     <h1>Smart Batch Reprocessing</h1>
     <p class="subtitle">Execute and monitor your intelligent batch processing tasks</p>
   </div>
 
   <div class="actions-container">
-    <div class="card">
+    <div class="showcase-card">
       <div class="card-content">
         <div class="status-indicator" [ngClass]="{ 'is-loading': isLoading }">
           <span *ngIf="!isLoading && !response && !error">Ready to execute</span>

@@ -1,39 +1,14 @@
-.batch-container {
-  padding: 40px 20px;
-  max-width: 1000px;
-  margin: 0 auto;
+:host {
+  display: block;
+}
+
+.batch-view {
   min-height: 80vh;
-  color: #f1f5f9;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 50px;
-}
-
-h1 {
-  font-size: 3rem;
-  font-weight: 800;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.025em;
 }
 
 .subtitle {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 1.2rem;
-}
-
-.card {
-  background: rgba(30, 41, 59, 0.4);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  padding: 40px;
-  margin-bottom: 30px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .card-content {
@@ -50,6 +25,7 @@ h1 {
   justify-content: center;
 }
 
+/* Indicadores de Estado */
 .status-indicator {
   padding: 12px 24px;
   background: rgba(15, 23, 42, 0.6);
@@ -62,14 +38,15 @@ h1 {
 }
 
 .is-loading {
-  color: #38bdf8;
+  color: var(--accent-color);
   border-color: rgba(56, 189, 248, 0.3);
   animation: pulse 2s infinite ease-in-out;
 }
 
-.success-text { color: #10b981; }
-.error-text { color: #ef4444; }
+.success-text { color: var(--success-color); }
+.error-text { color: var(--error-color); }
 
+/* Botones con degradados específicos */
 .run-button, .status-button, .reload-button {
   border: none;
   padding: 16px 32px;
@@ -98,7 +75,7 @@ h1 {
 
 .status-button {
   background: rgba(30, 41, 59, 0.8);
-  color: #f1f5f9;
+  color: var(--text-primary);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -112,13 +89,14 @@ h1 {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Stats Dashboard */
+/* Dashboard de Estadísticas */
 .stats-dashboard {
   background: rgba(30, 41, 59, 0.6);
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 30px;
-  margin-bottom: 50px;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
 }
 
 .stats-header {
@@ -130,12 +108,12 @@ h1 {
 
 .stats-header h2 {
   font-size: 1.5rem;
-  color: #f1f5f9;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .timestamp {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -156,11 +134,11 @@ h1 {
   gap: 8px;
 }
 
-.stat-label { color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; }
-.stat-value { font-size: 1.8rem; font-weight: 800; color: #f1f5f9; }
+.stat-label { color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; }
+.stat-value { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); }
 
-.stat-item.success .stat-value { color: #10b981; }
-.stat-item.error .stat-value { color: #ef4444; }
+.stat-item.success .stat-value { color: var(--success-color); }
+.stat-item.error .stat-value { color: var(--error-color); }
 .stat-item.warning .stat-value { color: #f59e0b; }
 
 .progress-container {
@@ -186,7 +164,7 @@ h1 {
 .progress-info {
   display: flex;
   justify-content: space-between;
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -207,6 +185,7 @@ h1 {
 
 .icon { font-size: 2.5rem; display: block; margin-bottom: 15px; }
 
+/* Animaciones */
 .spinner {
   width: 20px;
   height: 20px;
@@ -223,5 +202,5 @@ h1 {
 
 @media (max-width: 600px) {
   .button-group { width: 100%; }
-  .run-button, .status-button { width: 100%; }
+  .run-button, .status-button, .reload-button { width: 100%; }
 }
