@@ -95,6 +95,25 @@
     li {
       margin-bottom: 0.5rem;
     }
+
+    .highlight {
+      background: #eef6ff;
+      padding: 15px;
+      border-left: 4px solid #007BFF;
+      border-radius: 5px;
+      margin: 20px 0;
+      color: #2c3e50;
+    }
+
+    .blog-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 2.5rem 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+      display: block;
+    }
   }
 }
 
