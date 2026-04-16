@@ -56,8 +56,8 @@ export class ProjectService {
         'DB H2 en memoria',
 
       ],
-      demoUrl: ''
-      //demoUrl: 'smart-batch'
+      //demoUrl: ''
+      demoUrl: 'smart-batch'
     }
   ];
 

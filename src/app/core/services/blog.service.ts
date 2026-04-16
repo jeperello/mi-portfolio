@@ -30,14 +30,14 @@ export class BlogService {
           <p>Ventajas</p>
           <ul>
             <li>Simple de entender y mantener.</li>
-            <li>Ecosistema maduro.</li>
-            <li>Gran ecosistema de librerías y herramientas compatibles.</li>
+            <li>Ecosistema maduro. Gran cantidad de librerías y herramientas compatibles.</li>
             <li>Ideal para equipos grandes o proyectos existentes.</li>
           </ul>
+        </div>
+        <div class="highlight">
           <p>Desventajas</p>
           <ul>
             <li>Bloqueante.</li>
-            <li>Ecosistema maduro.</li>
             <li>Escala peor bajo alta concurrencia.</li>
             <li>Uso intensivo de threads del sistema.</li>
           </ul>
@@ -53,6 +53,8 @@ export class BlogService {
             <li>Ideal para aplicaciones con alta latencia o I/O intensivo.</li>
             <li>Excelente para alta concurrencia.</li>
           </ul>
+        </div>
+        <div class="highlight">
           <p>Desventajas</p>
           <ul>
             <li>Mayor complejidad. Código más difícil de leer/debuggear.</li>
@@ -72,6 +74,8 @@ export class BlogService {
             <li>No necesitás reescribir todo a reactivo.</li>
             <li>Compatible con librerías existentes (JPA, etc.).</li>
           </ul>
+        </div>
+        <div class="highlight">
           <p>Desventajas</p>
           <ul>
             <li>Todavía relativamente nuevo.</li>
