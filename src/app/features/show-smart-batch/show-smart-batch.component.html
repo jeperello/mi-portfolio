@@ -7,8 +7,7 @@ El objetivo fue construir un sistema capaz de procesar grandes volúmenes de dat
         class="repo-button">
         Ver Repositorio
       </a>
-</p>
-
+    </p>
     <button (click)="showInstructions = !showInstructions" class="instructions-toggle">
       {{ showInstructions ? 'Ocultar manual 📖' : 'Instrucciones de vuelo ✈️' }}
     </button>
@@ -102,6 +101,26 @@ El objetivo fue construir un sistema capaz de procesar grandes volúmenes de dat
       <div class="progress-info">
         <span>Processing Completion</span>
         <span>{{ ((statusResponse.successCount / statusResponse.totalRecords) * 100).toFixed(1) }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terminal de Logs (La joya de la corona) -->
+  <div class="terminal-container animation-fade-in">
+    <div class="terminal-header">
+      <div class="terminal-buttons">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <div class="terminal-title">backend-log-console — spring-boot-executor</div>
+    </div>
+    <div class="terminal-body">
+      <div *ngFor="let log of logs" class="log-line" [ngClass]="log.type">
+        <span class="log-message">{{ log.message }}</span>
+      </div>
+      <div *ngIf="isLoading" class="log-line debug">
+        <span class="cursor">_</span>
       </div>
     </div>
   </div>
