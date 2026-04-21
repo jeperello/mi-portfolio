@@ -7,7 +7,10 @@
   <div class="projects-grid">
     @if (projects$ | async; as projects) {
       @for (project of projects; track project.name) {
-        <div class="project-card">
+        <div class="project-card" [class.new-project]="project.isNew">
+          @if (project.isNew) {
+            <div class="new-badge">¡Nuevo! ✨</div>
+          }
           <h3>{{ project.name }}</h3>
           <p>{{ project.description }}</p>
 

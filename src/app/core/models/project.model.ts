@@ -8,4 +8,5 @@ export interface Project {
   repositoryUrl: string;
   technologies: string[];
   demoUrl?: string; // Opcional, por si algún proyecto no tiene demo desplegada.
+  isNew?: boolean;
 }

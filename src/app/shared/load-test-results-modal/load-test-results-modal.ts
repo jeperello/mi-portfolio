@@ -44,7 +44,7 @@ ngOnInit(): void {
 
   if (this.resultsStream) {
     this.resultsSubscription = this.resultsStream.subscribe(result => {
-      console.log('Modal received result:', result);
+      //console.log('Modal received result:', result);
       // Update the specific item in the array
       if (result.requestIndex !== undefined && this.results[result.requestIndex]) {
         this.results[result.requestIndex] = result;

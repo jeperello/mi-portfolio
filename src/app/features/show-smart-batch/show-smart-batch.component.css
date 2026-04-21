@@ -9,6 +9,89 @@
 .subtitle {
   color: var(--text-secondary);
   font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.instructions-toggle {
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--accent-color);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.instructions-toggle:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+/* Workflow Guide Styles */
+.workflow-guide {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 1rem 0 3rem 0;
+  padding: 1.5rem;
+  background: rgba(30, 41, 59, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.guide-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.step-num {
+  background: var(--accent-color);
+  color: #0f172a;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+
+.step-content strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.step-content p {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Colores de estado en texto */
+.text-pending { color: var(--accent-color); font-weight: 600; }
+.text-process { color: #818cf8; font-weight: 600; }
+.text-failed { color: var(--error-color); font-weight: 600; }
+
+@media (max-width: 992px) {
+  .workflow-guide {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
 }
 
 .card-content {

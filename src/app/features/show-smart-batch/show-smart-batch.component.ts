@@ -18,6 +18,7 @@ export class ShowSmartBatchComponent implements OnInit, OnDestroy {
   response: string | null = null;
   statusResponse: any = null;
   error: string | null = null;
+  showInstructions = false;
   private statusSubscription?: Subscription;
 
   constructor(

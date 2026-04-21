@@ -1,7 +1,42 @@
 <div class="api-showcase batch-view">
   <div class="description-row">
     <h1>Smart Batch Reprocessing</h1>
-    <p class="subtitle">Execute and monitor your intelligent batch processing tasks</p>
+    <p class="subtitle">Motor de procesamiento masivo asíncrono diseñado para gestionar operaciones críticas con alta tolerancia a fallos. El sistema automatiza el ciclo de vida de registros pendientes, aplicando reintentos inteligentes y garantizando la integridad de los datos mediante patrones de diseño empresariales.
+El objetivo fue construir un sistema capaz de procesar grandes volúmenes de datos sin saturar la memoria, manejando errores temporales (como caídas de servicios externos) y asegurando que ninguna operación se procese dos veces por error.
+    <a href="https://github.com/jeperello/smart-reprocessing-batch" target="_blank" rel="noopener noreferrer"
+        class="repo-button">
+        Ver Repositorio
+      </a>
+</p>
+
+    <button (click)="showInstructions = !showInstructions" class="instructions-toggle">
+      {{ showInstructions ? 'Ocultar manual 📖' : 'Instrucciones de vuelo ✈️' }}
+    </button>
+  </div>
+
+  <!-- Guía de Workflow Condicional -->
+  <div *ngIf="showInstructions" class="workflow-guide animation-fade-in">
+    <div class="guide-step">
+      <span class="step-num">1</span>
+      <div class="step-content">
+        <strong>Reload Data (Preparar)</strong>
+        <p>Inyecta 100 registros nuevos en estado <span class="text-pending">PENDING</span>.</p>
+      </div>
+    </div>
+    <div class="guide-step">
+      <span class="step-num">2</span>
+      <div class="step-content">
+        <strong>Run Batch (Procesar)</strong>
+        <p>Inicia el motor. Los registros pasan a <span class="text-process">IN PROCESS</span>.</p>
+      </div>
+    </div>
+    <div class="guide-step">
+      <span class="step-num">3</span>
+      <div class="step-content">
+        <strong>Refresh Status (Monitor)</strong>
+        <p>3 reintentos automáticos antes de marcar al registro como <span class="text-failed">FAILED</span>.</p>
+      </div>
+    </div>
   </div>
 
   <div class="actions-container">
@@ -15,17 +50,17 @@
         </div>
 
         <div class="button-group">
-          <button (click)="runBatch()" [disabled]="isLoading || isReloadLoading" class="run-button">
-            <span *ngIf="!isLoading">RUN BATCH</span>
-            <span *ngIf="isLoading" class="spinner"></span>
-          </button>
-
-          <button (click)="reload()" [disabled]="isReloadLoading || isLoading" class="reload-button">
+          <button (click)="reload()" [disabled]="isReloadLoading || isLoading" class="reload-button" title="Crea 100 nuevos registros para procesar">
             <span *ngIf="!isReloadLoading">RELOAD DATA</span>
             <span *ngIf="isReloadLoading" class="spinner"></span>
           </button>
 
-          <button (click)="checkStatus()" [disabled]="isStatusLoading" class="status-button">
+          <button (click)="runBatch()" [disabled]="isLoading || isReloadLoading" class="run-button" title="Comienza el procesamiento de los registros pendientes">
+            <span *ngIf="!isLoading">RUN BATCH</span>
+            <span *ngIf="isLoading" class="spinner"></span>
+          </button>
+
+          <button (click)="checkStatus()" [disabled]="isStatusLoading" class="status-button" title="Consulta manual del estado actual del batch">
             <span *ngIf="!isStatusLoading">REFRESH STATUS</span>
             <span *ngIf="isStatusLoading" class="spinner"></span>
           </button>
