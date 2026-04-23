@@ -59,6 +59,22 @@ export class ProjectService {
       //demoUrl: ''
       demoUrl: 'smart-batch',
       isNew: true
+    },
+    {
+      name: 'API REST FULL',
+      description: 'Este microservicio gestiona el motor de contenidos de mi portfolio personal (Blog & Comments). Está diseñado bajo principios de Clean Architecture, alta testabilidad y despliegue automatizado.',
+      repositoryUrl: 'https://github.com/jeperello/comment-service',
+      technologies: [
+        'Java 21',
+        'Spring Boot 3.5.13',
+        'Lombok',
+        'JUnit 5',
+        'Docker', 'Spring Data JPA',
+        'GitHub Actions: CI/CD',
+        'DB', 'PostgreSQL'
+
+      ],
+      demoUrl: ''
     }
   ];
 
