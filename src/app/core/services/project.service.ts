@@ -11,6 +11,22 @@ export class ProjectService {
   // Por ahora, los mantenemos aquí para desarrollar la UI.
   private projects: Project[] = [
     {
+      name: 'API REST FULL',
+      description: 'Este microservicio gestiona el motor de contenidos de mi portfolio personal (Blog & Comments). Está diseñado bajo principios de Clean Architecture, alta testabilidad y despliegue automatizado.',
+      repositoryUrl: 'https://github.com/jeperello/comment-service',
+      technologies: [
+        'Java 21',
+        'Spring Boot 3.5.13',
+        'Lombok',
+        'JUnit 5',
+        'Docker', 'Spring Data JPA',
+        'GitHub Actions: CI/CD',
+        'DB', 'PostgreSQL'
+      ],
+      isNew: true,
+      demoUrl: ''
+    },
+    {
       name: 'API Reactiva con Spring WebFlux',
       description: 'Una API REST reactiva construida con Java 21 y Spring Boot 3, utilizando programación funcional y comunicación no bloqueante para un alto rendimiento.',
       repositoryUrl: 'https://github.com/jeperello/reactive-api',
@@ -57,24 +73,7 @@ export class ProjectService {
 
       ],
       //demoUrl: ''
-      demoUrl: 'smart-batch',
-      isNew: true
-    },
-    {
-      name: 'API REST FULL',
-      description: 'Este microservicio gestiona el motor de contenidos de mi portfolio personal (Blog & Comments). Está diseñado bajo principios de Clean Architecture, alta testabilidad y despliegue automatizado.',
-      repositoryUrl: 'https://github.com/jeperello/comment-service',
-      technologies: [
-        'Java 21',
-        'Spring Boot 3.5.13',
-        'Lombok',
-        'JUnit 5',
-        'Docker', 'Spring Data JPA',
-        'GitHub Actions: CI/CD',
-        'DB', 'PostgreSQL'
-
-      ],
-      demoUrl: ''
+      demoUrl: 'smart-batch'
     }
   ];
 
