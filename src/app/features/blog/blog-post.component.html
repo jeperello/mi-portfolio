@@ -7,6 +7,10 @@
         <span>Por <strong>{{ blog.author }}</strong></span>
         <span class="separator">|</span>
         <span>{{ blog.date }}</span>
+        <span class="separator">|</span>
+        <a routerLink="." fragment="comments" class="comments-anchor">
+          {{ (comments$ | async)?.length || 0 }} comentarios
+        </a>
       </div>
       <div class="blog-tags">
         @for (tag of blog.tags; track tag) {
@@ -16,6 +20,61 @@
     </header>
 
     <div class="blog-post-content" [innerHTML]="blog.content"></div>
+
+    <section id="comments" class="comments-section">
+      <hr>
+      @if (comments$ | async; as comments) {
+        <h3>Comentarios ({{ comments.length }})</h3>
+        
+        <div class="comments-list">
+          @for (comment of comments; track comment.id) {
+            <div class="comment-card">
+              <div class="comment-header">
+                <div class="comment-avatar">{{ comment.author.charAt(0).toUpperCase() }}</div>
+                <div class="comment-info">
+                  <span class="comment-author">{{ comment.author }}</span>
+                  <span class="comment-date">{{ comment.date }}</span>
+                </div>
+              </div>
+              <p class="comment-content">{{ comment.content }}</p>
+            </div>
+          } @empty {
+            <p class="no-comments">Sé el primero en comentar este post. ¡Tu opinión cuenta!</p>
+          }
+        </div>
+      }
+
+      <div class="add-comment-container">
+        <h4>Deja un comentario</h4>
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="comment-form">
+          <div class="form-group">
+            <label for="author">Nombre</label>
+            <input 
+              id="author" 
+              type="text" 
+              formControlName="author" 
+              placeholder="Tu nombre o alias"
+              [class.error]="commentForm.get('author')?.invalid && commentForm.get('author')?.touched"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="content">Comentario</label>
+            <textarea 
+              id="content" 
+              formControlName="content" 
+              placeholder="Escribe lo que piensas..."
+              rows="4"
+              [class.error]="commentForm.get('content')?.invalid && commentForm.get('content')?.touched"
+            ></textarea>
+          </div>
+
+          <button type="submit" [disabled]="commentForm.invalid || isSubmitting" class="submit-button">
+            {{ isSubmitting ? 'Publicando...' : 'Publicar comentario' }}
+          </button>
+        </form>
+      </div>
+    </section>
 
     <footer class="blog-post-footer">
       <hr>

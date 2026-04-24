@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Blog } from '../models/blog.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of, map } from 'rxjs';
+import { Blog, BlogComment } from '../models/blog.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlogService {
+  private apiUrl = 'https://comment-service-4192.onrender.com/api/v1/comments';
 
   private blogs: Blog[] = [
     {
@@ -125,7 +127,7 @@ export class BlogService {
     }
   ];
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getBlogs(): Observable<Blog[]> {
     return of(this.blogs);
@@ -133,5 +135,26 @@ export class BlogService {
 
   getBlogById(id: string): Observable<Blog | undefined> {
     return of(this.blogs.find(blog => blog.id === id));
+  }
+
+  getComments(): Observable<BlogComment[]> {
+    return this.http.get<any[]>(this.apiUrl).pipe(
+      map(comments => comments.map(c => ({
+        id: c.id?.toString() || Math.random().toString(),
+        author: c.username || 'Anónimo',
+        content: c.content,
+        date: c.createdAt ? new Date(c.createdAt).toLocaleDateString('es-ES', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }) : 'Fecha desconocida'
+      })))
+    );
+  }
+
+  addComment(comment: { username: string, content: string }): Observable<any> {
+    return this.http.post(this.apiUrl, comment);
   }
 }
