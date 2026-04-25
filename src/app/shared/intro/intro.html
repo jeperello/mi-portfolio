@@ -1,0 +1,24 @@
+<div class="intro-overlay" [class.fade-out]="!isVisible">
+  <div class="mini-cup">☕</div>
+  
+  <div class="terminal-window">
+    <div class="log-container">
+      <div *ngFor="let log of logs; let i = index" class="log-line" [ngClass]="log.type" [style.animation-delay]="(i * 0.4) + 's'">
+        {{ log.message }}
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <span class="loading-text">BOOTING PORTFOLIO...</span>
+      <div class="progress-bar">
+        <div class="fill"></div>
+      </div>
+    </div>
+
+    <div class="status-check">
+      <div>JDK 21: <span>READY</span></div>
+      <div>LOOM: <span>ACTIVE</span></div>
+      <div>FLUX: <span>STREAMING</span></div>
+    </div>
+  </div>
+</div>

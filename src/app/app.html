@@ -1,14 +1,11 @@
-<app-navbar></app-navbar>
+<app-intro *ngIf="showIntro" (finished)="onIntroFinished()"></app-intro>
 
-<main>
-  <!--
-    El router-outlet es el contenedor dinámico.
-    Angular mostrará aquí el componente que corresponda a la ruta activa.
-    Para la ruta '/', mostrará 'ProjectShowcaseComponent'.
-    Para la ruta '/show-api-reactive', mostrará 'ShowApiReactiveComponent'.
-    Para la ruta '/show-threads-api', mostrará 'ShowThreadsApiComponent'.
-  -->
-  <router-outlet></router-outlet>
-</main>
+<div [style.display]="showIntro ? 'none' : 'block'">
+  <app-navbar></app-navbar>
 
-<app-chat></app-chat>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+
+  <app-chat></app-chat>
+</div>
