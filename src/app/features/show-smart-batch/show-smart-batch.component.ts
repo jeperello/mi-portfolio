@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { SmartBatchService } from '../../core/services/smart-batch.service';
 import { timer, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 
 @Component({
   selector: 'app-show-smart-batch',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ApiWarmingComponent],
   templateUrl: './show-smart-batch.component.html',
   styleUrls: ['./show-smart-batch.component.css']
 })
@@ -15,6 +16,7 @@ export class ShowSmartBatchComponent implements OnInit, OnDestroy {
   isLoading = false;
   isStatusLoading = false;
   isReloadLoading = false;
+  isWarming = false; // Flag para el café
   response: string | null = null;
   statusResponse: any = null;
   error: string | null = null;
@@ -33,7 +35,16 @@ export class ShowSmartBatchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.addLog('System initialized. Ready for operations.', 'success');
-    // ... resto del init ...
+
+    // Si en 1.5 segundos no hay respuesta del servidor, mostramos la animación de "Warming"
+    setTimeout(() => {
+      if (!this.statusResponse) {
+        this.isWarming = true;
+        this.addLog('Server cold start detected. Activating warming sequence...', 'debug');
+        this.cdr.detectChanges();
+      }
+    }, 1500);
+
     // Iniciamos el polling automático al entrar al componente
     //timer(0, 5000) dispara inmediatamente (0) y luego cada 5000ms
     this.statusSubscription = timer(0, 5000)
@@ -47,6 +58,7 @@ export class ShowSmartBatchComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           this.statusResponse = res;
+          this.isWarming = false; // Ocultamos el warming al recibir datos
           this.isStatusLoading = false;
           this.cdr.detectChanges();
         },

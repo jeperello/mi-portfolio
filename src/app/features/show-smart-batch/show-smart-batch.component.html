@@ -2,8 +2,8 @@
   <div class="description-row">
     <h1>Smart Batch Reprocessing</h1>
     <p class="subtitle">Motor de procesamiento masivo asíncrono diseñado para gestionar operaciones críticas con alta tolerancia a fallos. El sistema automatiza el ciclo de vida de registros pendientes, aplicando reintentos inteligentes y garantizando la integridad de los datos mediante patrones de diseño empresariales.
-El objetivo fue construir un sistema capaz de procesar grandes volúmenes de datos sin saturar la memoria, manejando errores temporales (como caídas de servicios externos) y asegurando que ninguna operación se procese dos veces por error.
-    <a href="https://github.com/jeperello/smart-reprocessing-batch" target="_blank" rel="noopener noreferrer"
+      El objetivo fue construir un sistema capaz de procesar grandes volúmenes de datos sin saturar la memoria, manejando errores temporales (como caídas de servicios externos) y asegurando que ninguna operación se procese dos veces por error.
+      <a href="https://github.com/jeperello/smart-reprocessing-batch" target="_blank" rel="noopener noreferrer"
         class="repo-button">
         Ver Repositorio
       </a>
@@ -13,133 +13,143 @@ El objetivo fue construir un sistema capaz de procesar grandes volúmenes de dat
     </button>
   </div>
 
-  <!-- Guía de Workflow Condicional -->
-  <div *ngIf="showInstructions" class="workflow-guide animation-fade-in">
-    <div class="guide-step">
-      <span class="step-num">1</span>
-      <div class="step-content">
-        <strong>Reload Data (Preparar)</strong>
-        <p>Inyecta 100 registros nuevos en estado <span class="text-pending">PENDING</span>.</p>
-      </div>
-    </div>
-    <div class="guide-step">
-      <span class="step-num">2</span>
-      <div class="step-content">
-        <strong>Run Batch (Procesar)</strong>
-        <p>Inicia el motor. Los registros pasan a <span class="text-process">IN PROCESS</span>.</p>
-      </div>
-    </div>
-    <div class="guide-step">
-      <span class="step-num">3</span>
-      <div class="step-content">
-        <strong>Refresh Status (Monitor)</strong>
-        <p>3 reintentos automáticos antes de marcar al registro como <span class="text-failed">FAILED</span>.</p>
-      </div>
-    </div>
-  </div>
+  <!-- Animación de Café (Warming) -->
+  <app-api-warming *ngIf="isWarming" 
+    mainMessage="Cargando Motor de Lotes..." 
+    subMessage="Preparando el hilo de ejecución (Spring Batch está despertando) ⚙️">
+  </app-api-warming>
 
-  <div class="actions-container">
-    <div class="showcase-card">
-      <div class="card-content">
-        <div class="status-indicator" [ngClass]="{ 'is-loading': isLoading }">
-          <span *ngIf="!isLoading && !response && !error">Ready to execute</span>
-          <span *ngIf="isLoading">Executing Batch...</span>
-          <span *ngIf="response" class="success-text">Batch iniciado correctamente</span>
-          <span *ngIf="error" class="error-text">{{ error }}</span>
-        </div>
-
-        <div class="button-group">
-          <button (click)="reload()" [disabled]="isReloadLoading || isLoading" class="reload-button" title="Crea 100 nuevos registros para procesar">
-            <span *ngIf="!isReloadLoading">RELOAD DATA</span>
-            <span *ngIf="isReloadLoading" class="spinner"></span>
-          </button>
-
-          <button (click)="runBatch()" [disabled]="isLoading || isReloadLoading" class="run-button" title="Comienza el procesamiento de los registros pendientes">
-            <span *ngIf="!isLoading">RUN BATCH</span>
-            <span *ngIf="isLoading" class="spinner"></span>
-          </button>
-
-          <button (click)="checkStatus()" [disabled]="isStatusLoading" class="status-button" title="Consulta manual del estado actual del batch">
-            <span *ngIf="!isStatusLoading">REFRESH STATUS</span>
-            <span *ngIf="isStatusLoading" class="spinner"></span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Dashboard de Estadísticas -->
-  <div *ngIf="statusResponse" class="stats-dashboard animation-fade-in">
-    <div class="stats-header">
-      <h2>Live Statistics</h2>
-      <span class="timestamp">Last updated: {{ statusResponse.timestamp | date:'HH:mm:ss' }}</span>
-    </div>
+  <!-- Contenido Principal (Solo visible cuando NO está calentando) -->
+  <div *ngIf="!isWarming" class="animation-fade-in">
     
-    <div class="stats-grid">
-      <div class="stat-item">
-        <span class="stat-label">Total Records</span>
-        <span class="stat-value">{{ statusResponse.totalRecords }}</span>
+    <!-- Guía de Workflow Condicional -->
+    <div *ngIf="showInstructions" class="workflow-guide animation-fade-in">
+      <div class="guide-step">
+        <span class="step-num">1</span>
+        <div class="step-content">
+          <strong>Reload Data (Preparar)</strong>
+          <p>Inyecta 100 registros nuevos en estado <span class="text-pending">PENDING</span>.</p>
+        </div>
       </div>
-      <div class="stat-item success">
-        <span class="stat-label">Success</span>
-        <span class="stat-value">{{ statusResponse.successCount }}</span>
+      <div class="guide-step">
+        <span class="step-num">2</span>
+        <div class="step-content">
+          <strong>Run Batch (Procesar)</strong>
+          <p>Inicia el motor. Los registros pasan a <span class="text-process">IN PROCESS</span>.</p>
+        </div>
       </div>
-      <div class="stat-item warning">
-        <span class="stat-label">In Progress</span>
-        <span class="stat-value">{{ statusResponse.inProgressCount }}</span>
-      </div>
-      <div class="stat-item error">
-        <span class="stat-label">Failed</span>
-        <span class="stat-value">{{ statusResponse.failedCount }}</span>
+      <div class="guide-step">
+        <span class="step-num">3</span>
+        <div class="step-content">
+          <strong>Refresh Status (Monitor)</strong>
+          <p>3 reintentos automáticos antes de marcar al registro como <span class="text-failed">FAILED</span>.</p>
+        </div>
       </div>
     </div>
 
-    <div class="progress-container">
-      <div class="progress-bar">
-        <div class="progress-fill" [style.width.%]="(statusResponse.successCount / statusResponse.totalRecords) * 100"></div>
-      </div>
-      <div class="progress-info">
-        <span>Processing Completion</span>
-        <span>{{ ((statusResponse.successCount / statusResponse.totalRecords) * 100).toFixed(1) }}%</span>
-      </div>
-    </div>
-  </div>
+    <div class="actions-container">
+      <div class="showcase-card">
+        <div class="card-content">
+          <div class="status-indicator" [ngClass]="{ 'is-loading': isLoading }">
+            <span *ngIf="!isLoading && !response && !error">Ready to execute</span>
+            <span *ngIf="isLoading">Executing Batch...</span>
+            <span *ngIf="response" class="success-text">Batch iniciado correctamente</span>
+            <span *ngIf="error" class="error-text">{{ error }}</span>
+          </div>
 
-  <!-- Terminal de Logs (La joya de la corona) -->
-  <div class="terminal-container animation-fade-in">
-    <div class="terminal-header">
-      <div class="terminal-buttons">
-        <span class="dot red"></span>
-        <span class="dot yellow"></span>
-        <span class="dot green"></span>
-      </div>
-      <div class="terminal-title">backend-log-console — spring-boot-executor</div>
-    </div>
-    <div class="terminal-body">
-      <div *ngFor="let log of logs" class="log-line" [ngClass]="log.type">
-        <span class="log-message">{{ log.message }}</span>
-      </div>
-      <div *ngIf="isLoading" class="log-line debug">
-        <span class="cursor">_</span>
-      </div>
-    </div>
-  </div>
+          <div class="button-group">
+            <button (click)="reload()" [disabled]="isReloadLoading || isLoading" class="reload-button" title="Crea 100 nuevos registros para procesar">
+              <span *ngIf="!isReloadLoading">RELOAD DATA</span>
+              <span *ngIf="isReloadLoading" class="spinner"></span>
+            </button>
 
-  <div class="features-grid">
-    <div class="feature-card">
-      <span class="icon">🚀</span>
-      <h3>Performance</h3>
-      <p>Optimized for high-volume data reprocessing.</p>
+            <button (click)="runBatch()" [disabled]="isLoading || isReloadLoading" class="run-button" title="Comienza el procesamiento de los registros pendientes">
+              <span *ngIf="!isLoading">RUN BATCH</span>
+              <span *ngIf="isLoading" class="spinner"></span>
+            </button>
+
+            <button (click)="checkStatus()" [disabled]="isStatusLoading" class="status-button" title="Consulta manual del estado actual del batch">
+              <span *ngIf="!isStatusLoading">REFRESH STATUS</span>
+              <span *ngIf="isStatusLoading" class="spinner"></span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="feature-card">
-      <span class="icon">🛡️</span>
-      <h3>Reliability</h3>
-      <p>Built-in retry mechanisms and error handling.</p>
+
+    <!-- Dashboard de Estadísticas -->
+    <div *ngIf="statusResponse" class="stats-dashboard animation-fade-in">
+      <div class="stats-header">
+        <h2>Live Statistics</h2>
+        <span class="timestamp">Last updated: {{ statusResponse.timestamp | date:'HH:mm:ss' }}</span>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-label">Total Records</span>
+          <span class="stat-value">{{ statusResponse.totalRecords }}</span>
+        </div>
+        <div class="stat-item success">
+          <span class="stat-label">Success</span>
+          <span class="stat-value">{{ statusResponse.successCount }}</span>
+        </div>
+        <div class="stat-item warning">
+          <span class="stat-label">In Progress</span>
+          <span class="stat-value">{{ statusResponse.inProgressCount }}</span>
+        </div>
+        <div class="stat-item error">
+          <span class="stat-label">Failed</span>
+          <span class="stat-value">{{ statusResponse.failedCount }}</span>
+        </div>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="(statusResponse.successCount / statusResponse.totalRecords) * 100"></div>
+        </div>
+        <div class="progress-info">
+          <span>Processing Completion</span>
+          <span>{{ ((statusResponse.successCount / statusResponse.totalRecords) * 100).toFixed(1) }}%</span>
+        </div>
+      </div>
     </div>
-    <div class="feature-card">
-      <span class="icon">📊</span>
-      <h3>Monitoring</h3>
-      <p>Real-time status updates and logging.</p>
+
+    <!-- Terminal de Logs -->
+    <div class="terminal-container animation-fade-in">
+      <div class="terminal-header">
+        <div class="terminal-buttons">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="terminal-title">backend-log-console — spring-boot-executor</div>
+      </div>
+      <div class="terminal-body">
+        <div *ngFor="let log of logs" class="log-line" [ngClass]="log.type">
+          <span class="log-message">{{ log.message }}</span>
+        </div>
+        <div *ngIf="isLoading" class="log-line debug">
+          <span class="cursor">_</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="icon">🚀</span>
+        <h3>Performance</h3>
+        <p>Optimized for high-volume data reprocessing.</p>
+      </div>
+      <div class="feature-card">
+        <span class="icon">🛡️</span>
+        <h3>Reliability</h3>
+        <p>Built-in retry mechanisms and error handling.</p>
+      </div>
+      <div class="feature-card">
+        <span class="icon">📊</span>
+        <h3>Monitoring</h3>
+        <p>Real-time status updates and logging.</p>
+      </div>
     </div>
   </div>
 </div>

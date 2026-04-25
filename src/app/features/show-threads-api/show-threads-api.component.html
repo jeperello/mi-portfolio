@@ -1,66 +1,123 @@
 <section class="api-showcase">
-  <div class="description-row">
+  <!-- Cabecera Hero -->
+  <div class="description-row hero-section">
     <h1>Virtual Threads vs Hilos Tradicionales</h1>
-    <p>Este proyecto es un sistema de ingesta de logs de alta concurrencia diseñado para comparar el rendimiento de los Virtual Threads (Project Loom) frente a los hilos de plataforma tradicionales, implementando el patrón Producer-Consumer.
-      <a href="https://github.com/jeperello/log-ingestion-engin" target="_blank" rel="noopener noreferrer"
-        class="repo-button">
+    <p class="subtitle">
+      Java 21 Project Loom: ¿Cuántos hilos puede aguantar tu servidor sin morir? 
+      Compara la eficiencia de los hilos virtuales frente a los pesados hilos de plataforma.
+      <a href="https://github.com/jeperello/log-ingestion-engin" target="_blank" rel="noopener noreferrer" class="repo-button">
         Ver Repositorio
       </a>
     </p>
   </div>
-  <div class="showcase-grid">
-    <!-- Panel de Control de Estrés -->
-    <div class="showcase-card stress-panel">
-      <h3>Panel de Control de Estrés</h3>
-      <p>
-        Usa este panel para simular una carga de trabajo en la API y comparar el rendimiento de los hilos de plataforma (el método clásico) con los nuevos Virtual Threads de Java 21.
-      </p>
-      <div class="form-group">
-        <label for="log-amount">Cantidad de logs a generar (Ej: 100, 200, 5000):</label>
-        <input #logCountInput id="log-amount" type="number" value="500" class="log-input" placeholder="500" min="1">
+
+  <!-- Despertador de API -->
+  <app-api-warming *ngIf="isWarming" 
+    mainMessage="Arrancando el Motor de Ingesta..." 
+    subMessage="Los Virtual Threads necesitan un café antes de procesar millones de logs ☕">
+  </app-api-warming>
+
+  <!-- Panel de Batalla -->
+  <div class="battle-arena" *ngIf="!isWarming">
+    
+    <!-- Configuración Global -->
+    <div class="showcase-card control-center">
+      <h3>🚀 Centro de Control de Estrés</h3>
+      <div class="stress-config">
+        <div class="form-group">
+          <label for="log-amount">Carga de Logs (Sugerido: 1000 - 5000):</label>
+          <div class="input-wrapper">
+            <input #logCountInput id="log-amount" type="number" value="1000" class="log-input" min="1" max="5000" step="100">
+            <span class="input-unit">logs</span>
+          </div>
+        </div>
       </div>
-      <!-- Cartel de advertencia visual -->
-      <div *ngIf="successMessage" class="alert-container alert-success">
+
+      <div class="engine-duel">
+        <!-- Motor Tradicional -->
+        <div class="engine-card platform">
+          <div class="engine-icon">🚜</div>
+          <h4>Platform Threads</h4>
+          <p class="engine-desc">Hilos del SO. Pesados (1MB c/u). Límite rápido.</p>
+          <button class="button button-platform" (click)="ingestLogs(logCountInput.value, 'platform')">
+            Lanzar con Platform
+          </button>
+        </div>
+
+        <div class="vs-divider">VS</div>
+
+        <!-- Motor Virtual -->
+        <div class="engine-card virtual">
+          <div class="engine-icon">🚀</div>
+          <h4>Virtual Threads</h4>
+          <p class="engine-desc">Ligeros (Project Loom). ¡Millones en el mismo hardware!</p>
+          <button class="button button-virtual" (click)="ingestLogs(logCountInput.value, 'virtual')">
+            Lanzar con Virtual
+          </button>
+        </div>
+      </div>
+
+      <!-- Alertas -->
+      <div *ngIf="successMessage" class="alert success anim-fade-in">
         <span>✅ {{ successMessage }}</span>
-        <button (click)="successMessage = null" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;">&times;</button>
+        <button (click)="successMessage = null" class="close-alert">&times;</button>
       </div>
-      <!-- Cartel de error visual -->
-      <div *ngIf="errorMessage" class="alert-container">
+      <div *ngIf="errorMessage" class="alert error anim-fade-in">
         <span>⚠️ {{ errorMessage }}</span>
-        <button (click)="errorMessage = null" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;">&times;</button>
-      </div>
-      <div class="card-actions button-group">
-        <button class="button button-primary" (click)="ingestLogs(logCountInput.value, 'platform')">Ejecutar con Platform Threads</button>
-        <button class="button button-secondary" (click)="ingestLogs(logCountInput.value, 'virtual')">Ejecutar con Virtual Threads</button>
+        <button (click)="errorMessage = null" class="close-alert">&times;</button>
       </div>
     </div>
 
-    <!-- Cuadrante de Métricas -->
-    <div class="showcase-card metrics-card">
-      <h3>Métricas de Memoria (Threads API)</h3>
-      <div class="table-container">
+    <!-- Panel de Resultados en Tiempo Real -->
+    <div class="showcase-card live-stats">
+      <div class="card-header">
+        <h3>📊 Monitor de Rendimiento</h3>
+        <button (click)="resetMetrics()" class="button-mini-danger">Limpiar</button>
+      </div>
+      
+      <div class="stats-visualizer" *ngIf="metrics.length > 0">
+        <div class="stat-box">
+          <span class="label">Hilos Activos</span>
+          <span class="value active">{{ metrics[0].activeThreads }}</span>
+        </div>
+        <div class="stat-box">
+          <span class="label">Logs en Cola</span>
+          <span class="value pending">{{ metrics[0].pendingLogs }}</span>
+        </div>
+      </div>
+
+      <div class="table-container scrollable">
         <table>
           <thead>
             <tr>
-              <th>Hilos Activos</th>
-              <th>Logs Pendientes</th>
+              <th>Timestamp</th>
+              <th class="text-center">Hilos Activos</th>
+              <th class="text-center">Logs Pendientes</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let metric of metrics">
-              <td><span class="live-number">{{ metric.activeThreads }}</span></td>
-              <td><span class="live-number">{{ metric.pendingLogs }}</span></td>
-            </tr>
-            <tr *ngIf="metrics.length === 0">
-              <td colspan="3" class="waiting-message">Esperando datos de métricas...</td>
+            <tr *ngFor="let metric of metrics; let i = index" [class.latest]="i === 0">
+              <td class="time-cell">{{ i === 0 ? 'AHORA' : '-'+i+'s' }}</td>
+              <td class="text-center">
+                <span class="badge" [class.badge-virtual]="metric.activeThreads > 100">
+                  {{ metric.activeThreads }}
+                </span>
+              </td>
+              <td class="text-center">
+                <div class="progress-bar-mini">
+                  <div class="fill" [style.width.%]="(metric.pendingLogs / 5000) * 100"></div>
+                  <span class="progress-text">{{ metric.pendingLogs }}</span>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="actions">
-        <button (click)="resetMetrics()" class="button button-danger">Reset</button>
+      
+      <div *ngIf="metrics.length === 0" class="empty-state">
+        <div class="spinner-small"></div>
+        <p>Sincronizando con el servidor...</p>
       </div>
     </div>
   </div>
-
 </section>

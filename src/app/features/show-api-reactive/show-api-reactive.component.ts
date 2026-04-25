@@ -6,11 +6,12 @@ import { ReactiveApiService, ApiMetrics, ApiDescription } from '../../core/servi
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { ModalService } from '../../shared/modal'; // Import ModalService
 import { LoadTestResult } from '../../shared/load-test-results-modal/load-test-results-modal'; // Removed .ts extension
+import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 
 @Component({
   selector: 'app-show-api-reactive',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Add FormsModule here
+  imports: [CommonModule, FormsModule, ApiWarmingComponent], // Add ApiWarmingComponent here
   templateUrl: './show-api-reactive.component.html',
   styleUrls: ['./show-api-reactive.component.css']
 })
@@ -24,6 +25,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
 
   // Load Test Indicator properties
   isLoading: boolean = false;
+  isWarming: boolean = false; // Flag for cold start animation
   loadTestStatus: string = '';
   requestsCompleted: number = 0;
   loadTestElapsedTime: number = 0;
@@ -39,6 +41,14 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // Si en 1 segundo no hay datos, mostramos la animación de "Warming"
+    setTimeout(() => {
+      if (this.technologies.length === 0 && this.advantages.length === 0) {
+        this.isWarming = true;
+        this.cdr.detectChanges();
+      }
+    }, 1000);
+
     // Suscripción al stream de métricas (infinito)
     this.subscriptions.add(
       this.reactiveApiService.getMetricsStream().subscribe(metric => {
@@ -55,6 +65,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.reactiveApiService.getTechnologiesStream().subscribe({
         next: tech => {
+          this.isWarming = false; // Ocultamos el warming al recibir el primer dato
           this.technologies = [...this.technologies, tech]; // Actualización inmutable
           this.cdr.detectChanges(); // Re-introduce change detection
         },
@@ -72,6 +83,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.reactiveApiService.getAdvantagesStream().subscribe({
         next: advantage => {
+          this.isWarming = false; // Ocultamos el warming al recibir el primer dato
           this.advantages = [...this.advantages, advantage]; // Actualización inmutable
           this.cdr.detectChanges(); // Re-introduce change detection
         },

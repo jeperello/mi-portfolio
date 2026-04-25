@@ -1,6 +1,8 @@
 <section class="api-showcase">
   <!--<a routerLink="/" class="back-link">&larr; Volver a Proyectos</a>-->
 
+  <app-api-warming *ngIf="isWarming"></app-api-warming>
+
   <!-- Fila superior para la tabla de métricas -->
   <div class="metrics-row">
     <div class="showcase-card">

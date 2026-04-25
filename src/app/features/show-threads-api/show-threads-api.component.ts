@@ -2,48 +2,64 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ThreadsApiService, ThreadStats, IngestPayload } from '../../core/services/threads-api.service';
-import { Subscription, timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subscription, timer, Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
+import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 
 @Component({
   selector: 'show-threads-api',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ApiWarmingComponent],
   templateUrl: './show-threads-api.component.html',
   styleUrls: ['./show-threads-api.component.css']
 })
 export class ShowThreadsApiComponent implements OnInit, OnDestroy {
 
   metrics: ThreadStats[] = [];
-  private metricsSubscription?: Subscription;
   public errorMessage: string | null = null;
-  public successMessage: string | null = null; // Nueva propiedad para mensajes de éxito
+  public successMessage: string | null = null;
+  public isWarming: boolean = false;
+  
+  private metricsSubscription?: Subscription;
+  private destroy$ = new Subject<void>();
 
   constructor(private threadsService: ThreadsApiService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    // Si en 1.5 segundos no hay métricas, mostramos el café
+    setTimeout(() => {
+      if (this.metrics.length === 0) {
+        this.isWarming = true;
+        this.cdr.detectChanges();
+      }
+    }, 1500);
+
     // Hacemos un sondeo (polling) a la API cada 1 segundos para refrescar las métricas.
-    this.metricsSubscription = timer(0, 1000) // Emite inmediatamente (0ms) y luego cada 1000ms.
+    this.metricsSubscription = timer(0, 2000) 
       .pipe(
-        // switchMap cancela la petición anterior si una nueva es emitida, evitando condiciones de carrera.
-        switchMap(() => this.threadsService.getStats())
+        switchMap(() => this.threadsService.getStats()),
+        takeUntil(this.destroy$)
       ).subscribe({
         next: (stats) => {
-          // Añadimos la nueva métrica al principio del array para que aparezca arriba en la tabla.
+          this.isWarming = false; // API despertada
           this.metrics = [stats, ...this.metrics];
-          // Para evitar que la lista crezca indefinidamente, la limitamos a los últimos 20 registros.
-          if (this.metrics.length > 20) {
-            this.metrics = this.metrics.slice(0, 20);
+          if (this.metrics.length > 10) {
+            this.metrics = this.metrics.slice(0, 10);
           }
-          this.cdr.detectChanges(); // Nos aseguramos de que la vista se actualice.
+          this.cdr.detectChanges();
         },
-        error: (err) => console.error('Error obteniendo métricas:', err)
+        error: (err) => {
+          console.error('Error obteniendo métricas:', err);
+          // No ponemos error visible aquí para no ensuciar si es solo un cold start
+        }
       });
   }
 
   ngOnDestroy(): void {
     // Es crucial desuscribirse para evitar fugas de memoria.
     this.metricsSubscription?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   resetMetrics(): void {
