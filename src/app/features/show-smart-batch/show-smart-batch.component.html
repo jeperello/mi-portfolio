@@ -47,89 +47,97 @@
       </div>
     </div>
 
-    <div class="actions-container">
-      <div class="showcase-card">
-        <div class="card-content">
-          <div class="status-indicator" [ngClass]="{ 'is-loading': isLoading }">
-            <span *ngIf="!isLoading && !response && !error">Ready to execute</span>
-            <span *ngIf="isLoading">Executing Batch...</span>
-            <span *ngIf="response" class="success-text">Batch iniciado correctamente</span>
-            <span *ngIf="error" class="error-text">{{ error }}</span>
+    <!-- Layout Principal: 2/3 Controles y 1/3 Terminal -->
+    <div class="main-layout-grid">
+      <!-- Columna Izquierda (2/3): Acciones y Estadísticas -->
+      <div class="left-column">
+        <div class="actions-container">
+          <div class="showcase-card">
+            <div class="card-content">
+              <div class="status-indicator" [ngClass]="{ 'is-loading': isLoading }">
+                <span *ngIf="!isLoading && !response && !error">Ready to execute</span>
+                <span *ngIf="isLoading">Executing Batch...</span>
+                <span *ngIf="response" class="success-text">Batch iniciado correctamente</span>
+                <span *ngIf="error" class="error-text">{{ error }}</span>
+              </div>
+
+              <div class="button-group">
+                <button (click)="reload()" [disabled]="isReloadLoading || isLoading" class="reload-button" title="Crea 100 nuevos registros para procesar">
+                  <span *ngIf="!isReloadLoading">RELOAD DATA</span>
+                  <span *ngIf="isReloadLoading" class="spinner"></span>
+                </button>
+
+                <button (click)="runBatch()" [disabled]="isLoading || isReloadLoading" class="run-button" title="Comienza el procesamiento de los registros pendientes">
+                  <span *ngIf="!isLoading">RUN BATCH</span>
+                  <span *ngIf="isLoading" class="spinner"></span>
+                </button>
+
+                <button (click)="checkStatus()" [disabled]="isStatusLoading" class="status-button" title="Consulta manual del estado actual del batch">
+                  <span *ngIf="!isStatusLoading">REFRESH STATUS</span>
+                  <span *ngIf="isStatusLoading" class="spinner"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard de Estadísticas -->
+        <div *ngIf="statusResponse" class="stats-dashboard animation-fade-in">
+          <div class="stats-header">
+            <h2>Live Statistics</h2>
+            <span class="timestamp">Last updated: {{ statusResponse.timestamp | date:'HH:mm:ss' }}</span>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-label">Total Records</span>
+              <span class="stat-value">{{ statusResponse.totalRecords }}</span>
+            </div>
+            <div class="stat-item success">
+              <span class="stat-label">Success</span>
+              <span class="stat-value">{{ statusResponse.successCount }}</span>
+            </div>
+            <div class="stat-item warning">
+              <span class="stat-label">In Progress</span>
+              <span class="stat-value">{{ statusResponse.inProgressCount }}</span>
+            </div>
+            <div class="stat-item error">
+              <span class="stat-label">Failed</span>
+              <span class="stat-value">{{ statusResponse.failedCount }}</span>
+            </div>
           </div>
 
-          <div class="button-group">
-            <button (click)="reload()" [disabled]="isReloadLoading || isLoading" class="reload-button" title="Crea 100 nuevos registros para procesar">
-              <span *ngIf="!isReloadLoading">RELOAD DATA</span>
-              <span *ngIf="isReloadLoading" class="spinner"></span>
-            </button>
-
-            <button (click)="runBatch()" [disabled]="isLoading || isReloadLoading" class="run-button" title="Comienza el procesamiento de los registros pendientes">
-              <span *ngIf="!isLoading">RUN BATCH</span>
-              <span *ngIf="isLoading" class="spinner"></span>
-            </button>
-
-            <button (click)="checkStatus()" [disabled]="isStatusLoading" class="status-button" title="Consulta manual del estado actual del batch">
-              <span *ngIf="!isStatusLoading">REFRESH STATUS</span>
-              <span *ngIf="isStatusLoading" class="spinner"></span>
-            </button>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="(statusResponse.successCount / statusResponse.totalRecords) * 100"></div>
+            </div>
+            <div class="progress-info">
+              <span>Processing Completion</span>
+              <span>{{ ((statusResponse.successCount / statusResponse.totalRecords) * 100).toFixed(1) }}%</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Dashboard de Estadísticas -->
-    <div *ngIf="statusResponse" class="stats-dashboard animation-fade-in">
-      <div class="stats-header">
-        <h2>Live Statistics</h2>
-        <span class="timestamp">Last updated: {{ statusResponse.timestamp | date:'HH:mm:ss' }}</span>
-      </div>
-      
-      <div class="stats-grid">
-        <div class="stat-item">
-          <span class="stat-label">Total Records</span>
-          <span class="stat-value">{{ statusResponse.totalRecords }}</span>
-        </div>
-        <div class="stat-item success">
-          <span class="stat-label">Success</span>
-          <span class="stat-value">{{ statusResponse.successCount }}</span>
-        </div>
-        <div class="stat-item warning">
-          <span class="stat-label">In Progress</span>
-          <span class="stat-value">{{ statusResponse.inProgressCount }}</span>
-        </div>
-        <div class="stat-item error">
-          <span class="stat-label">Failed</span>
-          <span class="stat-value">{{ statusResponse.failedCount }}</span>
-        </div>
-      </div>
-
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div class="progress-fill" [style.width.%]="(statusResponse.successCount / statusResponse.totalRecords) * 100"></div>
-        </div>
-        <div class="progress-info">
-          <span>Processing Completion</span>
-          <span>{{ ((statusResponse.successCount / statusResponse.totalRecords) * 100).toFixed(1) }}%</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Terminal de Logs -->
-    <div class="terminal-container animation-fade-in">
-      <div class="terminal-header">
-        <div class="terminal-buttons">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-        </div>
-        <div class="terminal-title">backend-log-console — spring-boot-executor</div>
-      </div>
-      <div class="terminal-body">
-        <div *ngFor="let log of logs" class="log-line" [ngClass]="log.type">
-          <span class="log-message">{{ log.message }}</span>
-        </div>
-        <div *ngIf="isLoading" class="log-line debug">
-          <span class="cursor">_</span>
+      <!-- Columna Derecha (1/3): Terminal de Logs -->
+      <div class="right-column">
+        <div class="terminal-container animation-fade-in">
+          <div class="terminal-header">
+            <div class="terminal-buttons">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="terminal-title">backend-log-console — spring-boot-executor</div>
+          </div>
+          <div class="terminal-body">
+            <div *ngFor="let log of logs" class="log-line" [ngClass]="log.type">
+              <span class="log-message">{{ log.message }}</span>
+            </div>
+            <div *ngIf="isLoading" class="log-line debug">
+              <span class="cursor">_</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
