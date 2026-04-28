@@ -24,7 +24,7 @@ export class ProjectService {
         'DB', 'PostgreSQL'
       ],
       isNew: true,
-      demoUrl: ''
+      demoUrl: '/blog'
     },
     {
       name: 'API Reactiva con Spring WebFlux',

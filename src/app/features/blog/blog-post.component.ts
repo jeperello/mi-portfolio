@@ -1,28 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, switchMap, tap, BehaviorSubject, of } from 'rxjs';
 import { Blog, BlogComment } from '../../core/models/blog.model';
 import { BlogService } from '../../core/services/blog.service';
+import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 
 @Component({
   selector: 'app-blog-post',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, ReactiveFormsModule, ApiWarmingComponent],
   templateUrl: './blog-post.component.html',
   styleUrls: ['./blog-post.component.scss']
 })
 export class BlogPostComponent implements OnInit {
-  public blog$: Observable<Blog | undefined> | undefined;
-  public comments$ = new BehaviorSubject<BlogComment[]>([]);
+  public blog = signal<Blog | undefined | null>(null);
+  public comments = signal<BlogComment[]>([]);
   public commentForm: FormGroup;
   public isSubmitting = false;
+  public isWarming = signal<boolean>(false);
+  private currentBlogId: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private blogService: BlogService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {
     this.commentForm = this.fb.group({
       author: [''],
@@ -31,44 +34,58 @@ export class BlogPostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.blog$ = this.route.paramMap.pipe(
-      switchMap(params => {
-        const id = params.get('id');
-        return this.blogService.getBlogById(id || '');
-      }),
-      tap(blog => {
-        if (blog) {
-          this.loadComments();
-        }
-      })
-    );
+    const warmingTimeout = setTimeout(() => {
+      this.isWarming.set(true);
+    }, 800);
+
+    this.route.paramMap.subscribe(params => {
+      this.currentBlogId = params.get('id');
+      if (this.currentBlogId) {
+        this.blogService.getBlogById(this.currentBlogId).subscribe({
+          next: (blog) => {
+            clearTimeout(warmingTimeout);
+            this.blog.set(blog);
+            this.isWarming.set(false);
+            if (blog) {
+              this.loadComments(this.currentBlogId!);
+            }
+          },
+          error: (err) => {
+            console.error('Error loading blog:', err);
+            clearTimeout(warmingTimeout);
+            this.blog.set(undefined);
+            this.isWarming.set(false);
+          }
+        });
+      }
+    });
   }
 
-  private loadComments(): void {
-    this.blogService.getComments().subscribe({
-      next: (comments) => this.comments$.next(comments),
+  private loadComments(postId: string): void {
+    this.blogService.getComments(postId).subscribe({
+      next: (comments) => this.comments.set(comments),
       error: (err) => console.error('Error cargando comentarios:', err)
     });
   }
 
   onSubmitComment(): void {
-    if (this.commentForm.valid && !this.isSubmitting) {
+    if (this.commentForm.valid && !this.isSubmitting && this.currentBlogId) {
       this.isSubmitting = true;
       const newComment = {
-        username: this.commentForm.value.author?.trim() || 'Anonymus',
+        username: this.commentForm.value.author?.trim() || 'Anónimo con Prisa',
         content: this.commentForm.value.content
       };
 
-      this.blogService.addComment(newComment).subscribe({
+      this.blogService.addComment(this.currentBlogId, newComment).subscribe({
         next: () => {
-          this.loadComments();
+          if (this.currentBlogId) this.loadComments(this.currentBlogId);
           this.commentForm.reset();
           this.isSubmitting = false;
         },
         error: (err) => {
           console.error('Error al publicar comentario:', err);
           this.isSubmitting = false;
-          alert('Ups! No se pudo publicar el comentario. ¿Estará el servidor de Java tomando un café? ☕');
+          alert('¡Epa! No pudimos enviar tu sabiduría al servidor. ¿Estará la base de datos de Java meditando? 🧘‍♂️');
         }
       });
     }

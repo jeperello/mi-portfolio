@@ -1,48 +1,52 @@
 <article class="blog-post-container">
-  @if (blog$ | async; as blog) {
+  <app-api-warming *ngIf="isWarming()" 
+    mainMessage="Despertando el Post..." 
+    subMessage="Estamos rescatando este artículo de las profundidades de Java ☕">
+  </app-api-warming>
+
+  <div *ngIf="!isWarming()">
+    @if (blog(); as data) {
     <header class="blog-post-header">
       <a routerLink="/blog" class="back-link">← Volver al blog</a>
-      <h1>{{ blog.title }}</h1>
+      <h1>{{ data.title }}</h1>
       <div class="blog-meta">
-        <span>Por <strong>{{ blog.author }}</strong></span>
+        <span>Por <strong>{{ data.author }}</strong></span>
         <span class="separator">|</span>
-        <span>{{ blog.date }}</span>
+        <span>{{ data.date }}</span>
         <span class="separator">|</span>
         <a routerLink="." fragment="comments" class="comments-anchor">
-          {{ (comments$ | async)?.length || 0 }} comentarios
+          {{ comments().length }} comentarios
         </a>
       </div>
       <div class="blog-tags">
-        @for (tag of blog.tags; track tag) {
+        @for (tag of data.tags; track tag) {
           <span class="tag">{{ tag }}</span>
         }
       </div>
     </header>
 
-    <div class="blog-post-content" [innerHTML]="blog.content"></div>
+    <div class="blog-post-content" [innerHTML]="data.content"></div>
 
     <section id="comments" class="comments-section">
       <hr>
-      @if (comments$ | async; as comments) {
-        <h3>Comentarios ({{ comments.length }})</h3>
-        
-        <div class="comments-list">
-          @for (comment of comments; track comment.id) {
-            <div class="comment-card">
-              <div class="comment-header">
-                <div class="comment-avatar">{{ comment.author.charAt(0).toUpperCase() }}</div>
-                <div class="comment-info">
-                  <span class="comment-author">{{ comment.author }}</span>
-                  <span class="comment-date">{{ comment.date }}</span>
-                </div>
+      <h3>Comentarios ({{ comments().length }})</h3>
+      
+      <div class="comments-list">
+        @for (comment of comments(); track comment.id) {
+          <div class="comment-card">
+            <div class="comment-header">
+              <div class="comment-avatar">{{ comment.author.charAt(0).toUpperCase() }}</div>
+              <div class="comment-info">
+                <span class="comment-author">{{ comment.author }}</span>
+                <span class="comment-date">{{ comment.date }}</span>
               </div>
-              <p class="comment-content">{{ comment.content }}</p>
             </div>
-          } @empty {
-            <p class="no-comments">Sé el primero en comentar este post. ¡Tu opinión cuenta!</p>
-          }
-        </div>
-      }
+            <p class="comment-content">{{ comment.content }}</p>
+          </div>
+        } @empty {
+          <p class="no-comments">Sé el primero en comentar este post. ¡Tu opinión cuenta!</p>
+        }
+      </div>
 
       <div class="add-comment-container">
         <h4>Deja un comentario</h4>
@@ -83,11 +87,17 @@
       </div>
       <a routerLink="/blog" class="button">Volver al listado</a>
     </footer>
-  } @else {
+  } @else if (blog() === undefined) {
     <div class="not-found">
       <h2>Post no encontrado</h2>
       <p>Lo sentimos, el artículo que buscas no existe o ha sido movido.</p>
       <a routerLink="/blog" class="button">Volver al blog</a>
     </div>
+  } @else {
+    <!-- Estado de carga inicial -->
+    <div class="loading-placeholder">
+      <p>Buscando el post...</p>
+    </div>
   }
+  </div>
 </article>

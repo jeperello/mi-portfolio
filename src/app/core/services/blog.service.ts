@@ -1,16 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, map } from 'rxjs';
+import { Observable, of, map, catchError } from 'rxjs';
 import { Blog, BlogComment } from '../models/blog.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlogService {
-  private apiUrl = 'https://comment-service-4192.onrender.com/api/v1/comments';
+  private baseUrl = 'https://comment-service-4192.onrender.com/api/v1';
 
-  private blogs: Blog[] = [
-    {
+  // El "Plan B": Estos datos aparecerán si la API está vacía o se toma un descanso.
+  private backupBlogs: Blog[] = [
+   /* {
+      id: 'chatbot-behind-the-scenes',
+      title: 'Chatbot: El Detrás de Escena (De Node.js a Spring AI)',
+      excerpt: '¿Cómo funciona el chat de este portfolio? Un viaje desde un proxy humilde en Node.js hasta la sofisticación de Spring Boot AI y Gemini.',
+      content: `
+        <p>Si alguna vez hablaste con el chatbot de este portfolio y pensaste: ¿Este bicho tendrá sentimientos o solo es un montón de IFs encadenados?, este post es para vos.</p>
+        <div class="section">
+          <p>Hoy vamos a desarmar el motor de nuestro asistente virtual. Actualmente, estamos en una fase de transición emocionante: el paso de un <b>Proxy en Node.js</b> a una arquitectura robusta con <b>Spring Boot AI</b>.</p>
+        </div>
+        <h3>La Fase 1: El "Atado con Alambre" Funcional</h3>
+        <p>Para que el chatbot cobrara vida rápido, usé un proxy en Node.js alojado en Render...</p>
+        <div class="highlight">
+          <p>Stack Actual: Frontend: Angular + Signals, Middleware: Node.js, IA: Gemini API.</p>
+        </div>
+      `,
+      date: '27 de abril de 2026',
+      author: 'Jorge Perello',
+      tags: ['IA', 'Spring Boot', 'Angular', 'Node.js', 'Gemini']
+    },*/
+ {
       id: 'spring-mvc-webflux-vt',
       title: 'Spring MVC vs WebFlux vs Virtual Threads',
       excerpt: 'Una comparativa profunda entre los diferentes paradigmas de concurrencia en Spring: desde el modelo thread-per-request tradicional hasta la reactividad de WebFlux y la revolución de los Virtual Threads.',
@@ -129,32 +149,85 @@ export class BlogService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   * Trae todos los posts. Si la API no tiene nada, tira de los datos de backup.
+   */
   getBlogs(): Observable<Blog[]> {
-    return of(this.blogs);
+    return of(this.backupBlogs);
+   /* return this.http.get<any[]>(`${this.baseUrl}/posts`).pipe(
+      map(posts => {
+        if (!posts || posts.length === 0) {
+          console.warn('⚠️ La API no devolvió posts. Usando el escuadrón de backup...');
+          return this.backupBlogs;
+        }
+        return posts.map(p => this.mapToBlog(p));
+      }),
+      catchError(err => {
+        console.error('🔥 Error al conectar con la API de posts:', err);
+        return of(this.backupBlogs);
+      })
+    );*/
   }
 
+  /**
+   * Busca un post por ID. Intenta en la API y si no, en el backup.
+   */
   getBlogById(id: string): Observable<Blog | undefined> {
-    return of(this.blogs.find(blog => blog.id === id));
-  }
-
-  getComments(): Observable<BlogComment[]> {
-    return this.http.get<any[]>(this.apiUrl).pipe(
-      map(comments => comments.map(c => ({
-        id: c.id?.toString() || Math.random().toString(),
-        author: c.username || 'Anónimo',
-        content: c.content,
-        date: c.createdAt ? new Date(c.createdAt).toLocaleDateString('es-ES', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        }) : 'Fecha desconocida'
-      })))
+    return this.http.get<any>(`${this.baseUrl}/posts/${id}`).pipe(
+      map(p => this.mapToBlog(p)),
+      catchError(() => of(this.backupBlogs.find(b => b.id === id)))
     );
   }
 
-  addComment(comment: { username: string, content: string }): Observable<any> {
-    return this.http.post(this.apiUrl, comment);
+  /**
+   * Obtiene comentarios específicos de un post.
+   */
+  getComments(postId: string): Observable<BlogComment[]> {
+   /*  return this.http.get<any[]>(`${this.baseUrl}/posts/${postId}/comments`).pipe(
+     map(comments => comments.map(c => ({
+        id: c.id?.toString(),
+        author: c.username || 'Explorador Anónimo',
+        content: c.content,
+        date: this.formatDate(c.createdAt)
+      }))),
+      catchError(() => of([]))
+    );*/
+        return this.http.get<any[]>(`${this.baseUrl}/posts/2/comments`).pipe(
+      map(comments => comments.map(c => ({
+        id: c.id?.toString(),
+        author: c.username || 'Explorador Anónimo',
+        content: c.content,
+        date: this.formatDate(c.createdAt)
+      }))),
+      catchError(() => of([]))
+    );
+  }
+
+  /**
+   * Agrega un comentario a un post específico.
+   */
+  addComment(postId: string, comment: { username: string, content: string }): Observable<any> {
+    //return this.http.post(`${this.baseUrl}/posts/${postId}/comments`, comment);
+    return this.http.post(`${this.baseUrl}/posts/2/comments`, comment);
+  }
+
+  // --- Helpers de Mapeo ---
+
+  private mapToBlog(apiPost: any): Blog {
+    return {
+      id: apiPost.id.toString(),
+      title: apiPost.title,
+      excerpt: apiPost.excerpt || apiPost.summary,
+      content: apiPost.content,
+      date: this.formatDate(apiPost.createdAt),
+      author: apiPost.author,
+      tags: apiPost.tags || []
+    };
+  }
+
+  private formatDate(dateStr: string): string {
+    if (!dateStr) return 'Fecha estelar desconocida';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
   }
 }

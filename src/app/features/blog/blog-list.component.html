@@ -1,12 +1,12 @@
 <section class="blog-list">
-  <div style="margin-bottom: 2rem;">
-    <h3>Gracias por venir!!! Aqui agregare mis pensamientos sobre desarrollo de software, arquitectura y nuevas tecnologías.</h3>
-    
-  </div>
+  <app-api-warming *ngIf="isWarming()" 
+    mainMessage="Despertando el Blog..." 
+    subMessage="El servidor está preparando los mejores artículos para vos ✍️">
+  </app-api-warming>
 
-  <div class="blog-grid">
-    @if (blogs$ | async; as blogs) {
-      @for (blog of blogs; track blog.id) {
+  <div class="blog-grid" *ngIf="!isWarming()">
+    @if (blogs(); as list) {
+      @for (blog of list; track blog.id) {
         <article class="blog-card">
           <div class="blog-header">
             <span class="blog-date">{{ blog.date }}</span>
@@ -31,6 +31,11 @@
           <p>Aún no hay entradas en el blog. ¡Pronto habrá contenido interesante!</p>
         </div>
       }
+    } @else {
+      <!-- Estado de carga inicial mientras no hay blogs y no ha saltado el warming -->
+      <div class="loading-placeholder">
+        <p>Cargando posts...</p>
+      </div>
     }
   </div>
 </section>
