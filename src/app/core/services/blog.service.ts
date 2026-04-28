@@ -173,10 +173,11 @@ export class BlogService {
    * Busca un post por ID. Intenta en la API y si no, en el backup.
    */
   getBlogById(id: string): Observable<Blog | undefined> {
-    return this.http.get<any>(`${this.baseUrl}/posts/${id}`).pipe(
+    /*return this.http.get<any>(`${this.baseUrl}/posts/${id}`).pipe(
       map(p => this.mapToBlog(p)),
       catchError(() => of(this.backupBlogs.find(b => b.id === id)))
-    );
+    );*/
+    return of(this.backupBlogs.find(b => b.id === id));
   }
 
   /**
