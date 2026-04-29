@@ -11,7 +11,7 @@ export class BlogService {
 
   // El "Plan B": Estos datos aparecerán si la API está vacía o se toma un descanso.
   private backupBlogs: Blog[] = [
-   /* {
+   {
       id: '1',
       title: 'Chatbot: El Detrás de Escena (De Node.js a Spring AI)',
       excerpt: '¿Cómo funciona el chat de este portfolio? Un viaje desde un proxy humilde en Node.js hasta la sofisticación de Spring Boot AI y Gemini.',
@@ -22,14 +22,16 @@ export class BlogService {
         </div>
         <h3>La Fase 1: El "Atado con Alambre" Funcional</h3>
         <p>Para que el chatbot cobrara vida rápido, usé un proxy en Node.js alojado en Render...</p>
+        <p><b> To be continued...</bv></p>
         <div class="highlight">
           <p>Stack Actual: Frontend: Angular + Signals, Middleware: Node.js, IA: Gemini API.</p>
-        </div>
+        </div> 
+        
       `,
       date: '27 de abril de 2026',
       author: 'Jorge Perello',
       tags: ['IA', 'Spring Boot', 'Angular', 'Node.js', 'Gemini']
-    },*/
+    },
  {
       id: '2',
       title: 'Spring MVC vs WebFlux vs Virtual Threads',
