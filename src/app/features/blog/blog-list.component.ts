@@ -14,7 +14,7 @@ import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 })
 export class BlogListComponent implements OnInit {
   public blogs = signal<Blog[] | null>(null);
-  public isWarming = signal<boolean>(false);
+  public isWarming = signal(true); // Iniciamos con la tasita
 
   constructor(
     private blogService: BlogService,
@@ -22,21 +22,17 @@ export class BlogListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Si en 800ms no hay respuesta, mostramos el mensaje de calentamiento
-    const warmingTimeout = setTimeout(() => {
-      this.isWarming.set(true);
-    }, 800);
+    // La tasita se queda por 3 segundos
+    setTimeout(() => {
+      this.isWarming.set(false);
+    }, 3000);
 
     this.blogService.getBlogs().subscribe({
       next: (data) => {
-        clearTimeout(warmingTimeout);
         this.blogs.set(data);
-        this.isWarming.set(false);
       },
       error: (err) => {
         console.error('Error loading blogs:', err);
-        clearTimeout(warmingTimeout);
-        this.isWarming.set(false);
         this.blogs.set([]); // Mostrar vacío o backup (el servicio ya debería dar backup)
       }
     });

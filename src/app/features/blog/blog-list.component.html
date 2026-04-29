@@ -1,7 +1,7 @@
 <section class="blog-list">
   <app-api-warming *ngIf="isWarming()" 
-    mainMessage="Despertando el Blog..." 
-    subMessage="El servidor está preparando los mejores artículos para vos ✍️">
+    mainMessage="Cargando el Blog..." 
+    subMessage="Estamos preparando los mejores artículos para vos mientras servimos un café ☕">
   </app-api-warming>
 
   <div class="blog-grid" *ngIf="!isWarming()">

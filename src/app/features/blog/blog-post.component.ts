@@ -18,7 +18,7 @@ export class BlogPostComponent implements OnInit {
   public comments = signal<BlogComment[]>([]);
   public commentForm: FormGroup;
   public isSubmitting = false;
-  public isWarming = signal<boolean>(false);
+  public isWarming = signal(true); // Empezamos "calentando"
   private currentBlogId: string | null = null;
 
   constructor(
@@ -34,27 +34,24 @@ export class BlogPostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const warmingTimeout = setTimeout(() => {
-      this.isWarming.set(true);
-    }, 800);
+    // El "ganche visual": Mantener la tacita por 4 segundos
+    setTimeout(() => {
+      this.isWarming.set(false);
+    }, 3000);
 
     this.route.paramMap.subscribe(params => {
       this.currentBlogId = params.get('id');
       if (this.currentBlogId) {
         this.blogService.getBlogById(this.currentBlogId).subscribe({
           next: (blog) => {
-            clearTimeout(warmingTimeout);
             this.blog.set(blog);
-            this.isWarming.set(false);
             if (blog) {
               this.loadComments(this.currentBlogId!);
             }
           },
           error: (err) => {
             console.error('Error loading blog:', err);
-            clearTimeout(warmingTimeout);
             this.blog.set(undefined);
-            this.isWarming.set(false);
           }
         });
       }

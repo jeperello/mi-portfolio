@@ -12,7 +12,7 @@ export class BlogService {
   // El "Plan B": Estos datos aparecerán si la API está vacía o se toma un descanso.
   private backupBlogs: Blog[] = [
    /* {
-      id: 'chatbot-behind-the-scenes',
+      id: '1',
       title: 'Chatbot: El Detrás de Escena (De Node.js a Spring AI)',
       excerpt: '¿Cómo funciona el chat de este portfolio? Un viaje desde un proxy humilde en Node.js hasta la sofisticación de Spring Boot AI y Gemini.',
       content: `
@@ -31,7 +31,7 @@ export class BlogService {
       tags: ['IA', 'Spring Boot', 'Angular', 'Node.js', 'Gemini']
     },*/
  {
-      id: 'spring-mvc-webflux-vt',
+      id: '2',
       title: 'Spring MVC vs WebFlux vs Virtual Threads',
       excerpt: 'Una comparativa profunda entre los diferentes paradigmas de concurrencia en Spring: desde el modelo thread-per-request tradicional hasta la reactividad de WebFlux y la revolución de los Virtual Threads.',
       content: `
@@ -184,16 +184,7 @@ export class BlogService {
    * Obtiene comentarios específicos de un post.
    */
   getComments(postId: string): Observable<BlogComment[]> {
-   /*  return this.http.get<any[]>(`${this.baseUrl}/posts/${postId}/comments`).pipe(
-     map(comments => comments.map(c => ({
-        id: c.id?.toString(),
-        author: c.username || 'Explorador Anónimo',
-        content: c.content,
-        date: this.formatDate(c.createdAt)
-      }))),
-      catchError(() => of([]))
-    );*/
-        return this.http.get<any[]>(`${this.baseUrl}/posts/2/comments`).pipe(
+    return this.http.get<any[]>(`${this.baseUrl}/posts/${postId}/comments`).pipe(
       map(comments => comments.map(c => ({
         id: c.id?.toString(),
         author: c.username || 'Explorador Anónimo',
@@ -208,8 +199,18 @@ export class BlogService {
    * Agrega un comentario a un post específico.
    */
   addComment(postId: string, comment: { username: string, content: string }): Observable<any> {
-    //return this.http.post(`${this.baseUrl}/posts/${postId}/comments`, comment);
-    return this.http.post(`${this.baseUrl}/posts/2/comments`, comment);
+    return this.http.post(`${this.baseUrl}/posts/${postId}/comments`, comment);
+  }
+
+  /**
+   * Envía un mensaje de contacto (usa el postId 3 por defecto).
+   */
+  sendContactMessage(email: string, message: string): Observable<any> {
+    const payload = {
+      username: email,
+      content: message
+    };
+    return this.http.post(`${this.baseUrl}/posts/3/comments`, payload);
   }
 
   // --- Helpers de Mapeo ---
