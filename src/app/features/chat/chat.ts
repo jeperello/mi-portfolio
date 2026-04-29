@@ -32,6 +32,11 @@ export class ChatComponent implements OnInit {
         this.showTooltip.set(true);
       }
     }, 2000);
+
+    // Enviar mensaje inicial silencioso para "despertar" al chatbot
+    setTimeout(() => {
+      this.chatService.sendMessage('hola, quien sos?', 3, true);
+    }, 1000);
   }
 
   toggleChat() {

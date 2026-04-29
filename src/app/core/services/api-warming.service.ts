@@ -12,8 +12,7 @@ export class ApiWarmingService {
     'https://reactive-api-27c7.onrender.com/api/technologies',
     'https://smart-reprocessing-batch.onrender.com/api/v1/batch/status',
     'https://log-ingestion-engin.onrender.com/api/logs/stats',
-    'https://comment-service-4192.onrender.com/api/v1/posts',
-    'https://proxi-ia.onrender.com/api/chat' // Despertador para el Chatbot Proxy
+    'https://comment-service-4192.onrender.com/api/v1/comments'
   ];
 
   constructor(private http: HttpClient) { }

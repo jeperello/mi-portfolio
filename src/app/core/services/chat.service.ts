@@ -21,27 +21,27 @@ export class ChatService {
   isLoading = signal(false);
 
   constructor(private http: HttpClient) {
-    this.messages.set([
-      {
-        role: 'assistant',
-        content: '¡Hola! Soy tu asistente virtual. Estoy aquí para ayudarte a conocer los proyectos de Jorge Perello. ¿Qué te gustaría saber?'
-      }
-    ]);
+    this.messages.set([]);
   }
 
-  async sendMessage(prompt: string) {
+  async sendMessage(prompt: string, retries = 3, isSilent = false): Promise<void> {
     if (this.isLoading() || !prompt.trim()) return;
 
-    // 1. Añadimos el mensaje del usuario a la UI
-    const userMsg = { role: 'user' as const, content: prompt };
-    this.messages.update(prev => [...prev, userMsg]);
+    // Solo añadimos el mensaje del usuario si NO es silencioso y es el primer intento
+    if (!isSilent) {
+      const currentMessages = this.messages();
+      const isRetry = currentMessages.length > 0 && currentMessages[currentMessages.length - 1].content === prompt;
+      
+      if (!isRetry) {
+        const userMsg = { role: 'user' as const, content: prompt };
+        this.messages.update(prev => [...prev, userMsg]);
+      }
+    }
+    
     this.isLoading.set(true);
 
     try {
-      // 2. Preparamos el historial (solo user y assistant)
-      // Excluimos el ÚLTIMO mensaje (el prompt actual) porque va en 'userPrompt'
       const history = this.messages()
-        .filter(m => m.content !== prompt)
         .map(m => ({
           role: m.role as 'user' | 'assistant',
           content: m.content
@@ -52,20 +52,27 @@ export class ChatService {
         conversationHistory: history
       };
 
-      // 3. Petición al Proxy
       const response = await lastValueFrom(
         this.http.post<ChatBackendResponse>(this.backendChatUrl, requestBody)
       );
 
-      // 4. Añadimos la respuesta del bot
       const botReply = response?.assistantReply || 'Lo siento, no pude obtener respuesta.';
       this.messages.update(prev => [...prev, { role: 'assistant', content: botReply }]);
+      this.isLoading.set(false);
 
     } catch (error) {
-      console.error('Error:', error);
-      this.messages.update(prev => [...prev, { role: 'assistant', content: 'Hubo un error de conexión.' }]);
-    } finally {
-      this.isLoading.set(false);
+      console.error(`Error (intentos restantes: ${retries}):`, error);
+      
+      if (retries > 0) {
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        this.isLoading.set(false);
+        return this.sendMessage(prompt, retries - 1, isSilent);
+      } else {
+        // Si falla después de reintentos, solo mostramos el error si no era un mensaje silencioso
+        // o si queremos que el usuario sepa que algo va mal.
+        this.messages.update(prev => [...prev, { role: 'assistant', content: 'El servidor está tardando en despertar. Por favor, intenta de nuevo en unos segundos.' }]);
+        this.isLoading.set(false);
+      }
     }
   }
 }
