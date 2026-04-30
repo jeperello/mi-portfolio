@@ -27,11 +27,11 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     // Mostrar el tooltip después de 2 segundos
-    setTimeout(() => {
+    /*/setTimeout(() => {
       if (!this.isOpen()) {
         this.showTooltip.set(true);
       }
-    }, 2000);
+    }, 2000);*/
 
     // Enviar mensaje inicial silencioso para "despertar" al chatbot
     setTimeout(() => {

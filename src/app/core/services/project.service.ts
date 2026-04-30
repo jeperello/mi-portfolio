@@ -23,7 +23,7 @@ export class ProjectService {
         'GitHub Actions: CI/CD',
         'DB', 'PostgreSQL'
       ],
-      isNew: true,
+      //isNew: true,
       demoUrl: '/blog'
     },
     {

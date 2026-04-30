@@ -14,7 +14,8 @@ import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 })
 export class BlogListComponent implements OnInit {
   public blogs = signal<Blog[] | null>(null);
-  public isWarming = signal(true); // Iniciamos con la tasita
+  public isWarming = signal(true);
+  public showChatbotTooltip = signal(false); // Señal para el tooltip
 
   constructor(
     private blogService: BlogService,
@@ -22,9 +23,19 @@ export class BlogListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // La tasita se queda por 3 segundos
+    // 1. La tasita se queda por 3 segundos
     setTimeout(() => {
       this.isWarming.set(false);
+      
+      // 2. Justo cuando se va la tasita, mostramos el tooltip del post estrella
+      setTimeout(() => {
+        this.showChatbotTooltip.set(true);
+        
+        // 3. Desaparece a los 5 segundos de haber salido
+        setTimeout(() => {
+          this.showChatbotTooltip.set(false);
+        }, 5000);
+      }, 500); // Pequeño respiro tras la tasita
     }, 3000);
 
     this.blogService.getBlogs().subscribe({

@@ -31,7 +31,7 @@
 }
 
 .blog-card {
-  background: #f1f5f9; /* Gris muy claro y sutil */
+  background: #f1f5f9;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   padding: 1.5rem;
@@ -39,14 +39,79 @@
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid #e2e8f0;
+  position: relative; 
+  overflow: visible !important; // Evita que se corte lo que sale
+
+  &.highlight-card {
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+    z-index: 10; 
+  }
 
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.25);
-    background: #e2e8f0; /* Un tono un poco más oscuro al pasar el ratón */
+    background: #e2e8f0; 
   }
+}
 
-  .blog-header {
+.chatbot-tooltip {
+  display: block !important;
+  position: absolute;
+  bottom: 100%; 
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 20px; 
+  background: #1e293b !important; // Azul pizarra oscuro (muy formal)
+  color: #38bdf8 !important; // Texto celeste brillante (eléctrico pero pro)
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.2); 
+  z-index: 99999 !important; 
+  border: 1px solid #38bdf8 !important; // Borde celeste fino
+  pointer-events: none;
+  animation: 
+    popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    floatAnim 3s infinite ease-in-out; // Flotación más lenta y elegante
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #38bdf8; // Flecha del color del borde
+  }
+}
+
+@keyframes floatAnim {
+  0% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.8) translateY(10px); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+}
+
+@keyframes floatAnim {
+  0% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.3) translateY(40px); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+}
+
+.blog-card .blog-header {
     margin-bottom: 1rem;
     .blog-date {
       font-size: 0.85rem;
@@ -104,7 +169,7 @@
       }
     }
   }
-}
+
 
 .no-blogs, .loading-placeholder {
   grid-column: 1 / -1;

@@ -12,17 +12,18 @@ import { RouterModule } from '@angular/router';
 export class NavbarComponent implements OnInit {
   public showBlogTooltip = signal(false);
 
+
   ngOnInit(): void {
     // Mostramos el tooltip después de 2.5 segundos
     setTimeout(() => {
-      this.showBlogTooltip.set(false);
+      this.showBlogTooltip.set(true);
 
-      // Lo ocultamos automáticamente tras 8 segundos
+      // Lo ocultamos automáticamente tras 9 segundos
       setTimeout(() => {
         if (this.showBlogTooltip()) {
           this.showBlogTooltip.set(false);
         }
-      }, 8000);
+      }, 9000);
     }, 2500);
   }
 

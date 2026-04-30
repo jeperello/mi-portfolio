@@ -13,24 +13,39 @@ export class BlogService {
   private backupBlogs: Blog[] = [
    {
       id: '1',
-      title: 'Chatbot: El Detrás de Escena (De Node.js a Spring AI)',
-      excerpt: '¿Cómo funciona el chat de este portfolio? Un viaje desde un proxy humilde en Node.js hasta la sofisticación de Spring Boot AI y Gemini.',
+      title: 'Chatbot: El Detrás de Escena (¿Adiós a Chatie en Node.js?)',
+      excerpt: '¿Es Java demasiada artillería para un chatbot? Acompañame en este experimento migrando de un proxy en Node.js a la robustez de Spring AI.',
       content: `
-        <p>Si alguna vez hablaste con el chatbot de este portfolio y pensaste: ¿Este bicho tendrá sentimientos o solo es un montón de IFs encadenados?, este post es para vos.</p>
-        <div class="section">
-          <p>Hoy vamos a desarmar el motor de nuestro asistente virtual. Actualmente, estamos en una fase de transición emocionante: el paso de un <b>Proxy en Node.js</b> a una arquitectura robusta con <b>Spring Boot AI</b>.</p>
-        </div>
-        <h3>La Fase 1: El "Atado con Alambre" Funcional</h3>
-        <p>Para que el chatbot cobrara vida rápido, usé un proxy en Node.js alojado en Render...</p>
-        <p><b> To be continued...</bv></p>
-        <div class="highlight">
-          <p>Stack Actual: Frontend: Angular + Signals, Middleware: Node.js, IA: Gemini API.</p>
-        </div> 
+        <p>Si estás acá, es porque viste el post en LinkedIn y querés saber si realmente me volví loco. <b>¿Reemplazar un proxy de Node.js que ya funciona por Spring AI?</b> Parece un tiro en el pie, ¿no?</p>
         
+        <div class="section">
+          <h3>El Punto de Partida: "Chatie", el humilde</h3>
+          <p>Actualmente, el chatbot que ves en este portfolio (al que cariñosamente llamo "Chatie") corre sobre un proxy muy simple en Node.js. Cumple su función: recibe mensajes, le pregunta a Gemini y te devuelve la respuesta. <i>(Atado con alambre, pero funcional).</i></p>
+        </div>
+
+        <div class="highlight">
+          <h3>La Gran Pregunta: ¿Java es "Demasiada Artillería"?</h3>
+          <p>Muchos colegas me dicen: <i>"Jorge, Java es para sistemas bancarios, no para un chat de portfolio"</i>. Y tienen parte de razón. Pero mi objetivo no es solo que funcione, es llevar la arquitectura al siguiente nivel.</p>
+        </div>
+
+        <div class="section">
+          <h3>Fase 1: El Diagnóstico</h3>
+          <p>Hoy estamos en la fase de "corazón abierto". Estoy analizando cómo Chatie maneja el historial de conversación en Node para replicarlo (y mejorarlo) con las <code>ChatMemory</code> de Spring AI.</p>
+          <p><b>Próxima parada:</b> Los primeros benchmarks. ¿Node.js vs Spring Boot? Se vienen los números.</p>
+        </div>
+
+        <h3>El Experimento: Los 3 pilares que voy a evaluar</h3>
+        <ul>
+          <li><b>1. Curva de Aprendizaje:</b> ¿Qué tan difícil es saltar de un <code>fetch</code> en Node a las abstracciones de <code>Spring AI</code>?</li>
+          <li><b>2. Rendimiento Real:</b> ¿Los Virtual Threads de Java 21 realmente marcan la diferencia en un entorno de baja latencia?</li>
+          <li><b>3. Productividad:</b> ¿Las abstracciones de Spring me ahorran tiempo o me obligan a escribir "boilerplate" infinito?</li>
+        </ul>
+
+        <p class="mt-4"><i>Este post es parte de una serie. Si tenés algún consejo o creés que estoy cometiendo un error épico, ¡dejame un comentario abajo! 👇</i></p>
       `,
       date: '27 de abril de 2026',
       author: 'Jorge Perello',
-      tags: ['IA', 'Spring Boot', 'Angular', 'Node.js', 'Gemini']
+      tags: ['IA', 'Spring AI', 'Node.js', 'Experimento', 'Java 21']
     },
  {
       id: '2',

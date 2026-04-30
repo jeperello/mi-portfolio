@@ -7,7 +7,14 @@
   <div class="blog-grid" *ngIf="!isWarming()">
     @if (blogs(); as list) {
       @for (blog of list; track blog.id) {
-        <article class="blog-card">
+        <article class="blog-card" [class.highlight-card]="blog.id === '1'">
+          <!-- Tooltip especial para el post del chatbot -->
+          @if (blog.id === '1' && showChatbotTooltip()) {
+            <div class="chatbot-tooltip">
+              ✨ ¡Nuevo! #Acompañame a ver esta triste historia!!
+            </div>
+          }
+          
           <div class="blog-header">
             <span class="blog-date">{{ blog.date }}</span>
           </div>
