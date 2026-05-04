@@ -14,6 +14,7 @@ export class ChatComponent implements OnInit {
   historyElement = viewChild<ElementRef>('history');
   isOpen = signal(false);
   showTooltip = signal(false);
+  private openSound = new Audio('assets/u_xio2tir4to-bubble-pop-389501.mp3');
 
   constructor() {
     // Efecto para hacer scroll automático al final cuando llegan mensajes nuevos
@@ -43,6 +44,7 @@ export class ChatComponent implements OnInit {
     this.isOpen.update(open => !open);
     if (this.isOpen()) {
       this.showTooltip.set(false);
+      this.openSound.play().catch(err => console.warn('Error playing sound:', err));
     }
   }
 
