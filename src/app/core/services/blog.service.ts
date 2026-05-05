@@ -33,6 +33,7 @@ export class BlogService {
           <p>Hoy estamos en la fase de "corazón abierto". Estoy analizando cómo Chatie maneja el historial de conversación en Node para replicarlo (y mejorarlo) con las <code>ChatMemory</code> de Spring AI.</p>
           <p><b>Próxima parada:</b> Los primeros benchmarks. ¿Node.js vs Spring Boot? Se vienen los números.</p>
         </div>
+        <img src="assets/blog/Chatie siendo remplazado.jpeg" class="blog-image">
 
         <h3>El Experimento: Los 3 pilares que voy a evaluar</h3>
         <ul>
