@@ -11,7 +11,7 @@ export class BlogService {
 
   // El "Plan B": Estos datos aparecerán si la API está vacía o se toma un descanso.
   private backupBlogs: Blog[] = [
-   {
+    {
       id: '1',
       title: 'Chatbot: El Detrás de Escena (¿Adiós a Chatie en Node.js?)',
       excerpt: '¿Es Java demasiada artillería para un chatbot? Acompañame en este experimento migrando de un proxy en Node.js a la robustez de Spring AI.',
@@ -41,15 +41,42 @@ export class BlogService {
           <li><b>3. Productividad:</b> ¿Las abstracciones de Spring me ahorran tiempo o me obligan a escribir "boilerplate" infinito?</li>
         </ul>
 
+        <hr class="my-5">
+
+        <div class="section">
+          <h3>🚀 Los hitos de este primer sprint</h3>
+          <ul>
+            <li><b>Java 21 & Virtual Threads:</b> Preparación para una concurrencia masiva con un consumo mínimo de recursos.</li>
+            <li><b>Spring AI (Google GenAI):</b> Se pasó de usar SDKs específicos a una capa de abstracción que permite cambiar de LLM (Gemini, OpenAI, Llama) cambiando solo una línea de configuración.</li>
+            <li><b>Arquitectura Profesional:</b> Implementación de DTOs con <b>Java Records</b>, servicios inyectados y desacoplamiento de lógica.</li>
+            <li><b>CI/CD desde el minuto 0:</b> Ya se tiene configurado un pipeline con <b>GitHub Actions</b> para asegurar que cada commit sea testeado automáticamente.</li>
+          </ul>
+        </div>
+        <div class="highlight">
+          <h3>💡 Aunque no todo es color de rosas</h3>
+          <p>Estuve peleando un poco con el error 429. Este error normalmente indica que se están realizando demasiadas peticiones. Pero luego de chequear la API KEy y el modelo, y las peticiones con google, estaba todo ok.
+           Sin embargo, en este caso, el error especificaba que el límite para el modelo gemini-2.0-flash era cero.
+           El detalle: Al usar librerías nuevas como Spring AI Google GenAI, el autoconfigurador a veces intenta usar la versión más reciente del modelo por defecto (la 2.0).
+           Y yo queria usar la versión 1.5, que es la que tengo habilitada. La solución fue explícitamente configurar el modelo a usar en el application.properties:
+           <code>spring.ai.google.model=gemini-1.5-pro</code>
+           Esto forzó a Spring AI a usar el modelo correcto y se solucionó el error 429.
+           <i>(Moraleja: Siempre revisen qué modelo está intentando usar la librería, a veces no es el que creen).</i>
+          </p>
+        </div>
+       <div class="highlight">
+          <h3>💡 El mayor aprendizaje hasta ahora</h3>
+          <p>La "magia" de las abstracciones de Spring AI tiene su precio: <b>la precisión</b>. Pelearse con los modelos en fase <i>v1beta</i> y los límites de cuota recordó que, al entender qué pasa bajo el capó (el SDK crudo de Google) es lo que realmente resuelve los problemas.</p>
+        </div>
+
         <p class="mt-4"><i>Este post es parte de una serie. Si tenés algún consejo o creés que estoy cometiendo un error épico, ¡dejame un comentario abajo! 👇</i></p>
       `,
-      date: '27 de abril de 2026',
+      date: '05 de mayo de 2026',
       author: 'Jorge Perello',
-      tags: ['IA', 'Spring AI', 'Node.js', 'Experimento', 'Java 21']
+      tags: ['IA', 'Spring AI', 'Java 21', 'Experimento', 'Software Architecture']
     },
- {
+   {
       id: '2',
-      title: 'Spring MVC vs WebFlux vs Virtual Threads',
+      title: 'Chatbot: El Detrás de Escena (¿Adiós a Chatie en Node.js?)',
       excerpt: 'Una comparativa profunda entre los diferentes paradigmas de concurrencia en Spring: desde el modelo thread-per-request tradicional hasta la reactividad de WebFlux y la revolución de los Virtual Threads.',
       content: `
         <p>En el ecosistema Java, la evolución de cómo manejamos la concurrencia ha dado pasos agigantados en los últimos años. Especialmente con la llegada de Java 21 y los Virtual Threads.</p>
