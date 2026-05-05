@@ -1,0 +1,31 @@
+<div class="map-container">
+    <div class="header">
+        <h1>Semantic Project Map</h1>
+        <p>Explora la constelación tecnológica de mis proyectos</p>
+    </div>
+
+    <canvas #mapCanvas (click)="handleCanvasClick($event)"></canvas>
+
+    <div class="info-panel" *ngIf="selectedNode">
+        <p class="tag">{{ selectedNode.type === 'concept' ? 'Habilidad Maestra' : (selectedNode.type === 'experience' ? 'Trayectoria Profesional' : 'Proyecto Portfolio') }}</p>
+        <h2>{{ selectedNode.name }}</h2>
+        <h3 *ngIf="selectedNode.company">{{ selectedNode.company }}</h3>
+        <p class="period" *ngIf="selectedNode.period">{{ selectedNode.period }}</p>
+        
+        <div class="details">
+            <p>{{ selectedNode.description }}</p>
+            
+            <div class="stack-tags" *ngIf="selectedNode.stack">
+                <span class="stack-tag" *ngFor="let tech of selectedNode.stack">{{ tech }}</span>
+            </div>
+        </div>
+
+        <button class="close-btn" (click)="selectedNode = null">Cerrar Explorador</button>
+    </div>
+
+    <div class="legend">
+        <div class="item"><span class="dot concept"></span> Habilidad</div>
+        <div class="item"><span class="dot experience"></span> Experiencia</div>
+        <div class="item"><span class="dot project"></span> Proyecto</div>
+    </div>
+</div>

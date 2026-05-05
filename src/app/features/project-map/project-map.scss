@@ -1,0 +1,109 @@
+.map-container {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 80px);
+    background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+    overflow: hidden;
+    color: white;
+
+    .header {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 10;
+        pointer-events: none;
+        
+        h1 { margin: 0; font-size: 2rem; color: #4facfe; }
+        p { margin: 5px 0; opacity: 0.7; }
+    }
+
+    canvas {
+        display: block;
+        cursor: crosshair;
+    }
+
+    .info-panel {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        width: 300px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        z-index: 20;
+        animation: slideIn 0.3s ease-out;
+
+        h2 { margin: 0; color: #4facfe; font-size: 1.5rem; }
+        h3 { margin: 5px 0; color: #ffeb3b; font-size: 1.1rem; }
+        .period { font-size: 0.85rem; color: #aaa; margin-bottom: 15px; }
+        .tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #00f2fe; margin-bottom: 5px; }
+        
+        .details {
+            line-height: 1.4;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .stack-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 15px;
+            .stack-tag {
+                background: rgba(79, 172, 254, 0.2);
+                border: 1px solid rgba(79, 172, 254, 0.4);
+                padding: 2px 8px;
+                border-radius: 10px;
+                font-size: 0.75rem;
+                color: #4facfe;
+            }
+        }
+
+        .close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            &:hover { background: rgba(255, 255, 255, 0.2); border-color: #4facfe; }
+        }
+    }
+
+    .legend {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        display: flex;
+        gap: 20px;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            .dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                &.concept { background: #4facfe; }
+                &.experience { background: #ffeb3b; }
+                &.project { background: #ffffff; }
+            }
+        }
+    }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}

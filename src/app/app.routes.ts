@@ -39,5 +39,10 @@ export const routes: Routes = [
     path: 'blog/:id',
     loadComponent: () => import('./features/blog/blog-post.component').then(m => m.BlogPostComponent),
     title: 'Post del Blog'
+  },
+  {
+    path: 'project-map',
+    loadComponent: () => import('./features/project-map/project-map').then(m => m.ProjectMapComponent),
+    title: 'Mapa Semántico de Proyectos'
   }
 ];
