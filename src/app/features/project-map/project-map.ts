@@ -105,6 +105,9 @@ export class ProjectMapComponent implements OnInit, AfterViewInit {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
+    this.nodes = [];
+    this.connections = [];
+
     // 1. Conceptos Tecnológicos (Centros de Gravedad)
     const concepts = [
       { id: 'c1', name: 'Java 21/Loom', color: '#f89820' },
@@ -120,7 +123,7 @@ export class ProjectMapComponent implements OnInit, AfterViewInit {
         ...c,
         type: 'concept',
         x: (width / (concepts.length + 1)) * (i + 1),
-        y: height / 2 + (Math.random() - 0.5) * 100,
+        y: height / 2,
         vx: (Math.random() - 0.5) * 1,
         vy: (Math.random() - 0.5) * 1,
         radius: 45,
@@ -134,10 +137,10 @@ export class ProjectMapComponent implements OnInit, AfterViewInit {
         ...exp,
         type: 'experience',
         x: (width / (this.experiences.length + 1)) * (i + 1),
-        y: 150 + (Math.random() - 0.5) * 50,
+        y: 150,
         vx: (Math.random() - 0.5) * 0.5,
         vy: (Math.random() - 0.5) * 0.5,
-        radius: 35,
+        radius: 85, 
         color: '#ffeb3b'
       };
       this.nodes.push(expNode);
@@ -166,7 +169,7 @@ export class ProjectMapComponent implements OnInit, AfterViewInit {
         description: p.description,
         stack: p.technologies,
         x: (width / (this.projects.length + 1)) * (i + 1),
-        y: height - 200 + (Math.random() - 0.5) * 50,
+        y: height - 200,
         vx: (Math.random() - 0.5) * 0.5,
         vy: (Math.random() - 0.5) * 0.5,
         radius: 30,
@@ -220,6 +223,7 @@ export class ProjectMapComponent implements OnInit, AfterViewInit {
   }
 
   private draw() {
+    if (!this.ctx) return;
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
     this.connections.forEach(conn => {
@@ -247,15 +251,15 @@ export class ProjectMapComponent implements OnInit, AfterViewInit {
 
       // Texto
       this.ctx.fillStyle = (node.color === '#ffffff' || node.color === '#ffeb3b') ? '#000' : '#fff';
-      this.ctx.font = 'bold 10px Arial';
       this.ctx.textAlign = 'center';
       
-      const lines = node.name.split(' ');
       if (node.type === 'experience') {
-        this.ctx.fillText(node.company || '', node.x, node.y - 2);
-        this.ctx.font = '8px Arial';
-        this.ctx.fillText(node.name, node.x, node.y + 10);
+        this.ctx.font = 'bold 14px Arial';
+        this.ctx.fillText(node.company || '', node.x, node.y - 5);
+        this.ctx.font = '10px Arial';
+        this.ctx.fillText(node.name, node.x, node.y + 12);
       } else {
+        this.ctx.font = 'bold 10px Arial';
         this.ctx.fillText(node.name, node.x, node.y + 5);
       }
     });
