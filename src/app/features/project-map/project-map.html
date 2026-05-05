@@ -7,7 +7,7 @@
     <canvas #mapCanvas (click)="handleCanvasClick($event)"></canvas>
 
     <div class="info-panel" *ngIf="selectedNode">
-        <p class="tag">{{ selectedNode.type === 'concept' ? 'Habilidad Maestra' : (selectedNode.type === 'experience' ? 'Trayectoria Profesional' : 'Proyecto Portfolio') }}</p>
+        <p class="tag">{{ selectedNode.type === 'technology' ? 'Habilidad Maestra' : (selectedNode.type === 'experience' ? 'Trayectoria Profesional' : 'Proyecto Portfolio') }}</p>
         <h2>{{ selectedNode.name }}</h2>
         <h3 *ngIf="selectedNode.company">{{ selectedNode.company }}</h3>
         <p class="period" *ngIf="selectedNode.period">{{ selectedNode.period }}</p>

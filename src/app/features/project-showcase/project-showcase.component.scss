@@ -33,11 +33,45 @@
     }
   }
 
-  h2 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    color: var(--title-color);
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
+
+    h2 {
+      margin: 0;
+      font-size: 2.5rem;
+      background: linear-gradient(to right, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.025em;
+    }
+
+    .map-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent-color);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: var(--accent-color);
+        color: #0f172a;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
+      }
+
+      i { font-size: 1.2rem; }
+    }
   }
 }
 
@@ -200,6 +234,17 @@
 @media (max-width: 768px) {
   .project-showcase {
     padding: 2rem 1rem; /* Reduce horizontal padding on small screens */
+
+    .header-container {
+      flex-direction: column;
+      gap: 1.5rem;
+      text-align: center;
+      margin-bottom: 2.5rem;
+
+      h2 {
+        font-size: 2rem;
+      }
+    }
   }
 
   .projects-grid {
