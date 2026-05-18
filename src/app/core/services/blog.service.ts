@@ -77,7 +77,7 @@ export class BlogService {
     },
    {
       id: '2',
-      title: 'Chatbot: El Detrás de Escena (¿Adiós a Chatie en Node.js?)',
+      title: 'Spring MVC vs WebFlux vs Virtual Threads',
       excerpt: 'Una comparativa profunda entre los diferentes paradigmas de concurrencia en Spring: desde el modelo thread-per-request tradicional hasta la reactividad de WebFlux y la revolución de los Virtual Threads.',
       content: `
         <p>En el ecosistema Java, la evolución de cómo manejamos la concurrencia ha dado pasos agigantados en los últimos años. Especialmente con la llegada de Java 21 y los Virtual Threads.</p>
