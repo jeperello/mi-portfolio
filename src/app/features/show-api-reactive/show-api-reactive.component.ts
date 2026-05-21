@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable, Subscription, forkJoin, from, map, of, catchError, finalize, range, Subject, mergeMap, takeUntil } from 'rxjs'; // Added Observable to imports
 import { ReactiveApiService, ApiMetrics, ApiDescription } from '../../core/services/reactive-api.service';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
@@ -11,7 +11,7 @@ import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 @Component({
   selector: 'app-show-api-reactive',
   standalone: true,
-  imports: [CommonModule, FormsModule, ApiWarmingComponent], // Add ApiWarmingComponent here
+  imports: [CommonModule, FormsModule, ApiWarmingComponent, RouterLink], // Add ApiWarmingComponent here
   templateUrl: './show-api-reactive.component.html',
   styleUrls: ['./show-api-reactive.component.css']
 })

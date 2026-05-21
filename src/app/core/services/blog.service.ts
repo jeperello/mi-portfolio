@@ -4,7 +4,7 @@ import { Observable, of, map, catchError } from 'rxjs';
 import { Blog, BlogComment } from '../models/blog.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BlogService {
   private baseUrl = 'https://comment-service-4192.onrender.com/api/v1';
@@ -14,7 +14,8 @@ export class BlogService {
     {
       id: '1',
       title: 'Chatbot: El Detrás de Escena (¿Adiós a Chatie en Node.js?)',
-      excerpt: '¿Es Java demasiada artillería para un chatbot? Acompañame en este experimento migrando de un proxy en Node.js a la robustez de Spring AI.',
+      excerpt:
+        '¿Es Java demasiada artillería para un chatbot? Acompañame en este experimento migrando de un proxy en Node.js a la robustez de Spring AI.',
       content: `
         <p>Si estás acá, es porque viste el post en LinkedIn y querés saber si realmente me volví loco. <b>¿Reemplazar un proxy de Node.js que ya funciona por Spring AI?</b> Parece un tiro en el pie, ¿no?</p>
         
@@ -73,15 +74,16 @@ export class BlogService {
       `,
       date: '05 de mayo de 2026',
       author: 'Jorge Perello',
-      tags: ['IA', 'Spring AI', 'Java 21', 'Experimento', 'Software Architecture']
+      tags: ['IA', 'Spring AI', 'Java 21', 'Experimento', 'Software Architecture'],
     },
-   {
+    {
       id: '2',
       title: 'Spring MVC vs WebFlux vs Virtual Threads',
-      excerpt: 'Una comparativa profunda entre los diferentes paradigmas de concurrencia en Spring: desde el modelo thread-per-request tradicional hasta la reactividad de WebFlux y la revolución de los Virtual Threads.',
+      excerpt:
+        'Una comparativa profunda entre los diferentes paradigmas de concurrencia en Spring: desde el modelo thread-per-request tradicional hasta la reactividad de WebFlux y la revolución de los Virtual Threads.',
       content: `
+              <b>¿Qué elegir en 2026 para construir APIs escalables?</b>
         <p>En el ecosistema Java, la evolución de cómo manejamos la concurrencia ha dado pasos agigantados en los últimos años. Especialmente con la llegada de Java 21 y los Virtual Threads.</p>
-        <b>¿Qué elegir en 2026 para construir APIs escalables?</b>
 
         <div class="section">
           <p>En los últimos meses estuve analizando distintas formas de construir APIs en Spring Boot con un objetivo claro: encontrar el mejor equilibrio entre rendimiento y simplicidad.</p>
@@ -188,18 +190,18 @@ export class BlogService {
       `,
       date: '15 de abril de 2026',
       author: 'Jorge Perello',
-      tags: ['Spring Boot', 'WebFlux', 'Virtual Threads', 'Java 21']
-    }
+      tags: ['Spring Boot', 'WebFlux', 'Virtual Threads', 'Java 21'],
+    },
   ];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Trae todos los posts. Si la API no tiene nada, tira de los datos de backup.
    */
   getBlogs(): Observable<Blog[]> {
     return of(this.backupBlogs);
-   /* return this.http.get<any[]>(`${this.baseUrl}/posts`).pipe(
+    /* return this.http.get<any[]>(`${this.baseUrl}/posts`).pipe(
       map(posts => {
         if (!posts || posts.length === 0) {
           console.warn('⚠️ La API no devolvió posts. Usando el escuadrón de backup...');
@@ -222,7 +224,7 @@ export class BlogService {
       map(p => this.mapToBlog(p)),
       catchError(() => of(this.backupBlogs.find(b => b.id === id)))
     );*/
-    return of(this.backupBlogs.find(b => b.id === id));
+    return of(this.backupBlogs.find((b) => b.id === id));
   }
 
   /**
@@ -230,20 +232,22 @@ export class BlogService {
    */
   getComments(postId: string): Observable<BlogComment[]> {
     return this.http.get<any[]>(`${this.baseUrl}/posts/${postId}/comments`).pipe(
-      map(comments => comments.map(c => ({
-        id: c.id?.toString(),
-        author: c.username || 'Explorador Anónimo',
-        content: c.content,
-        date: this.formatDate(c.createdAt)
-      }))),
-      catchError(() => of([]))
+      map((comments) =>
+        comments.map((c) => ({
+          id: c.id?.toString(),
+          author: c.username || 'Explorador Anónimo',
+          content: c.content,
+          date: this.formatDate(c.createdAt),
+        })),
+      ),
+      catchError(() => of([])),
     );
   }
 
   /**
    * Agrega un comentario a un post específico.
    */
-  addComment(postId: string, comment: { username: string, content: string }): Observable<any> {
+  addComment(postId: string, comment: { username: string; content: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/posts/${postId}/comments`, comment);
   }
 
@@ -253,7 +257,7 @@ export class BlogService {
   sendContactMessage(email: string, message: string): Observable<any> {
     const payload = {
       username: email,
-      content: message
+      content: message,
     };
     return this.http.post(`${this.baseUrl}/posts/3/comments`, payload);
   }
@@ -268,7 +272,7 @@ export class BlogService {
       content: apiPost.content,
       date: this.formatDate(apiPost.createdAt),
       author: apiPost.author,
-      tags: apiPost.tags || []
+      tags: apiPost.tags || [],
     };
   }
 

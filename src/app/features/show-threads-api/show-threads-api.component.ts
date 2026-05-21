@@ -9,7 +9,7 @@ import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 @Component({
   selector: 'show-threads-api',
   standalone: true,
-  imports: [CommonModule, ApiWarmingComponent],
+  imports: [CommonModule, ApiWarmingComponent, RouterLink],
   templateUrl: './show-threads-api.component.html',
   styleUrls: ['./show-threads-api.component.css']
 })
