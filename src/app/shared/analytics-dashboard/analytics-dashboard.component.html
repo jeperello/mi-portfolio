@@ -1,5 +1,7 @@
  <div class="analytics-public-wrapper">
-   <div class="stats-launcher" (click)="toggleDashboard()">
+   <div class="stats-launcher" 
+        [class.pulse-orange]="analytics.sessionEventCount() >= 5"
+        (click)="toggleDashboard()">
      📊
    </div>
 
