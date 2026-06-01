@@ -22,10 +22,25 @@ export class AnalyticsDashboardComponent {
 
   toggleDashboard() {
     this.isOpen.update(v => !v);
-    if (this.isOpen()) this.refreshCurrentTab();
+    if (this.isOpen()) {
+      // Al abrir, entramos directo al feed en vivo
+      this.activeTab.set('live');
+      
+      // Pre-seleccionamos nuestra sesión para que al ir a Métricas ya esté listo
+      if (!this.selectedSessionId()) {
+        this.selectedSessionId.set(this.analytics.sessionId);
+      }
+      
+      this.refreshCurrentTab();
+    }
   }
 
   setTab(tab: 'sessions' | 'stats' | 'live') {
+    // Si el usuario va a métricas y no tiene nada seleccionado, le mostramos lo suyo por defecto
+    if (tab === 'stats' && !this.selectedSessionId()) {
+      this.selectedSessionId.set(this.analytics.sessionId);
+    }
+    
     this.activeTab.set(tab);
     this.refreshCurrentTab();
   }
