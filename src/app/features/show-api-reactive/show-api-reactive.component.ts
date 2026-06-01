@@ -7,11 +7,12 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { ModalService } from '../../shared/modal'; // Import ModalService
 import { LoadTestResult } from '../../shared/load-test-results-modal/load-test-results-modal'; // Removed .ts extension
 import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
+import { AnalyticsDirective } from '../../shared/analytics.directive';
 
 @Component({
   selector: 'app-show-api-reactive',
   standalone: true,
-  imports: [CommonModule, FormsModule, ApiWarmingComponent, RouterLink], // Add ApiWarmingComponent here
+  imports: [CommonModule, FormsModule, ApiWarmingComponent, RouterLink, AnalyticsDirective], // Add AnalyticsDirective here
   templateUrl: './show-api-reactive.component.html',
   styleUrls: ['./show-api-reactive.component.css']
 })

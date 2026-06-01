@@ -1,11 +1,12 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { AnalyticsDirective } from '../analytics.directive';
 
 @Component({
   selector: 'app-analytics-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AnalyticsDirective],
     templateUrl: './analytics-dashboard.component.html',
   styleUrls: ['./analytics-dashboard.component.css']
 })
@@ -17,6 +18,7 @@ export class AnalyticsDashboardComponent {
   stats = signal<any>(null);
   sessions = signal<any[] | null>(null);
   selectedSessionId = signal<string | null>(null);
+  selectedPage = signal<string | null>(null);
 
   toggleDashboard() {
     this.isOpen.update(v => !v);
@@ -46,19 +48,26 @@ export class AnalyticsDashboardComponent {
 
   selectSession(id: string) {
     this.selectedSessionId.set(id);
+    this.selectedPage.set(null); // Reset page filter when switching session
     this.activeTab.set('stats');
     this.loadStats();
   }
 
-  clearSession() {
+  selectPage(page: string) {
+    this.selectedPage.set(page);
+    this.loadStats();
+  }
+
+  clearFilters() {
     this.selectedSessionId.set(null);
+    this.selectedPage.set(null);
     this.loadStats();
   }
 
   loadStats() {
     console.log('🔄 Solicitando actualización de métricas...');
     this.stats.set(null); // Feedback visual de carga
-    this.analytics.getStats(this.selectedSessionId() || undefined).subscribe({
+    this.analytics.getStats(this.selectedSessionId() || undefined, this.selectedPage() || undefined).subscribe({
       next: (data) => {
         console.log('✅ Métricas actualizadas:', data);
         this.stats.set(data);

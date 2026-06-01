@@ -4,11 +4,12 @@ import { Blog } from '../../core/models/blog.model';
 import { BlogService } from '../../core/services/blog.service';
 import { RouterLink } from '@angular/router';
 import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
+import { AnalyticsDirective } from '../../shared/analytics.directive';
 
 @Component({
   selector: 'app-blog-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, ApiWarmingComponent],
+  imports: [CommonModule, RouterLink, ApiWarmingComponent, AnalyticsDirective],
   templateUrl: './blog-list.component.html',
   styleUrls: ['./blog-list.component.scss']
 })

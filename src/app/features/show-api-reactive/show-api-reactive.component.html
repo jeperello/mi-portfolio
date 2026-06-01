@@ -37,8 +37,16 @@
     </div>
   </div>
   <div class="button-group-full">
-    <button (click)="simulateTechnologiesLoad()" class="button button-tech">Simular Carga en Tecnologías</button>
-    <button (click)="simulateAdvantagesLoad()" class="button primary">Simular Carga en Ventajas</button>
+    <button (click)="simulateTechnologiesLoad()" 
+            appTracker="btn-simular-tecnologias" 
+            class="button button-tech">
+      Simular Carga en Tecnologías
+    </button>
+    <button (click)="simulateAdvantagesLoad()" 
+            appTracker="btn-simular-ventajas" 
+            class="button primary">
+      Simular Carga en Ventajas
+    </button>
   </div>
   <!-- Grid para las tarjetas de información -->
   <div class="info-grid">
@@ -103,12 +111,17 @@
       <br>
       Las tecnologías y ventajas se emiten cada 3 segundos y luego la conexión finaliza. Las métricas de memoria se
       emiten continuamente para mostrar el estado del servidor en tiempo real.
-      <a href="https://github.com/jeperello/reactive-api" target="_blank" rel="noopener noreferrer"
-        class="repo-button">
+      <a href="https://github.com/jeperello/reactive-api" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         appTracker="btn-ver-repositorio"
+         class="repo-button">
         Ver Repositorio
       </a>
-      <a routerLink="/blog/2" class="repo-button">
-                Ver Analisis
+      <a routerLink="/blog/2" 
+         appTracker="btn-ver-analisis"
+         class="repo-button">
+        Ver Analisis
       </a>
     </p>
   </div>

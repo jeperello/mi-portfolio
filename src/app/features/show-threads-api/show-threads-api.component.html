@@ -5,10 +5,16 @@
     <p class="subtitle">
       Java 21 Project Loom: ¿Cuántos hilos puede aguantar tu servidor sin morir? 
       Compara la eficiencia de los hilos virtuales frente a los pesados hilos de plataforma.
-      <a href="https://github.com/jeperello/log-ingestion-engin" target="_blank" rel="noopener noreferrer" class="repo-button">
+      <a href="https://github.com/jeperello/log-ingestion-engin" 
+         target="_blank" 
+         rel="noopener noreferrer" 
+         appTracker="btn-repo-threads-api"
+         class="repo-button">
         Ver Repositorio
       </a>
-      <a routerLink="/blog/2" class="repo-button">
+      <a routerLink="/blog/2" 
+         appTracker="btn-view-analysis-threads"
+         class="repo-button">
           Ver Analisis
       </a>
     </p>
@@ -42,7 +48,9 @@
           <div class="engine-icon">🚜</div>
           <h4>Platform Threads</h4>
           <p class="engine-desc">Hilos del SO. Pesados (1MB c/u). Límite rápido.</p>
-          <button class="button button-platform" (click)="ingestLogs(logCountInput.value, 'platform')">
+          <button class="button button-platform" 
+                  appTracker="btn-ingest-logs-platform"
+                  (click)="ingestLogs(logCountInput.value, 'platform')">
             Lanzar con Platform
           </button>
         </div>
@@ -54,7 +62,9 @@
           <div class="engine-icon">🚀</div>
           <h4>Virtual Threads</h4>
           <p class="engine-desc">Ligeros (Project Loom). ¡Millones en el mismo hardware!</p>
-          <button class="button button-virtual" (click)="ingestLogs(logCountInput.value, 'virtual')">
+          <button class="button button-virtual" 
+                  appTracker="btn-ingest-logs-virtual"
+                  (click)="ingestLogs(logCountInput.value, 'virtual')">
             Lanzar con Virtual
           </button>
         </div>
@@ -63,11 +73,15 @@
       <!-- Alertas -->
       <div *ngIf="successMessage" class="alert success anim-fade-in">
         <span>✅ {{ successMessage }}</span>
-        <button (click)="successMessage = null" class="close-alert">&times;</button>
+        <button (click)="successMessage = null" 
+                appTracker="btn-close-alert-success"
+                class="close-alert">&times;</button>
       </div>
-      <div *ngIf="errorMessage" class="alert error anim-fade-in">
+      <div *if="errorMessage" class="alert error anim-fade-in">
         <span>⚠️ {{ errorMessage }}</span>
-        <button (click)="errorMessage = null" class="close-alert">&times;</button>
+        <button (click)="errorMessage = null" 
+                appTracker="btn-close-alert-error"
+                class="close-alert">&times;</button>
       </div>
     </div>
 
@@ -75,7 +89,9 @@
     <div class="showcase-card live-stats">
       <div class="card-header">
         <h3>📊 Monitor de Rendimiento</h3>
-        <button (click)="resetMetrics()" class="button-mini-danger">Limpiar</button>
+        <button (click)="resetMetrics()" 
+                appTracker="btn-clear-threads-metrics"
+                class="button-mini-danger">Limpiar</button>
       </div>
       
       <div class="stats-visualizer" *ngIf="metrics.length > 0">

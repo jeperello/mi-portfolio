@@ -3,12 +3,17 @@
     <h1>Smart Batch Reprocessing</h1>
     <p class="subtitle">Motor de procesamiento masivo asíncrono diseñado para gestionar operaciones críticas con alta tolerancia a fallos. El sistema automatiza el ciclo de vida de registros pendientes, aplicando reintentos inteligentes y garantizando la integridad de los datos mediante patrones de diseño empresariales.
       El objetivo fue construir un sistema capaz de procesar grandes volúmenes de datos sin saturar la memoria, manejando errores temporales (como caídas de servicios externos) y asegurando que ninguna operación se procese dos veces por error.
-      <a href="https://github.com/jeperello/smart-reprocessing-batch" target="_blank" rel="noopener noreferrer"
-        class="repo-button">
+      <a href="https://github.com/jeperello/smart-reprocessing-batch" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         appTracker="btn-repo-smart-batch"
+         class="repo-button">
         Ver Repositorio
       </a>
     </p>
-    <button (click)="showInstructions = !showInstructions" class="instructions-toggle">
+    <button (click)="showInstructions = !showInstructions" 
+            appTracker="btn-toggle-instructions"
+            class="instructions-toggle">
       {{ showInstructions ? 'Ocultar manual 📖' : 'Instrucciones de vuelo ✈️' }}
     </button>
   </div>
@@ -62,17 +67,26 @@
               </div>
 
               <div class="button-group">
-                <button (click)="reload()" [disabled]="isReloadLoading || isLoading" class="reload-button" title="Crea 100 nuevos registros para procesar">
+                <button (click)="reload()" 
+                        [disabled]="isReloadLoading || isLoading" 
+                        appTracker="btn-batch-reload"
+                        class="reload-button" title="Crea 100 nuevos registros para procesar">
                   <span *ngIf="!isReloadLoading">RELOAD DATA</span>
                   <span *ngIf="isReloadLoading" class="spinner"></span>
                 </button>
 
-                <button (click)="runBatch()" [disabled]="isLoading || isReloadLoading" class="run-button" title="Comienza el procesamiento de los registros pendientes">
+                <button (click)="runBatch()" 
+                        [disabled]="isLoading || isReloadLoading" 
+                        appTracker="btn-batch-run"
+                        class="run-button" title="Comienza el procesamiento de los registros pendientes">
                   <span *ngIf="!isLoading">RUN BATCH</span>
                   <span *ngIf="isLoading" class="spinner"></span>
                 </button>
 
-                <button (click)="checkStatus()" [disabled]="isStatusLoading" class="status-button" title="Consulta manual del estado actual del batch">
+                <button (click)="checkStatus()" 
+                        [disabled]="isStatusLoading" 
+                        appTracker="btn-batch-status"
+                        class="status-button" title="Consulta manual del estado actual del batch">
                   <span *ngIf="!isStatusLoading">REFRESH STATUS</span>
                   <span *ngIf="isStatusLoading" class="spinner"></span>
                 </button>

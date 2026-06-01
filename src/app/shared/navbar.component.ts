@@ -1,11 +1,12 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AnalyticsDirective } from './analytics.directive';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, AnalyticsDirective],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })

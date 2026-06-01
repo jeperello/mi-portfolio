@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BlogService } from '../../core/services/blog.service';
+import { AnalyticsDirective } from '../../shared/analytics.directive';
 
 @Component({
   selector: 'app-about-me',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, AnalyticsDirective],
   templateUrl: './about-me.html',
   styleUrls: ['./about-me.scss']
 })

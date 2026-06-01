@@ -4,11 +4,12 @@ import { SmartBatchService } from '../../core/services/smart-batch.service';
 import { timer, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
+import { AnalyticsDirective } from '../../shared/analytics.directive';
 
 @Component({
   selector: 'app-show-smart-batch',
   standalone: true,
-  imports: [CommonModule, ApiWarmingComponent],
+  imports: [CommonModule, ApiWarmingComponent, AnalyticsDirective],
   templateUrl: './show-smart-batch.component.html',
   styleUrls: ['./show-smart-batch.component.css']
 })

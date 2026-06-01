@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, NgFor, NgIf, DecimalPipe } from '@angular/common';
 import { Observable, Subscription } from 'rxjs'; // Import Observable and Subscription
+import { AnalyticsDirective } from '../analytics.directive';
 
 export interface LoadTestResult {
   status: 'pending' | 'success' | 'error'; // Add 'pending' status
@@ -12,7 +13,7 @@ export interface LoadTestResult {
 @Component({
   selector: 'app-load-test-results-modal',
   standalone: true,
-  imports: [CommonModule, NgFor, NgIf, DecimalPipe],
+  imports: [CommonModule, NgFor, NgIf, DecimalPipe, AnalyticsDirective],
   templateUrl: './load-test-results-modal.html',
   styleUrls: ['./load-test-results-modal.scss']
 })

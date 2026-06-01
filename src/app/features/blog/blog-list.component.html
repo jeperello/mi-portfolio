@@ -28,7 +28,9 @@
           </div>
 
           <div class="card-actions">
-            <a [routerLink]="['/blog', blog.id]" class="button">
+            <a [routerLink]="['/blog', blog.id]" 
+               [appTracker]="'btn-read-more-' + blog.id"
+               class="button">
               Leer más
             </a>
           </div>

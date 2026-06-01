@@ -7,14 +7,19 @@
   <div *ngIf="!isWarming()">
     @if (blog(); as data) {
     <header class="blog-post-header">
-      <a routerLink="/blog" class="back-link">← Volver al blog</a>
+      <a routerLink="/blog" 
+         appTracker="btn-back-to-blog-header"
+         class="back-link">← Volver al blog</a>
       <h1>{{ data.title }}</h1>
       <div class="blog-meta">
         <span>Por <strong>{{ data.author }}</strong></span>
         <span class="separator">|</span>
         <span>{{ data.date }}</span>
         <span class="separator">|</span>
-        <a routerLink="." fragment="comments" class="comments-anchor">
+        <a routerLink="." 
+           fragment="comments" 
+           appTracker="lnk-view-comments"
+           class="comments-anchor">
           {{ comments().length }} comentarios
         </a>
       </div>
@@ -73,7 +78,10 @@
             ></textarea>
           </div>
 
-          <button type="submit" [disabled]="commentForm.invalid || isSubmitting" class="submit-button">
+          <button type="submit" 
+                  [disabled]="commentForm.invalid || isSubmitting" 
+                  [appTracker]="'btn-submit-comment-' + data.id"
+                  class="submit-button">
             {{ isSubmitting ? 'Publicando...' : 'Publicar comentario' }}
           </button>
         </form>
@@ -85,13 +93,17 @@
       <div class="share-section">
         <p>¿Te ha gustado este post? ¡Compártelo!</p>
       </div>
-      <a routerLink="/blog" class="button">Volver al listado</a>
+      <a routerLink="/blog" 
+         appTracker="btn-back-to-blog-footer"
+         class="button">Volver al listado</a>
     </footer>
   } @else if (blog() === undefined) {
     <div class="not-found">
       <h2>Post no encontrado</h2>
       <p>Lo sentimos, el artículo que buscas no existe o ha sido movido.</p>
-      <a routerLink="/blog" class="button">Volver al blog</a>
+      <a routerLink="/blog" 
+         appTracker="btn-not-found-back"
+         class="button">Volver al blog</a>
     </div>
   } @else {
     <!-- Estado de carga inicial -->

@@ -1,7 +1,9 @@
 <section class="project-showcase">
   <div class="header-container">
     <h2>Mis Proyectos Actuales</h2>
-    <a routerLink="/project-map" class="map-button">
+    <a routerLink="/project-map" 
+       appTracker="btn-view-project-map"
+       class="map-button">
       <span>Explorar Mapa Semántico</span>
       <i>🧠</i>
     </a>
@@ -25,11 +27,17 @@
           </ul>
 
           <div class="card-actions">
-            <a [href]="project.repositoryUrl" target="_blank" rel="noopener noreferrer" class="button">
+            <a [href]="project.repositoryUrl" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               [appTracker]="'btn-repo-' + project.name"
+               class="button">
               Ver Repositorio
             </a>
             @if (project.demoUrl) {
-              <a [routerLink]="project.demoUrl" class="button">
+              <a [routerLink]="project.demoUrl" 
+                 [appTracker]="'btn-demo-' + project.name"
+                 class="button">
                 Probar API
               </a>
             }

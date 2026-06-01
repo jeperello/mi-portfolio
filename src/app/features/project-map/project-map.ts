@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener }
 import { CommonModule } from '@angular/common';
 import { ProjectService } from '../../core/services/project.service';
 import { Project } from '../../core/models/project.model';
+import { AnalyticsDirective } from '../../shared/analytics.directive';
 
 interface Node {
   id: string;
@@ -28,7 +29,7 @@ interface Connection {
 @Component({
   selector: 'app-project-map',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AnalyticsDirective],
   templateUrl: './project-map.html',
   styleUrls: ['./project-map.scss']
 })

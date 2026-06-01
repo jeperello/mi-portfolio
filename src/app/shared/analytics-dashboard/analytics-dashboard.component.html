@@ -6,14 +6,19 @@
       <div class="stats-panel" *ngIf="isOpen()">
         <div class="header">
           <h3>Kafka Control Center</h3>
-          <button (click)="toggleDashboard()">✕</button>
+          <button (click)="toggleDashboard()" appTracker="btn-dash-close">✕</button>
         </div>
-        <!-- ... resto del template ... -->
 
       <div class="tabs">
-        <button [class.active]="activeTab() === 'sessions'" (click)="setTab('sessions')">Usuarios</button>
-        <button [class.active]="activeTab() === 'stats'" (click)="setTab('stats')">Métricas</button>
-        <button [class.active]="activeTab() === 'live'" (click)="setTab('live')">Live</button>
+        <button [class.active]="activeTab() === 'sessions'" 
+                appTracker="btn-dash-tab-sessions"
+                (click)="setTab('sessions')">Usuarios</button>
+        <button [class.active]="activeTab() === 'stats'" 
+                appTracker="btn-dash-tab-stats"
+                (click)="setTab('stats')">Métricas</button>
+        <button [class.active]="activeTab() === 'live'" 
+                appTracker="btn-dash-tab-live"
+                (click)="setTab('live')">Live</button>
       </div>
       
       <!-- TAB: SESSIONS -->
@@ -36,14 +41,19 @@
 
       <!-- TAB: STATS -->
       <div class="content" *ngIf="activeTab() === 'stats'">
-        <div class="stats-header" *ngIf="selectedSessionId()">
-          <button class="back-btn" (click)="clearSession()">← Global</button>
-          <span class="session-label">ID: {{ selectedSessionId() | slice:0:10 }}...</span>
+        <div class="stats-header" *ngIf="selectedSessionId() || selectedPage()">
+          <button class="back-btn" 
+                  appTracker="btn-dash-clear-filters"
+                  (click)="clearFilters()">← Limpiar</button>
+          <div class="active-filters">
+            <span class="filter-tag" *ngIf="selectedSessionId()">👤 SESIÓN</span>
+            <span class="filter-tag" *ngIf="selectedPage()">📄 {{ selectedPage() }}</span>
+          </div>
         </div>
 
         <div *ngIf="stats(); else loading">
           <div class="stat-card">
-            <span class="label">Eventos {{ selectedSessionId() ? 'Sesión' : 'Global' }}</span>
+            <span class="label">Eventos Totales</span>
             <span class="value">{{ stats().totalEvents }}</span>
           </div>
           
@@ -56,22 +66,28 @@
           </div>
 
           <div class="stat-group" *ngIf="stats().eventsByPage">
-            <h4>Por Pestaña</h4>
-            <div class="bar-row" *ngFor="let entry of stats().eventsByPage | keyvalue">
+            <h4>Por Pestaña (Click para filtrar)</h4>
+            <div class="bar-row clickable" 
+                 *ngFor="let entry of stats().eventsByPage | keyvalue"
+                 (click)="selectPage(entry.key.toString())"
+                 [class.selected]="selectedPage() === entry.key">
               <span class="bar-label">{{ entry.key }}:</span>
               <span class="bar-value">{{ entry.value }}</span>
             </div>
           </div>
 
           <div class="stat-group">
-            <h4>Top Componentes</h4>
+            <h4>Interacciones (Botones/Componentes)</h4>
             <div class="list-item" *ngFor="let comp of stats().topComponents">
-              <span>{{ comp.componentId }}</span>
+              <span class="comp-id">{{ comp.componentId }}</span>
               <span class="badge">{{ comp.count }}</span>
             </div>
+            <div *ngIf="stats().topComponents?.length === 0" class="empty-small">Sin interacciones registradas.</div>
           </div>
 
-          <button class="refresh-btn" (click)="loadStats()">Actualizar</button>
+          <button class="refresh-btn" 
+                  appTracker="btn-dash-refresh"
+                  (click)="loadStats()">Actualizar</button>
         </div>
       </div>
 

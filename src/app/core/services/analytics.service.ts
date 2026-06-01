@@ -23,8 +23,16 @@ export class AnalyticsService {
   public liveEvents$ = this.liveEventsSubject.asObservable();
   private liveLog: AnalyticsEvent[] = [];
 
-  getStats(sessionId?: string) {
-    const url = sessionId ? `${this.statsUrl}?sessionId=${sessionId}` : this.statsUrl;
+  getStats(sessionId?: string, page?: string) {
+    let url = this.statsUrl;
+    const params: string[] = [];
+    if (sessionId) params.push(`sessionId=${sessionId}`);
+    if (page) params.push(`page=${page}`);
+    
+    if (params.length > 0) {
+      url += `?${params.join('&')}`;
+    }
+    
     return this.http.get<any>(url);
   }
 

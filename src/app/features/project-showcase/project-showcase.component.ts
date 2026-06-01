@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import { Project } from '../../core/models/project.model';
 import { ProjectService } from '../../core/services/project.service';
 import { RouterLink } from '@angular/router';
+import { AnalyticsDirective } from '../../shared/analytics.directive';
 
 @Component({
   selector: 'app-project-showcase',
   standalone: true, // Marcamos el componente como Standalone
-  imports: [CommonModule, RouterLink], // CommonModule nos da acceso a *ngFor, *ngIf, async pipe, etc.
+  imports: [CommonModule, RouterLink, AnalyticsDirective], // CommonModule nos da acceso a *ngFor, *ngIf, async pipe, etc.
   templateUrl: './project-showcase.component.html', // Ruta actualizada
   styleUrls: ['./project-showcase.component.scss'] // Ruta actualizada
 })

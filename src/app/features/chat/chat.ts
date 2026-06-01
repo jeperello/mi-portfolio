@@ -1,13 +1,14 @@
 import { Component, inject, viewChild, ElementRef, effect, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../core/services/chat.service';
+import { AnalyticsDirective } from '../../shared/analytics.directive';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.html',
   styleUrl: './chat.scss',
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, AnalyticsDirective]
 })
 export class ChatComponent implements OnInit {
   chatService = inject(ChatService);

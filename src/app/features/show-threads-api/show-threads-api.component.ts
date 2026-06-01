@@ -5,11 +5,12 @@ import { ThreadsApiService, ThreadStats, IngestPayload } from '../../core/servic
 import { Subscription, timer, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
+import { AnalyticsDirective } from '../../shared/analytics.directive';
 
 @Component({
   selector: 'show-threads-api',
   standalone: true,
-  imports: [CommonModule, ApiWarmingComponent, RouterLink],
+  imports: [CommonModule, ApiWarmingComponent, RouterLink, AnalyticsDirective],
   templateUrl: './show-threads-api.component.html',
   styleUrls: ['./show-threads-api.component.css']
 })

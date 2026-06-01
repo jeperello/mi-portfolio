@@ -6,11 +6,12 @@ import { Blog, BlogComment } from '../../core/models/blog.model';
 import { BlogService } from '../../core/services/blog.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
+import { AnalyticsDirective } from '../../shared/analytics.directive';
 
 @Component({
   selector: 'app-blog-post',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, ReactiveFormsModule, ApiWarmingComponent],
+  imports: [CommonModule, RouterLink, FormsModule, ReactiveFormsModule, ApiWarmingComponent, AnalyticsDirective],
   templateUrl: './blog-post.component.html',
   styleUrls: ['./blog-post.component.scss']
 })

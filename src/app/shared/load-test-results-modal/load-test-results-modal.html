@@ -2,7 +2,9 @@
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <h2>Simulación de {{ totalRequests }} requests en simultaneo</h2>
-      <button class="close-button" (click)="closeModal()">&times;</button>
+      <button class="close-button" 
+              appTracker="btn-close-test-modal"
+              (click)="closeModal()">&times;</button>
     </div>
     <div class="modal-body">
       <p>Tipo de Prueba: <strong>{{ testType }}</strong>

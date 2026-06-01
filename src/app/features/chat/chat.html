@@ -2,7 +2,9 @@
 <div class="chat-container">
   <div class="chat-header">
     <span>Asistente Virtual de Jorge Perello</span>
-    <button class="close-btn" (click)="toggleChat()">✕</button>
+    <button class="close-btn" 
+            appTracker="btn-chat-close"
+            (click)="toggleChat()">✕</button>
   </div>
   <div class="history" #history>
     @for (msg of chatService.messages(); track $index) {
@@ -27,6 +29,9 @@
 </div>
 }
 
-<button class="chat-fab" (click)="toggleChat()" title="Abrir asistente">
+<button class="chat-fab" 
+        appTracker="btn-chat-toggle"
+        (click)="toggleChat()" 
+        title="Abrir asistente">
   {{ isOpen() ? '✕' : '💬' }}
 </button>

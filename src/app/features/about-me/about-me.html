@@ -56,20 +56,24 @@
           style="display:flex; flex-direction:column; justify-content:center; align-items:center; gap:15px;">
           <h3>Trayectoria Profesional</h3>
           <p style="text-align:center;">Podés ver mi experiencia, formación y certificaciones.</p>
-          <a href="assets/docs/CV Perello Jorge.pdf" target="_blank" class="btn primary">👁 Ver
-            CV Online</a>
-          <a href="assets/docs/CV Perello Jorge.pdf" download="CV_Jorge_Perello.pdf" class="btn secondary">📄
-            Descargar CV</a>
-        </div>
-      </div>
-    </section>
+          <a href="assets/docs/CV Perello Jorge.pdf" 
+             target="_blank" 
+             appTracker="btn-view-cv"
+             class="btn primary">👁 Ver CV Online</a>
+          <a href="assets/docs/CV Perello Jorge.pdf" 
+             download="CV_Jorge_Perello.pdf" 
+             appTracker="btn-download-cv"
+             class="btn secondary">📄 Descargar CV</a>
+          </div>
+          </div>
+          </section>
 
-    <!-- STACK -->
-    <section class="section reveal">
-      <h2>Stack Tecnológico</h2>
-      <div class="grid">
+          <!-- STACK -->
+          <section class="section reveal">
+          <h2>Stack Tecnológico</h2>
+          <div class="grid">
 
-        <div class="card">
+          <div class="card">
           <h3>Backend</h3>
           <ul>
             <li>Java 21</li>
@@ -77,101 +81,121 @@
             <li>Spring Batch</li>
             <li>JPA / Hibernate</li>
           </ul>
-        </div>
+          </div>
 
-        <div class="card">
+          <div class="card">
           <h3>Frontend</h3>
           <ul>
             <li>Angular</li>
             <li>TypeScript</li>
             <li>HTML / CSS</li>
           </ul>
-        </div>
+          </div>
 
-        <div class="card">
+          <div class="card">
           <h3>Testing</h3>
           <ul>
             <li>JUnit</li>
             <li>Mockito</li>
           </ul>
-        </div>
+          </div>
 
-        <div class="card">
+          <div class="card">
           <h3>Herramientas</h3>
           <ul>
             <li>Git</li>
             <li>SQL</li>
             <li>Linux</li>
           </ul>
-        </div>
+          </div>
 
-      </div>
-    </section>
+          </div>
+          </section>
 
-    <!-- PROYECTOS -->
-    <section class="section reveal">
-      <h2>Otros Proyectos</h2>
+          <!-- PROYECTOS -->
+          <section class="section reveal">
+          <h2>Otros Proyectos</h2>
 
-      <div class="card project">
-        <h3>Sistema Full Stack de Gestión de Tareas</h3>
-        <p>Aplicación completa con backend en Spring Boot y frontend en Angular.</p>
-        <ul>
+          <div class="card project">
+          <h3>Sistema Full Stack de Gestión de Tareas</h3>
+          <p>Aplicación completa con backend en Spring Boot y frontend en Angular.</p>
+          <ul>
           <li>CRUD completo</li>
           <li>Validaciones y manejo de errores</li>
           <li>Arquitectura escalable</li>
-        </ul>
-                <a href="https://github.com/jeperello/task-manager/tree/master/task-manager" target="_blank" rel="noopener noreferrer" class="button">
+          </ul>
+                <a href="https://github.com/jeperello/task-manager/tree/master/task-manager" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   appTracker="btn-repo-task-manager"
+                   class="button">
               Ver Repositorio
             </a>
-      </div>
+          </div>
 
-      <div class="card project">
-        <h3>API REST para Gestión de Recursos</h3>
-        <p>Backend robusto con Spring Boot.</p>
-        <ul>
+          <div class="card project">
+          <h3>API REST para Gestión de Recursos</h3>
+          <p>Backend robusto con Spring Boot.</p>
+          <ul>
           <li>Endpoints RESTful</li>
           <li>Validación de datos</li>
           <li>Manejo de excepciones</li>
-        </ul>
-        <a href="https://github.com/jeperello/rent-bikes" target="_blank" rel="noopener noreferrer" class="button">
+          </ul>
+          <a href="https://github.com/jeperello/rent-bikes" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           appTracker="btn-repo-rent-bikes"
+           class="button">
               Ver Repositorio
             </a>
-      </div>
+          </div>
 
-      <div class="card project">
-        <h3>Simulación de Procesamiento Batch</h3>
-        <p>Procesamiento de datos por lotes.</p>
-        <ul>
+          <div class="card project">
+          <h3>Simulación de Procesamiento Batch</h3>
+          <p>Procesamiento de datos por lotes.</p>
+          <ul>
           <li>Reintentos automáticos</li>
           <li>Manejo de estados</li>
           <li>Logging estructurado</li>
-        </ul>
-            <a href="https://github.com/jeperello/smart-reprocessing-batch" target="_blank" rel="noopener noreferrer" class="button">
+          </ul>
+            <a href="https://github.com/jeperello/smart-reprocessing-batch" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               appTracker="btn-repo-smart-batch"
+               class="button">
               Ver Repositorio
             </a>
-      </div>
+          </div>
 
-    </section>
+          </section>
 
-    <!-- CONTACTO -->
-    <section id="contact" class="section reveal">
-      <h2>Contacto</h2>
-      <p>¿Buscás un desarrollador Full Stack con fuerte base en backend?</p>
+          <!-- CONTACTO -->
+          <section id="contact" class="section reveal">
+          <h2>Contacto</h2>
+          <p>¿Buscás un desarrollador Full Stack con fuerte base en backend?</p>
 
-      <div class="contact-grid">
-        <div class="contact-info">
+          <div class="contact-grid">
+          <div class="contact-info">
           <div class="contact-buttons">
-            <a href="mailto:jorgeperello2020@gmail.com" class="btn primary">📧 Email</a>
-            <a href="https://www.linkedin.com/in/jorge-perello-sw-developer/" target="_blank" class="btn secondary">
+            <a href="mailto:jorgeperello2020@gmail.com" 
+               appTracker="btn-contact-email"
+               class="btn primary">📧 Email</a>
+            <a href="https://www.linkedin.com/in/jorge-perello-sw-developer/" 
+               target="_blank" 
+               appTracker="btn-contact-linkedin"
+               class="btn secondary">
               💼 LinkedIn
             </a>
-            <a href="https://github.com/jeperello" target="_blank" class="btn secondary">
+            <a href="https://github.com/jeperello" 
+               target="_blank" 
+               appTracker="btn-contact-github"
+               class="btn secondary">
               💻 GitHub
             </a>
           </div>
-        </div>
+          </div>
 
-        <div class="card contact-form-card">
+          <div class="card contact-form-card">
           <h3>Enviame un mensaje</h3>
           <form [formGroup]="contactForm" (ngSubmit)="onSubmitContact()">
             <div class="form-group">
@@ -186,7 +210,10 @@
                 [class.error]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"></textarea>
             </div>
 
-            <button type="submit" class="btn primary w-full" [disabled]="contactForm.invalid || isSubmitting()">
+            <button type="submit" 
+                    appTracker="btn-submit-contact"
+                    class="btn primary w-full" 
+                    [disabled]="contactForm.invalid || isSubmitting()">
               {{ isSubmitting() ? 'Enviando...' : 'Enviar Mensaje' }}
             </button>
 
