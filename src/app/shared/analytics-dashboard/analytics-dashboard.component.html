@@ -1,0 +1,94 @@
+ <ng-container *ngIf="analytics.localMode">
+      <div class="stats-launcher" (click)="toggleDashboard()">
+        📊
+      </div>
+
+      <div class="stats-panel" *ngIf="isOpen()">
+        <div class="header">
+          <h3>Kafka Control Center</h3>
+          <button (click)="toggleDashboard()">✕</button>
+        </div>
+        <!-- ... resto del template ... -->
+
+      <div class="tabs">
+        <button [class.active]="activeTab() === 'sessions'" (click)="setTab('sessions')">Usuarios</button>
+        <button [class.active]="activeTab() === 'stats'" (click)="setTab('stats')">Métricas</button>
+        <button [class.active]="activeTab() === 'live'" (click)="setTab('live')">Live</button>
+      </div>
+      
+      <!-- TAB: SESSIONS -->
+      <div class="content" *ngIf="activeTab() === 'sessions'">
+        <div class="session-list" *ngIf="sessions(); else loading">
+          <div class="session-item" *ngFor="let s of sessions()" (click)="selectSession(s.sessionId)"
+               [class.active-user]="s.sessionId === analytics.sessionId">
+            <div class="session-info">
+              <span class="id">
+                {{ s.sessionId | slice:0:15 }}...
+                <span class="active-tag" *ngIf="s.sessionId === analytics.sessionId">ESTÁS AQUÍ</span>
+              </span>
+              <span class="meta">{{ s.browser }} • {{ s.eventCount }} ev.</span>
+            </div>
+            <span class="arrow">›</span>
+          </div>
+          <div *ngIf="sessions()?.length === 0" class="empty">No hay sesiones activas.</div>
+        </div>
+      </div>
+
+      <!-- TAB: STATS -->
+      <div class="content" *ngIf="activeTab() === 'stats'">
+        <div class="stats-header" *ngIf="selectedSessionId()">
+          <button class="back-btn" (click)="clearSession()">← Global</button>
+          <span class="session-label">ID: {{ selectedSessionId() | slice:0:10 }}...</span>
+        </div>
+
+        <div *ngIf="stats(); else loading">
+          <div class="stat-card">
+            <span class="label">Eventos {{ selectedSessionId() ? 'Sesión' : 'Global' }}</span>
+            <span class="value">{{ stats().totalEvents }}</span>
+          </div>
+          
+          <div class="stat-group">
+            <h4>Por Tipo</h4>
+            <div class="bar-row" *ngFor="let entry of stats().eventsByType | keyvalue">
+              <span class="bar-label">{{ entry.key }}:</span>
+              <span class="bar-value">{{ entry.value }}</span>
+            </div>
+          </div>
+
+          <div class="stat-group" *ngIf="stats().eventsByPage">
+            <h4>Por Pestaña</h4>
+            <div class="bar-row" *ngFor="let entry of stats().eventsByPage | keyvalue">
+              <span class="bar-label">{{ entry.key }}:</span>
+              <span class="bar-value">{{ entry.value }}</span>
+            </div>
+          </div>
+
+          <div class="stat-group">
+            <h4>Top Componentes</h4>
+            <div class="list-item" *ngFor="let comp of stats().topComponents">
+              <span>{{ comp.componentId }}</span>
+              <span class="badge">{{ comp.count }}</span>
+            </div>
+          </div>
+
+          <button class="refresh-btn" (click)="loadStats()">Actualizar</button>
+        </div>
+      </div>
+
+      <!-- TAB: LIVE -->
+      <div class="content live-feed" *ngIf="activeTab() === 'live'">
+        <div class="event-log">
+          <div class="event-entry" *ngFor="let event of (analytics.liveEvents$ | async)">
+            <span class="time">{{ event.timestamp | date:'HH:mm:ss' }}</span>
+            <span class="type" [attr.data-type]="event.eventType">{{ event.eventType }}</span>
+            <span class="comp">{{ event.componentId }}</span>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #loading>
+        <div class="loading-state">
+          📡 Sincronizando con el cluster...
+        </div>
+      </ng-template>
+    </div>

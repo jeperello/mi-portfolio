@@ -1,9 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Blog, BlogComment } from '../../core/models/blog.model';
 import { BlogService } from '../../core/services/blog.service';
+import { AnalyticsService } from '../../core/services/analytics.service';
 import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 
 @Component({
@@ -20,6 +21,7 @@ export class BlogPostComponent implements OnInit {
   public isSubmitting = false;
   public isWarming = signal(true); // Empezamos "calentando"
   private currentBlogId: string | null = null;
+  private analytics = inject(AnalyticsService);
 
   constructor(
     private route: ActivatedRoute,

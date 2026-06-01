@@ -1,0 +1,146 @@
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AnalyticsEvent } from '../models/analytics.model';
+import { interval, Subscription, BehaviorSubject, of, catchError } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AnalyticsService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:8080/api/v1/events';
+  private statsUrl = 'http://localhost:8080/api/v1/events/stats';
+  public readonly sessionId = this.generateSessionId();
+  
+  // Flag de control: Determina si el dashboard es visible (solo para entorno local/dev)
+  public localMode = true; 
+
+  // Configuración de la ráfaga
+  private eventBuffer: AnalyticsEvent[] = [];
+  
+  // Stream para el dashboard live
+  private liveEventsSubject = new BehaviorSubject<AnalyticsEvent[]>([]);
+  public liveEvents$ = this.liveEventsSubject.asObservable();
+  private liveLog: AnalyticsEvent[] = [];
+
+  getStats(sessionId?: string) {
+    const url = sessionId ? `${this.statsUrl}?sessionId=${sessionId}` : this.statsUrl;
+    return this.http.get<any>(url);
+  }
+
+  getSessions() {
+    return this.http.get<any[]>(`${this.apiUrl}/sessions`);
+  }
+  private readonly STORAGE_KEY = 'pending_analytics_events';
+  private readonly BATCH_LIMIT = 5; // Enviar cada 5 eventos
+  private readonly FLUSH_INTERVAL = 15000; // O cada 15 segundos
+  private timerSubscription?: Subscription;
+
+  constructor() {
+    this.loadFromStorage();
+    this.setupTimer();
+    this.trackPageView('INITIAL_LOAD');
+    
+    // Intentar enviar eventos pendientes al cerrar la ventana
+    window.addEventListener('beforeunload', () => this.flush());
+  }
+
+  private setupTimer() {
+    this.timerSubscription = interval(this.FLUSH_INTERVAL).subscribe(() => {
+      if (this.eventBuffer.length > 0) {
+        this.flush();
+      }
+    });
+  }
+
+  private loadFromStorage() {
+    const saved = localStorage.getItem(this.STORAGE_KEY);
+    if (saved) {
+      try {
+        this.eventBuffer = JSON.parse(saved);
+        console.log(`📦 Eventos recuperados del baúl: ${this.eventBuffer.length}`);
+        this.addToLiveLog(...this.eventBuffer);
+      } catch (e) {
+        this.eventBuffer = [];
+      }
+    }
+  }
+
+  private addToLiveLog(...events: AnalyticsEvent[]) {
+    this.liveLog = [...events, ...this.liveLog].slice(0, 50); // Guardamos los últimos 50
+    this.liveEventsSubject.next(this.liveLog);
+  }
+
+  private saveToStorage() {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.eventBuffer));
+  }
+
+  private generateSessionId(): string {
+    return 'session-' + Math.random().toString(36).substring(2, 11);
+  }
+
+  trackEvent(eventType: string, componentId: string, metadata: Record<string, any> = {}): void {
+    const event: AnalyticsEvent = {
+      eventType: eventType.toUpperCase(),
+      componentId: componentId.toUpperCase(),
+      metadata: {
+        ...metadata,
+        page: window.location.pathname,
+        browser: this.getBrowserInfo()
+      },
+      timestamp: Date.now(), // Unix timestamp en ms
+      sessionId: this.sessionId
+    };
+
+    this.eventBuffer.push(event);
+    this.addToLiveLog(event);
+    this.saveToStorage();
+
+    console.log(`📥 Evento encolado [${this.eventBuffer.length}/${this.BATCH_LIMIT}]:`, eventType);
+
+    if (this.eventBuffer.length >= this.BATCH_LIMIT) {
+      this.flush();
+    }
+  }
+
+  private getBrowserInfo(): string {
+    const ua = navigator.userAgent;
+    if (ua.includes('Firefox')) return 'Firefox';
+    if (ua.includes('Chrome')) return 'Chrome';
+    if (ua.includes('Safari')) return 'Safari';
+    return 'Unknown';
+  }
+
+  trackPageView(pageId: string): void {
+    this.trackEvent('PAGE_VIEW', pageId);
+  }
+
+  private flush(): void {
+    if (this.eventBuffer.length === 0) return;
+
+    // Clonamos y limpiamos para evitar duplicados si hay peticiones lentas
+    const eventsToSend = [...this.eventBuffer];
+    this.eventBuffer = [];
+    this.saveToStorage();
+
+    console.log(`🚀 ¡DESPEGUE! Enviando ráfaga de ${eventsToSend.length} eventos a la terminal de Kafka...`);
+
+    // Enviamos los eventos en paralelo, especificando que la respuesta es texto plano
+    eventsToSend.forEach(event => {
+      this.http.post(this.apiUrl, event, { responseType: 'text' }).subscribe({
+        next: (response) => console.log(`✅ Kafka dice: ${response}`),
+        error: (err) => {
+          console.error('❌ Kafka se ha puesto caprichoso:', err);
+        }
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+  }
+}
+
+
