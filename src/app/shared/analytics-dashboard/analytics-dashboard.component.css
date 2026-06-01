@@ -1,5 +1,5 @@
     .stats-launcher {
-      position: fixed; bottom: 20px; right: 20px;
+      position: fixed; bottom: 20px; left: 20px;
       background: #f89820; width: 50px; height: 50px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 24px; cursor: pointer; z-index: 9999;
@@ -9,7 +9,7 @@
     }
 
     .stats-panel {
-      position: fixed; bottom: 80px; right: 20px;
+      position: fixed; bottom: 80px; left: 20px;
       width: 320px; max-height: 500px;
       background: rgba(10, 10, 10, 0.98);
       border: 1px solid #f89820; border-radius: 12px;

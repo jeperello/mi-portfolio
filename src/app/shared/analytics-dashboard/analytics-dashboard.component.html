@@ -1,9 +1,9 @@
- <ng-container *ngIf="analytics.localMode">
-      <div class="stats-launcher" (click)="toggleDashboard()">
-        📊
-      </div>
+ <div class="analytics-public-wrapper">
+   <div class="stats-launcher" (click)="toggleDashboard()">
+     📊
+   </div>
 
-      <div class="stats-panel" *ngIf="isOpen()">
+   <div class="stats-panel" *ngIf="isOpen()">
         <div class="header">
           <h3>Kafka Control Center</h3>
           <button (click)="toggleDashboard()" appTracker="btn-dash-close">✕</button>
@@ -108,3 +108,4 @@
         </div>
       </ng-template>
     </div>
+  </div>

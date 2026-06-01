@@ -77,7 +77,7 @@
                 appTracker="btn-close-alert-success"
                 class="close-alert">&times;</button>
       </div>
-      <div *if="errorMessage" class="alert error anim-fade-in">
+      <div *ngIf="errorMessage" class="alert error anim-fade-in">
         <span>⚠️ {{ errorMessage }}</span>
         <button (click)="errorMessage = null" 
                 appTracker="btn-close-alert-error"
