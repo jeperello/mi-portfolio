@@ -11,6 +11,23 @@ export class ProjectService {
   // Por ahora, los mantenemos aquí para desarrollar la UI.
   private projects: Project[] = [
     {
+      name: 'Kafka-Portfolio',
+      description: 'Microservicio de alto rendimiento para el rastreo de analíticas en tiempo real, construido con Spring Boot 3.x y Java 21.',
+      repositoryUrl: 'https://github.com/jeperello/portfolio-pulse-service',
+      technologies: [
+        'Java 21',
+        'Spring Boot 3.2.5',
+        'Apache Kafka',
+        'Event-driven',
+        'MongoDB',
+        'Docker',
+        'Lombok',
+        'Spring Validation'
+      ],
+      isNew: true,
+      demoUrl: 'OPEN_DASHBOARD'
+    },
+    {
       name: 'API REST FULL',
       description: 'Este microservicio gestiona el motor de contenidos de mi portfolio personal (Blog & Comments). Está diseñado bajo principios de Clean Architecture, alta testabilidad y despliegue automatizado.',
       repositoryUrl: 'https://github.com/jeperello/comment-service',

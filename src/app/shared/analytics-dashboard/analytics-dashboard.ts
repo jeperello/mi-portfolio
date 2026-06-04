@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, effect, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { AnalyticsDirective } from '../analytics.directive';
@@ -12,27 +12,34 @@ import { AnalyticsDirective } from '../analytics.directive';
 })
 export class AnalyticsDashboardComponent {
   public analytics = inject(AnalyticsService);
-  
-  isOpen = signal(false);
-  activeTab = signal<'sessions' | 'stats' | 'live'>('sessions');
+
+  // Por defecto empezamos en 'live' para dar esa sensación de "siempre activo"
+  activeTab = signal<'sessions' | 'stats' | 'live'>('live');
   stats = signal<any>(null);
   sessions = signal<any[] | null>(null);
   selectedSessionId = signal<string | null>(null);
   selectedPage = signal<string | null>(null);
 
-  toggleDashboard() {
-    this.isOpen.update(v => !v);
-    if (this.isOpen()) {
-      // Al abrir, entramos directo al feed en vivo
-      this.activeTab.set('live');
-      
-      // Pre-seleccionamos nuestra sesión para que al ir a Métricas ya esté listo
-      if (!this.selectedSessionId()) {
-        this.selectedSessionId.set(this.analytics.sessionId);
+  constructor() {
+    // Usamos untracked para que el efecto solo dependa de showDashboard
+    // y no se reinicie cada vez que cambiamos de pestaña internamente.
+    effect(() => {
+      if (this.analytics.showDashboard()) {
+        untracked(() => this.onOpen());
       }
-      
-      this.refreshCurrentTab();
+    });
+  }
+
+  private onOpen() {
+    this.activeTab.set('live'); 
+    if (!this.selectedSessionId()) {
+      this.selectedSessionId.set(this.analytics.sessionId);
     }
+    this.refreshCurrentTab();
+  }
+
+  toggleDashboard() {
+    this.analytics.toggleDashboard();
   }
 
   setTab(tab: 'sessions' | 'stats' | 'live') {

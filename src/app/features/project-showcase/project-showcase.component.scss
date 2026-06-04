@@ -19,137 +19,194 @@
   padding: 4rem 2rem;
   font-family: var(--font-family);
   color: var(--text-main);
-  background-color: #0f172a; // Fondo principal Dark
+  background-color: #0f172a;
   min-height: 100vh;
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .header-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
+    width: 100%;
     max-width: 1200px;
-    margin: 0 auto 3rem;
+    margin: 0 auto 4rem;
     padding: 0 1rem;
 
-    h2 {
-      margin: 0;
-      font-size: 2.5rem;
-      background: linear-gradient(to right, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.025em;
+    .title-group {
+      h2 {
+        margin: 0;
+        font-size: 3rem;
+        background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.05em;
+        font-weight: 800;
+      }
+      .subtitle {
+        color: var(--text-muted);
+        margin: 0.5rem 0 0;
+        font-size: 1.1rem;
+      }
     }
 
     .map-button {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(56, 189, 248, 0.1);
-      color: var(--accent-color);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 0.75rem 1.25rem;
-      border-radius: 12px;
+      background: rgba(56, 189, 248, 0.05);
+      color: var(--primary-blue);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 0.75rem 1.5rem;
+      border-radius: 14px;
       font-weight: 600;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
       &:hover {
-        background: var(--accent-color);
-        color: #0f172a;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
+        background: rgba(56, 189, 248, 0.15);
+        border-color: var(--primary-blue);
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
       }
 
-      i { font-size: 1.2rem; }
+      i { font-size: 1.3rem; }
     }
+  }
+}
+
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  position: relative;
+}
+
+.nav-button {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 20;
+
+  &:hover:not(:disabled) {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: var(--primary-blue);
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.1;
+    cursor: not-allowed;
+  }
+
+  .arrow {
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-top: -5px;
   }
 }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  min-height: 500px; // Evitar saltos de layout
 }
 
 .project-card {
-  position: relative; // Para posicionar el badge
+  position: relative;
   background-color: var(--card-bg);
-  backdrop-filter: blur(8px);
+  background: linear-gradient(145deg, #1e293b 0%, #111827 100%);
   border: 1px solid var(--card-border);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 24px;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
-
-  &.new-project {
-    border-color: rgba(56, 189, 248, 0.4);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
-  }
-
-  .new-badge {
-    position: absolute;
-    top: -12px;
-    right: 20px;
-    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-    color: #0f172a;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
-    z-index: 10;
-    animation: bounce 2s infinite;
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-  }
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   
-  // Animación de entrada
-  opacity: 0;
-  animation: fadeIn 0.6s ease-out forwards;
+  // Animación de cambio
+  animation: slideIn 0.5s ease-out;
 
-  // Retraso escalonado (Stagger)
-  @for $i from 1 through 10 {
-    &:nth-child(#{$i}) {
-      animation-delay: #{$i * 0.1}s;
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(30px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) scale(1);
     }
   }
 
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    transform: translateY(-12px) scale(1.02);
     border-color: var(--primary-blue);
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5), 0 18px 36px -18px rgba(56, 189, 248, 0.3);
   }
 
   h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-top: 0;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
     color: var(--primary-blue);
-    letter-spacing: -0.025em;
+    font-weight: 700;
   }
 
   p {
-    flex-grow: 1;
     color: var(--text-muted);
-    line-height: 1.6;
-    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+}
+
+.carousel-indicators {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 3rem;
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(56, 189, 248, 0.4);
+    }
+
+    &.active {
+      background: var(--primary-blue);
+      width: 30px;
+      border-radius: 5px;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+  
+  .nav-button {
+    width: 45px;
+    height: 45px;
   }
 }
 

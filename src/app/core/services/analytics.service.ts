@@ -15,6 +15,15 @@ export class AnalyticsService {
   
   // Flag de control: Determina si el dashboard es visible (solo para entorno local/dev)
   public localMode = true; 
+  public showDashboard = signal(false);
+
+  public toggleDashboard() {
+    this.showDashboard.update(v => !v);
+  }
+
+  public openDashboard() {
+    this.showDashboard.set(true);
+  }
 
   // Configuración de la ráfaga
   private eventBuffer: AnalyticsEvent[] = [];

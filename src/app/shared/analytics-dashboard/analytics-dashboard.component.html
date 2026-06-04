@@ -5,7 +5,7 @@
      📊
    </div>
 
-   <div class="stats-panel" *ngIf="isOpen()">
+   <div class="stats-panel" *ngIf="analytics.showDashboard()">
         <div class="header">
           <h3>Kafka Control Center</h3>
           <button (click)="toggleDashboard()" appTracker="btn-dash-close">✕</button>

@@ -1,6 +1,9 @@
 <section class="project-showcase">
   <div class="header-container">
-    <h2>Mis Proyectos Actuales</h2>
+    <div class="title-group">
+      <h2>Mis Proyectos Actuales</h2>
+      <p class="subtitle">Explora mis últimas creaciones y experimentos backend</p>
+    </div>
     <a routerLink="/project-map" 
        appTracker="btn-view-project-map"
        class="map-button">
@@ -9,9 +12,16 @@
     </a>
   </div>
 
-  <div class="projects-grid">
-    @if (projects$ | async; as projects) {
-      @for (project of projects; track project.name) {
+  <div class="carousel-container">
+    <button class="nav-button prev" 
+            (click)="prev()" 
+            [disabled]="!canPrev()"
+            aria-label="Anterior">
+      <span class="arrow">‹</span>
+    </button>
+
+    <div class="projects-grid">
+      @for (project of visibleProjects(); track project.name) {
         <div class="project-card" [class.new-project]="project.isNew">
           @if (project.isNew) {
             <div class="new-badge">¡Nuevo! ✨</div>
@@ -35,11 +45,11 @@
               Ver Repositorio
             </a>
             @if (project.demoUrl) {
-              <a [routerLink]="project.demoUrl" 
+              <button (click)="handleDemo(project)"
                  [appTracker]="'btn-demo-' + project.name"
-                 class="button">
+                 class="button primary">
                 Probar API
-              </a>
+              </button>
             }
           </div>
         </div>
@@ -48,6 +58,22 @@
           <p>Actualmente no hay proyectos para mostrar. ¡Vuelve pronto!</p>
         </div>
       }
+    </div>
+
+    <button class="nav-button next" 
+            (click)="next()" 
+            [disabled]="!canNext()"
+            aria-label="Siguiente">
+      <span class="arrow">›</span>
+    </button>
+  </div>
+
+  <div class="carousel-indicators">
+    @for (dot of [].constructor(totalSteps()); track $index) {
+      <div class="dot" 
+           [class.active]="$index === currentIndex()"
+           (click)="currentIndex.set($index)">
+      </div>
     }
   </div>
 </section>
