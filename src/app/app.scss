@@ -1,0 +1,52 @@
+@use "sass:math"; 
+
+.snow-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at bottom, #0f172a 0%, #020617 100%); // Mucho más oscuro
+  overflow: hidden;
+  z-index: -1; // Lo volvemos a bajar pero asegurando transparencia arriba
+  pointer-events: none;
+}
+
+.snowflake {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: 0.9; // Más opaco
+  top: -20px;
+  pointer-events: none;
+  box-shadow: 0 0 10px white; // Brillo propio para que se vea
+}
+
+// Generamos 50 variaciones aleatorias para los copos
+@for $i from 1 through 50 {
+  .snowflake:nth-child(#{$i}) {
+    $random-left: math.random(100) * 1vw;       
+    $random-duration: math.random(15) + 8 + s; 
+    $random-delay: math.random(20) * -1s;      
+    $random-size: math.random(5) + 2 + px;     
+    $random-opacity: (math.random(10) * 0.1) + 0.2; // Aseguramos opacidad mínima
+
+    left: $random-left;
+    width: $random-size;
+    height: $random-size;
+    opacity: $random-opacity;
+    animation: fall-#{$i} $random-duration $random-delay linear infinite;
+  }
+
+  @keyframes fall-#{$i} {
+    0% {
+      transform: translateY(-5vh) translateX(0);
+    }
+    100% {
+      transform: translateY(105vh) translateX(#{math.random(60) - 30}px);
+    }
+  }
+}

@@ -1,5 +1,10 @@
 <app-intro *ngIf="showIntro" (finished)="onIntroFinished()"></app-intro>
 
+<!-- FONDO DE NIEVE - Movido fuera para asegurar carga -->
+<div class="snow-container" aria-hidden="true">
+  <div *ngFor="let snowflake of snowflakes" class="snowflake"></div>
+</div>
+
 <div [style.display]="showIntro ? 'none' : 'block'">
   <app-navbar></app-navbar>
 

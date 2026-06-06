@@ -19,7 +19,7 @@
   padding: 4rem 2rem;
   font-family: var(--font-family);
   color: var(--text-main);
-  background-color: #0f172a;
+  background-color: transparent; // Quitamos el fondo sólido para ver la nieve
   min-height: 100vh;
   display: flex;
   flex-direction: column;

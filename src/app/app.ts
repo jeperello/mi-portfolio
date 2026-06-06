@@ -24,6 +24,7 @@ export class App implements OnInit {
   private router = inject(Router);
   
   showIntro = true;
+  snowflakes = new Array(50).fill(0);
 
   constructor() {
     this.trackNavigation();
