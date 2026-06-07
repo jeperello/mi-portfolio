@@ -16,8 +16,8 @@ interface ChatBackendResponse {
 export class ChatService {
   private backendChatUrl = 'https://proxi-ia.onrender.com/api/chat';
   
-  // Flag de control: ¡Cámbialo a true para no gastar tokens en desarrollo!
-  public localMode = true;
+  // Flag de control: ¡Cámbio a true para no gastar tokens en desarrollo!
+  public localMode = false;
 
   // Use Signals for a reactive and efficient state
   messages = signal<{ role: 'system' | 'user' | 'assistant', content: string }[]>([]);

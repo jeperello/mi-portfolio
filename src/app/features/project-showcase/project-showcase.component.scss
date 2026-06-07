@@ -16,7 +16,7 @@
 // @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 .project-showcase {
-  padding: 4rem 2rem;
+  padding: 1.5rem 2rem;
   font-family: var(--font-family);
   color: var(--text-main);
   background-color: transparent; // Quitamos el fondo sólido para ver la nieve
@@ -31,7 +31,7 @@
     align-items: flex-end;
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto 4rem;
+    margin: 0 auto 2rem;
     padding: 0 1rem;
 
     .title-group {
