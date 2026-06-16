@@ -8,8 +8,10 @@ import { interval, Subscription, BehaviorSubject, of, catchError } from 'rxjs';
 })
 export class AnalyticsService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/v1/events';
-  private statsUrl = 'http://localhost:8080/api/v1/events/stats';
+  private readonly baseUrl = 'https://portfolio-pulse-service.onrender.com';
+  //private readonly baseUrl = 'http://localhost:8080';
+  private apiUrl = this.baseUrl + '/api/v1/events';
+  private statsUrl = this.baseUrl + '/api/v1/events/stats';
   public readonly sessionId = this.generateSessionId();
   public sessionEventCount = signal(0);
   
