@@ -58,6 +58,10 @@ export class AnalyticsDashboardComponent {
   }
 
   loadSessions() {
+    if (!this.analytics.localMode) {
+      this.sessions.set([]);
+      return;
+    }
     this.sessions.set(null);
     this.analytics.getSessions().subscribe({
       next: (data) => this.sessions.set(data),
