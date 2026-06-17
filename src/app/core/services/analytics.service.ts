@@ -16,7 +16,7 @@ export class AnalyticsService {
   public sessionEventCount = signal(0);
   
   // Flag de control: Determina si el dashboard es visible (solo para entorno local/dev)
-  public localMode = true; 
+  public localMode = false; 
   public showDashboard = signal(false);
 
   public toggleDashboard() {
