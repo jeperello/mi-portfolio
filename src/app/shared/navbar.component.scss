@@ -136,7 +136,15 @@
   }
 }
 
+.navbar-toggle {
+  display: none;
+}
+
 @media (max-width: 768px) {
+  .navbar-container {
+    padding: 0 1rem;
+  }
+
   .full-title-suffix {
     display: none;
   }
@@ -205,8 +213,4 @@
       font-size: 1.5rem;
     }
   }
-}
-
-.navbar-toggle {
-  display: none;
 }
