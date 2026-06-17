@@ -5,16 +5,17 @@
       <span>Jorge Perello</span><span class="full-title-suffix">Full Stack Developer (Java + Spring Boot + Angular)</span>
     </a>
     
-    <ul class="navbar-links">
+    <ul class="navbar-links" [class.active]="isMenuOpen()">
       <li><a routerLink="/" 
              appTracker="nav-projects"
              routerLinkActive="active" 
-             [routerLinkActiveOptions]="{exact: true}">Proyectos</a></li>
+             [routerLinkActiveOptions]="{exact: true}"
+             (click)="isMenuOpen.set(false)">Proyectos</a></li>
       <li class="nav-item-relative">
         <a routerLink="/blog" 
            appTracker="nav-blog"
            routerLinkActive="active" 
-           (mouseenter)="hideTooltip()" (click)="hideTooltip()">
+           (mouseenter)="hideTooltip()" (click)="hideTooltip(); isMenuOpen.set(false)">
           Mi Blog
         </a>
         @if (showBlogTooltip()) {
@@ -27,10 +28,23 @@
       <li><a routerLink="/about" 
              appTracker="nav-about"
              routerLinkActive="active" 
-             [routerLinkActiveOptions]="{exact: true}">Sobre Mí</a></li>
+             [routerLinkActiveOptions]="{exact: true}"
+             (click)="isMenuOpen.set(false)">Sobre Mí</a></li>
       <li><a routerLink="/about" 
              appTracker="nav-contact"
-             fragment="contact">Contacto</a></li>
+             fragment="contact"
+             (click)="isMenuOpen.set(false)">Contacto</a></li>
     </ul>
+
+    <button class="navbar-toggle" 
+            (click)="isMenuOpen.set(!isMenuOpen())"
+            [attr.aria-expanded]="isMenuOpen()"
+            aria-label="Toggle navigation">
+      <div class="hamburger" [class.open]="isMenuOpen()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
   </div>
 </nav>

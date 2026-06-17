@@ -12,7 +12,7 @@ import { AnalyticsDirective } from './analytics.directive';
 })
 export class NavbarComponent implements OnInit {
   public showBlogTooltip = signal(false);
-
+  public isMenuOpen = signal(false);
 
   ngOnInit(): void {
     // Mostramos el tooltip después de 2.5 segundos
