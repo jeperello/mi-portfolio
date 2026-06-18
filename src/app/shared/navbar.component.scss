@@ -95,6 +95,12 @@
     }
   }
 
+  li {
+    &.mobile-only {
+      display: none;
+    }
+  }
+
   a {
     font-family: 'Inter', sans-serif;
     text-decoration: none;
@@ -207,7 +213,12 @@
 
     &.active {
       transform: translateX(0);
+
+      li.mobile-only {
+        display: block;
+      }
     }
+
 
     a {
       font-size: 1.5rem;
