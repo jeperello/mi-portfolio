@@ -37,10 +37,10 @@ export class BlogPostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // El "ganche visual": Mantener la tacita por 4 segundos
+    // El "ganche visual": Mantener la tacita menos tiempo para no estorbar la lectura
     setTimeout(() => {
       this.isWarming.set(false);
-    }, 3000);
+    }, 1200);
 
     this.route.paramMap.subscribe(params => {
       this.currentBlogId = params.get('id');
