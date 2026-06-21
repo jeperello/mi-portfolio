@@ -18,6 +18,7 @@
     <button class="nav-button prev" 
             (click)="prev()" 
             [disabled]="!canPrev()"
+            appTracker="btn-carousel-prev"
             aria-label="Anterior">
       <span class="arrow">‹</span>
     </button>
@@ -65,6 +66,7 @@
     <button class="nav-button next" 
             (click)="next()" 
             [disabled]="!canNext()"
+            appTracker="btn-carousel-next"
             aria-label="Siguiente">
       <span class="arrow">›</span>
     </button>
