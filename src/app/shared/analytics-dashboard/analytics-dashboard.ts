@@ -2,6 +2,7 @@ import { Component, inject, signal, computed, effect, untracked } from '@angular
 import { CommonModule } from '@angular/common';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { AnalyticsDirective } from '../analytics.directive';
+import { isLocalEnvironment } from '../utils/environment';
 
 @Component({
   selector: 'app-analytics-dashboard',
@@ -12,6 +13,8 @@ import { AnalyticsDirective } from '../analytics.directive';
 })
 export class AnalyticsDashboardComponent {
   public analytics = inject(AnalyticsService);
+  // Flag de control: Determina si el log es visible (solo para entorno local/dev)
+  public localMode = isLocalEnvironment(); 
 
   // Por defecto empezamos en 'live' para dar esa sensación de "siempre activo"
   activeTab = signal<'sessions' | 'stats' | 'live'>('live');
@@ -47,7 +50,6 @@ export class AnalyticsDashboardComponent {
     if (tab === 'stats' && !this.selectedSessionId()) {
       this.selectedSessionId.set(this.analytics.sessionId);
     }
-    
     this.activeTab.set(tab);
     this.refreshCurrentTab();
   }
@@ -91,11 +93,15 @@ export class AnalyticsDashboardComponent {
   }
 
   loadStats() {
-    console.log('🔄 Solicitando actualización de métricas...');
+    if (this.localMode) {
+      console.log('🔄 Solicitando actualización de métricas...');
+    }
     this.stats.set(null); // Feedback visual de carga
     this.analytics.getStats(this.selectedSessionId() || undefined, this.selectedPage() || undefined).subscribe({
       next: (data) => {
-        console.log('✅ Métricas actualizadas:', data);
+        if (this.localMode) {
+          console.log('✅ Métricas actualizadas:', data);
+        }
         this.stats.set(data);
       },
       error: (err) => {
