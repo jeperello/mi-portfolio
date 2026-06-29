@@ -2,7 +2,7 @@ import { Component, inject, signal, computed, effect, untracked } from '@angular
 import { CommonModule } from '@angular/common';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { AnalyticsDirective } from '../analytics.directive';
-import { isLocalEnvironment } from '../utils/environment';
+import { isLocalEnvironment } from '../../core/utils/environment';
 
 @Component({
   selector: 'app-analytics-dashboard',
