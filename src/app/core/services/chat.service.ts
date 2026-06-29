@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
+import { isLocalEnvironment } from '../utils/environment';
 
 // Interfaces para tipar la comunicación con el backend
 interface ChatBackendRequest {
@@ -17,7 +18,7 @@ export class ChatService {
   private backendChatUrl = 'https://proxi-ia.onrender.com/api/chat';
   
   // Flag de control: ¡Cámbio a true para no gastar tokens en desarrollo!
-  public localMode = false;
+  public localMode = isLocalEnvironment();
 
   // Use Signals for a reactive and efficient state
   messages = signal<{ role: 'system' | 'user' | 'assistant', content: string }[]>([]);

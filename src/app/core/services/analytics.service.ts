@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AnalyticsEvent } from '../models/analytics.model';
 import { interval, Subscription, BehaviorSubject, of, catchError } from 'rxjs';
+import { isLocalEnvironment } from '../utils/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AnalyticsService {
   public sessionEventCount = signal(0);
   
   // Flag de control: Determina si el dashboard es visible (solo para entorno local/dev)
-  public localMode = false; 
+  public localMode = isLocalEnvironment(); 
   public showDashboard = signal(false);
 
   public toggleDashboard() {
@@ -117,7 +118,9 @@ export class AnalyticsService {
     this.addToLiveLog(event);
     this.saveToStorage();
 
-    console.log(`📥 Evento encolado [${this.eventBuffer.length}/${this.BATCH_LIMIT}]:`, eventType);
+    if (this.localMode) {
+      console.log(`📥 Evento encolado [${this.eventBuffer.length}/${this.BATCH_LIMIT}]:`, eventType);
+    }
 
     if (this.eventBuffer.length >= this.BATCH_LIMIT) {
       this.flush();
