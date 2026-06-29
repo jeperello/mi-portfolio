@@ -24,7 +24,7 @@ export class BlogListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // 1. La tasita se queda por 3 segundos
+    // 1. La tasita se queda casi instantánea (200ms)
     setTimeout(() => {
       this.isWarming.set(false);
       
@@ -37,7 +37,7 @@ export class BlogListComponent implements OnInit {
           this.showChatbotTooltip.set(false);
         }, 5000);
       }, 500); // Pequeño respiro tras la tasita
-    }, 3000);
+    }, 200);
 
     this.blogService.getBlogs().subscribe({
       next: (data) => {
