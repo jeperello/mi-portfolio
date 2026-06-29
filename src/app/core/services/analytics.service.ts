@@ -16,7 +16,7 @@ export class AnalyticsService {
   public readonly sessionId = this.generateSessionId();
   public sessionEventCount = signal(0);
   
-  // Flag de control: Determina si el dashboard es visible (solo para entorno local/dev)
+  // Flag de control: Determina si el log es visible (solo para entorno local/dev)
   public localMode = isLocalEnvironment(); 
   public showDashboard = signal(false);
 
@@ -79,7 +79,9 @@ export class AnalyticsService {
     if (saved) {
       try {
         this.eventBuffer = JSON.parse(saved);
-        console.log(`📦 Eventos recuperados del baúl: ${this.eventBuffer.length}`);
+        if (this.localMode) {
+          console.log(`📦 Eventos recuperados del baúl: ${this.eventBuffer.length}`);
+        }
         this.addToLiveLog(...this.eventBuffer);
       } catch (e) {
         this.eventBuffer = [];
@@ -146,9 +148,9 @@ export class AnalyticsService {
     const eventsToSend = [...this.eventBuffer];
     this.eventBuffer = [];
     this.saveToStorage();
-
-    console.log(`🚀 ¡DESPEGUE! Enviando ráfaga de ${eventsToSend.length} eventos a la terminal de Kafka...`);
-
+    if (this.localMode) {
+        console.log(`🚀 ¡DESPEGUE! Enviando ráfaga de ${eventsToSend.length} eventos a la terminal de Kafka...`);
+    }
     // Enviamos los eventos en paralelo, especificando que la respuesta es texto plano
     eventsToSend.forEach(event => {
       this.http.post(this.apiUrl, event, { responseType: 'text' }).subscribe({

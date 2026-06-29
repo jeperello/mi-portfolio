@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, of } from 'rxjs';
 import { catchError, first } from 'rxjs/operators';
+import { isLocalEnvironment } from '../utils/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +17,18 @@ export class ApiWarmingService {
   ];
 
   constructor(private http: HttpClient) { }
+  
+  // Flag de control: Determina si el log es visible (solo para entorno local/dev)
+  public localMode = isLocalEnvironment(); 
 
   /**
    * Envía una petición GET silenciosa a cada API para despertarlas (Cold Start).
    * No nos importa el resultado, solo queremos que el servidor reciba la señal.
    */
   warmUpAll(): void {
-    console.log('🚀 Iniciando Operación Despertador: Calentando APIs de Render...');
+    if (this.localMode) {
+      console.log('🚀 Iniciando Operación Despertador: Calentando APIs de Render...');
+    }
     
     // Ejecutamos todas las peticiones en paralelo
     const requests = this.warmingUrls.map(url => 
@@ -38,7 +44,8 @@ export class ApiWarmingService {
 
     // ForkJoin dispara todas y nos olvidamos. "Fire and forget".
     forkJoin(requests).subscribe({
-      next: () => console.log('✅ Señal enviada a todas las APIs. Despertando motores...'),
+      //Despertando motores...
+      next: () => console.log('✅ Señal enviada a todas las APIs.'),
       error: () => console.log('⚠️ Operación Despertador finalizada con algunos errores (esperado).')
     });
   }
