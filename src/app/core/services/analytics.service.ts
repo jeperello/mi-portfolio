@@ -154,7 +154,11 @@ export class AnalyticsService {
     // Enviamos los eventos en paralelo, especificando que la respuesta es texto plano
     eventsToSend.forEach(event => {
       this.http.post(this.apiUrl, event, { responseType: 'text' }).subscribe({
-        next: (response) => console.log(`✅ Kafka dice: ${response}`),
+        next: (response) => {
+          if (this.localMode) {
+            console.log(`✅ Kafka dice: ${response}`);
+          }
+        },
         error: (err) => {
           console.error('❌ Kafka se ha puesto caprichoso:', err);
         }
