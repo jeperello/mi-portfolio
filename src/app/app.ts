@@ -7,6 +7,7 @@ import { NavbarComponent } from './shared/navbar.component';
 import { IntroComponent } from './shared/intro/intro';
 import { ApiWarmingService } from './core/services/api-warming.service';
 import { AnalyticsService } from './core/services/analytics.service';
+import { ThemeService } from './core/services/theme.service';
 
 import { AnalyticsDashboardComponent } from './shared/analytics-dashboard/analytics-dashboard';
 
@@ -22,6 +23,7 @@ export class App implements OnInit {
   private warmingService = inject(ApiWarmingService);
   public analytics = inject(AnalyticsService);
   private router = inject(Router);
+  private themeService = inject(ThemeService);
   
   showIntro = true;
   snowflakes = new Array(50).fill(0);

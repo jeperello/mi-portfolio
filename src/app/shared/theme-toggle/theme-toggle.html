@@ -1,0 +1,29 @@
+<button class="theme-toggle-btn"
+        (click)="toggle()"
+        [class.is-light-moon]="themeService.isLightMoon()"
+        [appTracker]="'btn-toggle-theme'"
+        [attr.aria-label]="themeService.isLightMoon() ? 'Activar modo oscuro estelar' : 'Activar modo lunar de la luna'"
+        [attr.title]="themeService.isLightMoon() ? 'Cambiar a modo oscuro estelar' : 'Cambiar a modo lunar de la luna'">
+  
+  <div class="icon-container">
+    <!-- Starry Dark Mode Icon (Crescent Moon + Stars) -->
+    <svg class="icon moon-crescent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" fill="currentColor"/>
+      <path d="M19 3v4M17 5h4" stroke-linecap="round"/>
+      <circle cx="10" cy="8" r="1" fill="currentColor"/>
+    </svg>
+    
+    <!-- Moon Light Mode Icon (Glowing Full Moon with Crater details) -->
+    <svg class="icon moon-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="9" fill="currentColor" />
+      <circle cx="9" cy="9" r="1.5" fill="rgba(0,0,0,0.15)" stroke="none" />
+      <circle cx="15" cy="13" r="2" fill="rgba(0,0,0,0.15)" stroke="none" />
+      <circle cx="10" cy="15" r="1" fill="rgba(0,0,0,0.15)" stroke="none" />
+    </svg>
+  </div>
+  
+  <!-- Subtle label that changes -->
+  <span class="theme-label">
+    {{ themeService.isLightMoon() ? 'Dark Side' : 'Moon Light' }}
+  </span>
+</button>

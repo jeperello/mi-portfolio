@@ -1,0 +1,184 @@
+/* Theme: Light Mood of the Moon */
+
+.light-moon-theme {
+  // Theme Variables Overrides
+  --bg-color: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.65);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --accent-color: #0284c7; // Beautiful celestial blue
+  --accent-hover: #0369a1;
+  --border-color: #cbd5e1;
+  --success-color: #059669;
+  --error-color: #dc2626;
+  --table-row-hover: rgba(203, 213, 225, 0.4);
+
+  // Background and lunar particles overrides
+  .snow-container {
+    background: radial-gradient(circle at top right, #fffbeb 0%, #cbd5e1 100%) !important;
+  }
+
+  .snowflake {
+    background: #94a3b8 !important;
+    box-shadow: 0 0 6px rgba(15, 23, 42, 0.15) !important;
+  }
+
+  // Navbar theme overrides (without changing the original navbar component code)
+  .navbar {
+    background: rgba(248, 250, 252, 0.4) !important;
+    border-bottom: 1px solid rgba(2, 132, 199, 0.15) !important;
+  }
+
+  .navbar-logo {
+    color: #0f172a !important;
+    
+    .full-title-suffix {
+      color: #475569 !important;
+    }
+    
+    .navbar-profile-img {
+      border-color: #0284c7 !important;
+    }
+  }
+
+  .navbar-links {
+    a {
+      color: #475569 !important;
+      
+      &:hover, &.active {
+        color: #0284c7 !important;
+      }
+      
+      &.active::after {
+        background-color: #0284c7 !important;
+      }
+    }
+  }
+
+  .navbar-toggle span {
+    background-color: #0f172a !important;
+  }
+
+  // Chat panel and other features overrides
+  .chat-panel {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+    
+    .chat-header {
+      background: rgba(241, 245, 249, 0.9) !important;
+      border-bottom-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+
+    .message {
+      &.user .message-content {
+        background-color: #0284c7 !important;
+        color: #ffffff !important;
+      }
+      &.bot .message-content {
+        background-color: #e2e8f0 !important;
+        color: #0f172a !important;
+      }
+    }
+
+    .chat-input-area {
+      border-top-color: #cbd5e1 !important;
+      input {
+        background-color: #ffffff !important;
+        border-color: #cbd5e1 !important;
+        color: #0f172a !important;
+        
+        &::placeholder {
+          color: #94a3b8 !important;
+        }
+      }
+    }
+  }
+
+  .chat-toggle-btn {
+    background: #0284c7 !important;
+    color: #ffffff !important;
+    
+    &:hover {
+      background: #0369a1 !important;
+      box-shadow: 0 0 15px rgba(2, 132, 199, 0.4) !important;
+    }
+  }
+
+  /* -------------------------------------------------------------
+     Specific component overrides for ProjectShowcase (Proyectos)
+     ------------------------------------------------------------- */
+  
+  app-project-showcase {
+    // Redefining custom host variables inside the project component
+    --primary-blue: #0284c7;
+    --primary-blue-hover: #0369a1;
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --card-border: rgba(2, 132, 199, 0.15);
+    --badge-bg: #e0f2fe; // Light blue/sky pill background
+    --badge-text: #0369a1; // Contrast blue text
+  }
+
+  // Override the hardcoded project cards gradient with a beautiful celestial sky blue glass layout
+  .project-card {
+    background: linear-gradient(145deg, rgba(224, 242, 254, 0.8) 0%, rgba(186, 230, 253, 0.8) 100%) !important;
+    border-color: rgba(2, 132, 199, 0.2) !important;
+    box-shadow: 0 15px 35px -5px rgba(2, 132, 199, 0.1) !important;
+
+    h3 {
+      color: #0369a1 !important;
+    }
+
+    p {
+      color: #334155 !important;
+    }
+
+    &:hover {
+      border-color: #0284c7 !important;
+      box-shadow: 0 25px 50px -12px rgba(2, 132, 199, 0.15), 0 12px 24px -15px rgba(2, 132, 199, 0.2) !important;
+    }
+  }
+
+  // Carousel indicators
+  .carousel-indicators .dot {
+    background: rgba(15, 23, 42, 0.15) !important;
+    
+    &:hover {
+      background: rgba(2, 132, 199, 0.4) !important;
+    }
+    
+    &.active {
+      background: #0284c7 !important;
+    }
+  }
+
+  // Navigation Arrows (prev/next) for the carousel
+  .nav-button {
+    background: rgba(15, 23, 42, 0.05) !important;
+    border: 1px solid rgba(15, 23, 42, 0.1) !important;
+    color: #0f172a !important;
+
+    &:hover:not(:disabled) {
+      background: rgba(2, 132, 199, 0.15) !important;
+      border-color: #0284c7 !important;
+    }
+
+    &:disabled {
+      opacity: 0.15 !important;
+    }
+  }
+
+  // Explorar Mapa Semántico button adjustments
+  .map-button {
+    background: rgba(2, 132, 199, 0.05) !important;
+    border-color: rgba(2, 132, 199, 0.25) !important;
+    color: #0284c7 !important;
+
+    &:hover {
+      background: rgba(2, 132, 199, 0.12) !important;
+      border-color: #0284c7 !important;
+    }
+  }
+}

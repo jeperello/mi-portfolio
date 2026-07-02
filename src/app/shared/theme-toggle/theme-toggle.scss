@@ -1,0 +1,112 @@
+:host {
+  display: inline-flex;
+  
+  // Align properly in desktop flex container using order
+  @media (min-width: 769px) {
+    order: 2;
+  }
+}
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  user-select: none;
+  
+  &:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(56, 189, 248, 0.25);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.icon-container {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+// Default (Dark theme active, showing crescent moon)
+.moon-crescent {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+  color: #38bdf8; // Blue cyan accent
+}
+
+.moon-full {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.3);
+  color: #d97706; // Warm lunar gold glow
+}
+
+// Light theme active (showing full moon)
+.is-light-moon {
+  background: rgba(255, 255, 255, 0.85);
+  color: #0f172a;
+  border-color: rgba(2, 132, 199, 0.25);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+  
+  &:hover {
+    background: #ffffff;
+    border-color: #0284c7;
+    box-shadow: 0 6px 18px rgba(2, 132, 199, 0.2);
+  }
+
+  .moon-crescent {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.3);
+  }
+
+  .moon-full {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+.theme-label {
+  font-family: 'Inter', sans-serif;
+}
+
+// Responsive design: transform to compact icon-only button on mobile
+@media (max-width: 768px) {
+  :host {
+    order: 1; // Align alongside map-button on mobile
+  }
+
+  .theme-toggle-btn {
+    padding: 0;
+    width: 45px;
+    height: 45px;
+    justify-content: center;
+    border-radius: 12px;
+    
+    .theme-label {
+      display: none;
+    }
+  }
+}
