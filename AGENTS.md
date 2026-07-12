@@ -26,3 +26,16 @@ Tus respuestas deben seguir estas reglas estrictas:
 - **Prohibido el uso de `@import`**: Para importar hojas de estilo u otros módulos Sass, utiliza la directiva moderna `@use` (ej: `@use './theme';`).
 - **Posición de `@use`**: Coloca todas las directivas `@use` en la parte superior absoluta del archivo, antes de cualquier otra regla CSS o selector, para cumplir estrictamente con las especificaciones de Dart Sass 3.0+ y evitar errores de compilación.
 
+## 6. Mapa y Estado del Proyecto
+Para evitar exploraciones innecesarias, ten en cuenta la estructura actual:
+- **`src/app/core/`**: Servicios core, guards, interceptores.
+- **`src/app/shared/`**: Componentes reutilizables, directivas y pipes comunes.
+- **`src/app/features/`**:
+  - `project-showcase/`: Sección principal que muestra la lista de proyectos de APIs de Java.
+  - `about-me/`: Información del perfil.
+  - `blog/`: Artículos técnicos.
+  - `chat/`: Chatbot/asistente integrado en el portfolio.
+  - `project-map/`: Vista de relaciones/mapa de proyectos.
+  - `show-api-reactive/`, `show-smart-batch/`, `show-threads-api/`: Demos/detalles específicos de APIs de Java.
+
+

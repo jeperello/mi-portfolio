@@ -1,50 +1,53 @@
 <section class="blog-list">
-  <app-api-warming *ngIf="isWarming()" 
-    mainMessage="Cargando el Blog..." 
-    subMessage="Estamos preparando los mejores artículos para vos mientras servimos un café ☕">
-  </app-api-warming>
-
-  <div class="blog-grid" *ngIf="!isWarming()">
-    @if (blogs(); as list) {
-      @for (blog of list; track blog.id) {
-        <article class="blog-card" [class.highlight-card]="blog.id === '1'">
-          <!-- Tooltip especial para el post del chatbot -->
-          @if (blog.id === '1' && showChatbotTooltip()) {
-            <div class="chatbot-tooltip">
-              ✨ ¡Nuevo! #Acompañame a ver esta triste historia!!
-            </div>
-          }
-          
-          <div class="blog-header">
-            <span class="blog-date">{{ blog.date }}</span>
-          </div>
-          <h3>{{ blog.title }}</h3>
-          <p>{{ blog.excerpt }}</p>
-
-          <div class="blog-tags">
-            @for (tag of blog.tags; track tag) {
-              <span class="tag">{{ tag }}</span>
+  @if (isWarming()) {
+    <app-api-warming 
+      mainMessage="Cargando el Blog..." 
+      subMessage="Estamos preparando los mejores artículos para vos mientras servimos un café ☕">
+    </app-api-warming>
+  } @else {
+    <div class="blog-grid">
+      @if (blogs(); as list) {
+        @for (blog of list; track blog.id) {
+          <article class="blog-card" [class.highlight-card]="blog.id === '1'">
+            <!-- Tooltip especial para el post del chatbot -->
+            @if (blog.id === '1' && showChatbotTooltip()) {
+              <div class="chatbot-tooltip">
+                ✨ ¡Nuevo! #Acompañame a ver esta triste historia!!
+              </div>
             }
-          </div>
+            
+            <div class="blog-header">
+              <span class="blog-date">{{ blog.date }}</span>
+            </div>
+            <h3>{{ blog.title }}</h3>
+            <p>{{ blog.excerpt }}</p>
 
-          <div class="card-actions">
-            <a [routerLink]="['/blog', blog.id]" 
-               [appTracker]="'btn-read-more-' + blog.id"
-               class="button">
-              Leer más
-            </a>
+            <div class="blog-tags">
+              @for (tag of blog.tags; track tag) {
+                <span class="tag">{{ tag }}</span>
+              }
+            </div>
+
+            <div class="card-actions">
+              <a [routerLink]="['/blog', blog.id]" 
+                 [appTracker]="'btn-read-more-' + blog.id"
+                 class="button">
+                Leer más
+              </a>
+            </div>
+          </article>
+        } @empty {
+          <div class="no-blogs">
+            <p>Aún no hay entradas en el blog. ¡Pronto habrá contenido interesante!</p>
           </div>
-        </article>
-      } @empty {
-        <div class="no-blogs">
-          <p>Aún no hay entradas en el blog. ¡Pronto habrá contenido interesante!</p>
+        }
+      } @else {
+        <!-- Estado de carga inicial mientras no hay blogs y no ha saltado el warming -->
+        <div class="loading-placeholder">
+          <p>Cargando posts...</p>
         </div>
       }
-    } @else {
-      <!-- Estado de carga inicial mientras no hay blogs y no ha saltado el warming -->
-      <div class="loading-placeholder">
-        <p>Cargando posts...</p>
-      </div>
-    }
-  </div>
+    </div>
+  }
 </section>
+

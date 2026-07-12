@@ -181,4 +181,227 @@
       border-color: #0284c7 !important;
     }
   }
+
+  // Blog page overrides
+  app-blog-list {
+    --bg-color: transparent !important;
+    --card-bg: rgba(255, 255, 255, 0.7) !important;
+    --text-primary: #0f172a !important;
+    --text-secondary: #475569 !important;
+    --accent-color: #0284c7 !important;
+    --accent-hover: #0369a1 !important;
+    --border-color: rgba(2, 132, 199, 0.15) !important;
+  }
+
+  app-blog-post {
+    --bg-color: transparent !important;
+    --card-bg: rgba(255, 255, 255, 0.75) !important;
+    --text-primary: #0f172a !important;
+    --text-secondary: #475569 !important;
+    --accent-color: #0284c7 !important;
+    --accent-hover: #0369a1 !important;
+    --border-color: rgba(2, 132, 199, 0.15) !important;
+  }
+
+  .blog-list {
+    background-color: transparent !important;
+    color: #0f172a !important;
+  }
+
+  .blog-card {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border-color: rgba(2, 132, 199, 0.15) !important;
+    color: #0f172a !important;
+  }
+
+  .blog-card .blog-date,
+  .blog-card p,
+  .blog-card .blog-tags .tag,
+  .blog-post-container,
+  .blog-post-content,
+  .blog-post-header .blog-meta,
+  .comments-section h3,
+  .comments-section .comment-content,
+  .add-comment-container,
+  .not-found,
+  .loading-placeholder {
+    color: #0f172a !important;
+  }
+
+  .blog-post-container,
+  .add-comment-container,
+  .comment-card,
+  .no-comments {
+    background: rgba(255, 255, 255, 0.75) !important;
+    border-color: rgba(2, 132, 199, 0.15) !important;
+  }
+
+  .blog-post-header .back-link,
+  .comments-anchor,
+  .blog-tags .tag,
+  .card-actions .button,
+  .blog-post-footer .button,
+  .submit-button {
+    background: #0284c7 !important;
+    color: #ffffff !important;
+    border-color: #0284c7 !important;
+  }
+
+  .blog-post-header .back-link:hover,
+  .comments-anchor:hover,
+  .card-actions .button:hover,
+  .blog-post-footer .button:hover,
+  .submit-button:hover:not(:disabled) {
+    background: #0369a1 !important;
+  }
+
+  /* -------------------------------------------------------------
+     Specific component overrides for AboutMe (Sobre Mí)
+     ------------------------------------------------------------- */
+  app-about-me {
+    body {
+      background: transparent !important;
+      color: #0f172a !important;
+    }
+
+    h2 {
+      color: #0284c7 !important;
+    }
+
+    h3 {
+      color: #0369a1 !important;
+    }
+
+    p {
+      color: #334155 !important;
+    }
+
+    ul {
+      color: #334155 !important;
+    }
+
+    a {
+      color: #0284c7 !important;
+
+      &:hover {
+        color: #0369a1 !important;
+      }
+    }
+
+    .hero {
+      background: linear-gradient(rgba(255, 255, 255, 0.75), rgba(248, 250, 252, 0.85)),
+                  url('https://images.unsplash.com/photo-1555066931-4365d14bab8c') !important;
+      
+      h1 {
+        color: #0f172a !important;
+      }
+
+      .subtitle {
+        color: #0284c7 !important;
+      }
+
+      .tagline {
+        color: #64748b !important;
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.7) !important;
+      border-color: rgba(2, 132, 199, 0.15) !important;
+      color: #0f172a !important;
+      
+      h3 {
+        color: #0369a1 !important;
+      }
+
+      p {
+        color: #334155 !important;
+      }
+
+      ul {
+        color: #334155 !important;
+      }
+
+      &:hover {
+        border-color: #0284c7 !important;
+        box-shadow: 0 10px 30px rgba(2, 132, 199, 0.15) !important;
+      }
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #0284c7, #38bdf8) !important;
+      color: #ffffff !important;
+
+      &:hover {
+        box-shadow: 0 10px 20px rgba(2, 132, 199, 0.3) !important;
+      }
+    }
+
+    .btn.secondary {
+      border-color: rgba(2, 132, 199, 0.4) !important;
+      color: #0284c7 !important;
+      background: transparent !important;
+
+      &:hover {
+        border-color: #0284c7 !important;
+        color: #0369a1 !important;
+        background: rgba(2, 132, 199, 0.05) !important;
+      }
+    }
+
+    .contact-form-card {
+      background: rgba(255, 255, 255, 0.8) !important;
+      border-color: rgba(2, 132, 199, 0.15) !important;
+
+      h3 {
+        color: #0f172a !important;
+      }
+    }
+
+    .form-group {
+      label {
+        color: #475569 !important;
+      }
+
+      input, textarea {
+        background: #ffffff !important;
+        border-color: #cbd5e1 !important;
+        color: #0f172a !important;
+
+        &:focus {
+          border-color: #0284c7 !important;
+          background: #ffffff !important;
+          box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2) !important;
+        }
+
+        &::placeholder {
+          color: #94a3b8 !important;
+        }
+      }
+    }
+
+    .feedback-msg {
+      &.success {
+        background: #ecfdf5 !important;
+        color: #065f46 !important;
+        border-color: #a7f3d0 !important;
+      }
+
+      &.error {
+        background: #fef2f2 !important;
+        color: #991b1b !important;
+        border-color: #fca5a5 !important;
+      }
+    }
+
+    .availability {
+      color: #475569 !important;
+    }
+
+    .footer {
+      border-top-color: rgba(2, 132, 199, 0.15) !important;
+      color: #64748b !important;
+    }
+  }
 }
+

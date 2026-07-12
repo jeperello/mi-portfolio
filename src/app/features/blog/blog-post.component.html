@@ -1,115 +1,118 @@
 <article class="blog-post-container">
-  <app-api-warming *ngIf="isWarming()" 
-    mainMessage="Preparando el Post..." 
-    subMessage="Estamos sirviendo un café mientras cargamos el contenido ☕">
-  </app-api-warming>
-
-  <div *ngIf="!isWarming()">
-    @if (blog(); as data) {
-    <header class="blog-post-header">
-      <a routerLink="/blog" 
-         appTracker="btn-back-to-blog-header"
-         class="back-link">← Volver al blog</a>
-      <h1>{{ data.title }}</h1>
-      <div class="blog-meta">
-        <span>Por <strong>{{ data.author }}</strong></span>
-        <span class="separator">|</span>
-        <span>{{ data.date }}</span>
-        <span class="separator">|</span>
-        <a routerLink="." 
-           fragment="comments" 
-           appTracker="lnk-view-comments"
-           class="comments-anchor">
-          {{ comments().length }} comentarios
-        </a>
-      </div>
-      <div class="blog-tags">
-        @for (tag of data.tags; track tag) {
-          <span class="tag">{{ tag }}</span>
-        }
-      </div>
-    </header>
-
-    <div class="blog-post-content" [innerHTML]="data.content"></div>
-
-    <section id="comments" class="comments-section">
-      <hr>
-      <h3>Comentarios ({{ comments().length }})</h3>
-      
-      <div class="comments-list">
-        @for (comment of comments(); track comment.id) {
-          <div class="comment-card">
-            <div class="comment-header">
-              <div class="comment-avatar">{{ comment.author.charAt(0).toUpperCase() }}</div>
-              <div class="comment-info">
-                <span class="comment-author">{{ comment.author }}</span>
-                <span class="comment-date">{{ comment.date }}</span>
-              </div>
-            </div>
-            <p class="comment-content">{{ comment.content }}</p>
-          </div>
-        } @empty {
-          <p class="no-comments">Sé el primero en comentar este post. ¡Tu opinión cuenta!</p>
-        }
-      </div>
-
-      <div class="add-comment-container">
-        <h4>Deja un comentario</h4>
-        <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="comment-form">
-          <div class="form-group">
-            <label for="author">Nombre</label>
-            <input 
-              id="author" 
-              type="text" 
-              formControlName="author" 
-              placeholder="Tu nombre o alias"
-              [class.error]="commentForm.get('author')?.invalid && commentForm.get('author')?.touched"
-            >
-          </div>
-          
-          <div class="form-group">
-            <label for="content">Comentario</label>
-            <textarea 
-              id="content" 
-              formControlName="content" 
-              placeholder="Escribe lo que piensas..."
-              rows="4"
-              [class.error]="commentForm.get('content')?.invalid && commentForm.get('content')?.touched"
-            ></textarea>
-          </div>
-
-          <button type="submit" 
-                  [disabled]="commentForm.invalid || isSubmitting" 
-                  [appTracker]="'btn-submit-comment-' + data.id"
-                  class="submit-button">
-            {{ isSubmitting ? 'Publicando...' : 'Publicar comentario' }}
-          </button>
-        </form>
-      </div>
-    </section>
-
-    <footer class="blog-post-footer">
-      <hr>
-      <div class="share-section">
-        <p>¿Te ha gustado este post? ¡Compártelo!</p>
-      </div>
-      <a routerLink="/blog" 
-         appTracker="btn-back-to-blog-footer"
-         class="button">Volver al listado</a>
-    </footer>
-  } @else if (blog() === undefined) {
-    <div class="not-found">
-      <h2>Post no encontrado</h2>
-      <p>Lo sentimos, el artículo que buscas no existe o ha sido movido.</p>
-      <a routerLink="/blog" 
-         appTracker="btn-not-found-back"
-         class="button">Volver al blog</a>
-    </div>
+  @if (isWarming()) {
+    <app-api-warming 
+      mainMessage="Preparando el Post..." 
+      subMessage="Estamos sirviendo un café mientras cargamos el contenido ☕">
+    </app-api-warming>
   } @else {
-    <!-- Estado de carga inicial -->
-    <div class="loading-placeholder">
-      <p>Buscando el post...</p>
+    <div>
+      @if (blog(); as data) {
+      <header class="blog-post-header">
+        <a routerLink="/blog" 
+           appTracker="btn-back-to-blog-header"
+           class="back-link">← Volver al blog</a>
+        <h1>{{ data.title }}</h1>
+        <div class="blog-meta">
+          <span>Por <strong>{{ data.author }}</strong></span>
+          <span class="separator">|</span>
+          <span>{{ data.date }}</span>
+          <span class="separator">|</span>
+          <a routerLink="." 
+             fragment="comments" 
+             appTracker="lnk-view-comments"
+             class="comments-anchor">
+            {{ comments().length }} comentarios
+          </a>
+        </div>
+        <div class="blog-tags">
+          @for (tag of data.tags; track tag) {
+            <span class="tag">{{ tag }}</span>
+          }
+        </div>
+      </header>
+
+      <div class="blog-post-content" [innerHTML]="data.content"></div>
+
+      <section id="comments" class="comments-section">
+        <hr>
+        <h3>Comentarios ({{ comments().length }})</h3>
+        
+        <div class="comments-list">
+          @for (comment of comments(); track comment.id) {
+            <div class="comment-card">
+              <div class="comment-header">
+                <div class="comment-avatar">{{ comment.author.charAt(0).toUpperCase() }}</div>
+                <div class="comment-info">
+                  <span class="comment-author">{{ comment.author }}</span>
+                  <span class="comment-date">{{ comment.date }}</span>
+                </div>
+              </div>
+              <p class="comment-content">{{ comment.content }}</p>
+            </div>
+          } @empty {
+            <p class="no-comments">Sé el primero en comentar este post. ¡Tu opinión cuenta!</p>
+          }
+        </div>
+
+        <div class="add-comment-container">
+          <h4>Deja un comentario</h4>
+          <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="comment-form">
+            <div class="form-group">
+              <label for="author">Nombre</label>
+              <input 
+                id="author" 
+                type="text" 
+                formControlName="author" 
+                placeholder="Tu nombre o alias"
+                [class.error]="commentForm.get('author')?.invalid && commentForm.get('author')?.touched"
+              >
+            </div>
+            
+            <div class="form-group">
+              <label for="content">Comentario</label>
+              <textarea 
+                id="content" 
+                formControlName="content" 
+                placeholder="Escribe lo que piensas..."
+                rows="4"
+                [class.error]="commentForm.get('content')?.invalid && commentForm.get('content')?.touched"
+              ></textarea>
+            </div>
+
+            <button type="submit" 
+                    [disabled]="commentForm.invalid || isSubmitting" 
+                    [appTracker]="'btn-submit-comment-' + data.id"
+                    class="submit-button">
+              {{ isSubmitting ? 'Publicando...' : 'Publicar comentario' }}
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <footer class="blog-post-footer">
+        <hr>
+        <div class="share-section">
+          <p>¿Te ha gustado este post? ¡Compártelo!</p>
+        </div>
+        <a routerLink="/blog" 
+           appTracker="btn-back-to-blog-footer"
+           class="button">Volver al listado</a>
+      </footer>
+    } @else if (blog() === undefined) {
+      <div class="not-found">
+        <h2>Post no encontrado</h2>
+        <p>Lo sentimos, el artículo que buscas no existe o ha sido movido.</p>
+        <a routerLink="/blog" 
+           appTracker="btn-not-found-back"
+           class="button">Volver al blog</a>
+      </div>
+    } @else {
+      <!-- Estado de carga inicial -->
+      <div class="loading-placeholder">
+        <p>Buscando el post...</p>
+      </div>
+    }
     </div>
   }
-  </div>
 </article>
+
