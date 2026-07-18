@@ -1,4 +1,4 @@
- <div class="analytics-public-wrapper">
+  <div class="analytics-public-wrapper">
    <div class="stats-launcher" 
         [class.pulse-orange]="analytics.sessionEventCount() >= 5"
         (click)="toggleDashboard()">
@@ -6,10 +6,20 @@
    </div>
 
    <div class="stats-panel" *ngIf="analytics.showDashboard()">
-        <div class="header">
-          <h3>Kafka Control Center</h3>
-          <button (click)="toggleDashboard()" appTracker="btn-dash-close">✕</button>
-        </div>
+         <div class="header">
+           <h3>Kafka Control Center</h3>
+           <button (click)="toggleDashboard()" appTracker="btn-dash-close">✕</button>
+         </div>
+
+         <!-- Developer Stealth Toggle (Only visible if developer mode is active) -->
+         @if (analytics.isDeveloper()) {
+           <div class="dev-mode-bar" [class.dev-active]="analytics.isDeveloper()" (click)="analytics.toggleDeveloperMode()" appTracker="btn-dash-toggle-dev">
+             <span class="status-text">🕶️ Developer Mode: ON (Silenciado)</span>
+             <div class="dev-switch">
+               <span class="switch-knob"></span>
+             </div>
+           </div>
+         }
 
       <div class="tabs">
         <button [class.active]="activeTab() === 'sessions'" 

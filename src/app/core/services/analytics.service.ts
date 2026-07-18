@@ -19,9 +19,20 @@ export class AnalyticsService {
   // Flag de control: Determina si el log es visible (solo para entorno local/dev)
   public localMode = isLocalEnvironment(); 
   public showDashboard = signal(false);
+  public isDeveloper = signal<boolean>(
+    isLocalEnvironment() || (typeof window !== 'undefined' && localStorage.getItem('portfolio_is_developer') === 'true')
+  );
 
   public toggleDashboard() {
     this.showDashboard.update(v => !v);
+  }
+
+  public toggleDeveloperMode() {
+    const nextVal = !this.isDeveloper();
+    this.isDeveloper.set(nextVal);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('portfolio_is_developer', String(nextVal));
+    }
   }
 
   public openDashboard() {
@@ -58,12 +69,26 @@ export class AnalyticsService {
   private timerSubscription?: Subscription;
 
   constructor() {
+    this.checkQueryParameters();
     this.loadFromStorage();
     this.setupTimer();
     this.trackPageView('INITIAL_LOAD');
     
     // Intentar enviar eventos pendientes al cerrar la ventana
     window.addEventListener('beforeunload', () => this.flush());
+  }
+
+  private checkQueryParameters() {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('dev') === 'true') {
+        this.isDeveloper.set(true);
+        localStorage.setItem('portfolio_is_developer', 'true');
+        // Limpiamos el query param de la URL para que no quede rastro en la barra de direcciones
+        const cleanUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    }
   }
 
   private setupTimer() {
@@ -109,7 +134,8 @@ export class AnalyticsService {
       metadata: {
         ...metadata,
         page: window.location.pathname,
-        browser: this.getBrowserInfo()
+        browser: this.getBrowserInfo(),
+        isDeveloper: this.isDeveloper()
       },
       timestamp: Date.now(), // Unix timestamp en ms
       sessionId: this.sessionId

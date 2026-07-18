@@ -38,4 +38,16 @@ Para evitar exploraciones innecesarias, ten en cuenta la estructura actual:
   - `project-map/`: Vista de relaciones/mapa de proyectos.
   - `show-api-reactive/`, `show-smart-batch/`, `show-threads-api/`: Demos/detalles específicos de APIs de Java.
 
-
+## 7. Analíticas y Control de Eventos de Kafka
+- **Formato del Evento:** Todos los eventos enviados al cluster llevan un campo `metadata` con la estructura:
+  ```json
+  "metadata": {
+      "page": "ruta_actual",
+      "browser": "nombre_navegador",
+      "isDeveloper": true | false
+  }
+  ```
+- **Filtro de Desarrollador (isDeveloper):** 
+  * En entorno local, `isDeveloper` es `true` por defecto.
+  * En producción, un usuario es marcado como developer si ingresa a la URL con el query param `?dev=true`. Esto almacena `'portfolio_is_developer' = 'true'` en `localStorage` y remueve el parámetro de la URL silenciosamente para mantener la limpieza.
+- **Acceso en Dashboard:** La barra de control de desarrollador (`dev-mode-bar`) en `AnalyticsDashboardComponent` se oculta bajo `@if (analytics.isDeveloper())` para que los usuarios comunes de producción no vean ni alteren este switch, garantizando que el resto del dashboard de analíticas permanezca público e interactivo.
