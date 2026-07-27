@@ -11,6 +11,10 @@
              routerLinkActive="active" 
              [routerLinkActiveOptions]="{exact: true}"
              (click)="isMenuOpen.set(false)">Proyectos</a></li>
+      <li><a routerLink="/fleet" 
+             appTracker="nav-fleet"
+             routerLinkActive="active" 
+             (click)="isMenuOpen.set(false)">Fleet 50/50</a></li>
       <li class="mobile-only">
         <a routerLink="/project-map" 
            appTracker="nav-project-map"

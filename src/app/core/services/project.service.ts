@@ -91,6 +91,21 @@ export class ProjectService {
       ],
       //demoUrl: ''
       demoUrl: 'smart-batch'
+    },
+    {
+      name: 'Fleet-FiftyFifty (Consolidación de Ingresos)',
+      description: 'Módulo de liquidación semanal 50/50 de ingresos de flota de transporte (Uber, DiDi) desarrollado con Angular 21, Signals y arquitectura SOLID.',
+      repositoryUrl: 'https://github.com/jeperello/portfolio-fullstack',
+      technologies: [
+        'Angular 21',
+        'TypeScript 5',
+        'Signals & Computed',
+        'SOLID Architecture',
+        'Clean Code',
+        'OnPush Strategy'
+      ],
+      isNew: true,
+      demoUrl: '/fleet'
     }
   ];
 

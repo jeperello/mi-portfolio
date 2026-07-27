@@ -44,5 +44,10 @@ export const routes: Routes = [
     path: 'project-map',
     loadComponent: () => import('./features/project-map/project-map').then(m => m.ProjectMapComponent),
     title: 'Mapa Semántico de Proyectos'
+  },
+  {
+    path: 'fleet',
+    loadComponent: () => import('./features/fleet/fleet-consolidation.component').then(m => m.FleetConsolidationComponent),
+    title: 'Fleet FiftyFifty - Consolidación de Ingresos'
   }
 ];
