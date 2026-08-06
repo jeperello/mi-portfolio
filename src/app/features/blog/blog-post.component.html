@@ -12,10 +12,17 @@
            appTracker="btn-back-to-blog-header"
            class="back-link">← Volver al blog</a>
         <h1>{{ data.title }}</h1>
+        @if (data.subtitle) {
+          <h2 class="blog-post-subtitle">{{ data.subtitle }}</h2>
+        }
         <div class="blog-meta">
           <span>Por <strong>{{ data.author }}</strong></span>
           <span class="separator">|</span>
           <span>{{ data.date }}</span>
+          @if (data.status) {
+            <span class="separator">|</span>
+            <span class="status-badge" [class.in-progress]="data.status === 'En progreso'">⚡ {{ data.status }}</span>
+          }
           <span class="separator">|</span>
           <a routerLink="." 
              fragment="comments" 
@@ -30,6 +37,26 @@
           }
         </div>
       </header>
+
+      @if (data.chapters && data.chapters.length > 0) {
+        <div class="chapters-index">
+          <div class="index-header">
+            <span class="index-icon">📌</span>
+            <h4>Índice de Capítulos</h4>
+          </div>
+          <ul class="chapters-list">
+            @for (chap of data.chapters; track chap.title) {
+              <li class="chapter-item" 
+                  [class.status-read]="chap.status === 'Done'"
+                  [class.status-current]="chap.status === 'Actual'"
+                  [class.status-next]="chap.status === 'Próximo'">
+                <span class="chapter-title">{{ chap.title }}</span>
+                <span class="chapter-status-pill">{{ chap.status }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      }
 
       <div class="blog-post-content" [innerHTML]="data.content"></div>
 

@@ -36,18 +36,45 @@
   h1 {
     font-size: 2.8rem;
     color: var(--text-primary);
-    margin: 0 0 1rem 0;
+    margin: 0 0 0.5rem 0;
     line-height: 1.2;
+  }
+
+  .blog-post-subtitle {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin: 0 0 1.5rem 0;
+    line-height: 1.5;
   }
 
   .blog-meta {
     color: var(--text-secondary);
     font-size: 1rem;
     margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 
     .separator {
       margin: 0 0.8rem;
       color: var(--border-color);
+    }
+
+    .status-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+
+      &.in-progress {
+        background: rgba(56, 189, 248, 0.12);
+        color: #38bdf8;
+        border-color: rgba(56, 189, 248, 0.35);
+      }
     }
 
     .comments-anchor {
@@ -74,6 +101,108 @@
       border-radius: 4px;
       font-size: 0.85rem;
       font-weight: 600;
+    }
+  }
+}
+
+/* --- Índice de Capítulos --- */
+.chapters-index {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 3rem;
+  backdrop-filter: blur(12px);
+
+  .index-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+
+    .index-icon {
+      font-size: 1.2rem;
+    }
+
+    h4 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+  }
+
+  .chapters-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+
+    .chapter-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      transition: all 0.2s ease;
+
+      .chapter-title {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      .chapter-status-pill {
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 0.2rem 0.6rem;
+        border-radius: 9999px;
+      }
+
+      // Estados: Done, Actual, Próximo
+      &.status-read {
+        border-color: rgba(16, 185, 129, 0.2);
+        .chapter-status-pill {
+          background: rgba(16, 185, 129, 0.12);
+          color: #34d399;
+          border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+      }
+
+      &.status-current {
+        background: rgba(56, 189, 248, 0.06);
+        border-color: rgba(56, 189, 248, 0.4);
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+
+        .chapter-title {
+          color: var(--accent-color);
+          font-weight: 600;
+        }
+
+        .chapter-status-pill {
+          background: rgba(56, 189, 248, 0.2);
+          color: #38bdf8;
+          border: 1px solid rgba(56, 189, 248, 0.45);
+        }
+      }
+
+      &.status-next {
+        opacity: 0.75;
+        .chapter-status-pill {
+          background: rgba(255, 255, 255, 0.04);
+          color: #94a3b8;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
     }
   }
 }

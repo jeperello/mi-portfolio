@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     // Mostramos el tooltip después de 2.5 segundos
-    /*setTimeout(() => {
+    setTimeout(() => {
       this.showBlogTooltip.set(true);
 
       // Lo ocultamos automáticamente tras 9 segundos
@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
           this.showBlogTooltip.set(false);
         }
       }, 9000);
-    }, 2500);*/
+    }, 2500);
   }
 
   hideTooltip(): void {

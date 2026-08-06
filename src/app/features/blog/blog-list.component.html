@@ -8,34 +8,72 @@
     <div class="blog-grid">
       @if (blogs(); as list) {
         @for (blog of list; track blog.id) {
-          <article class="blog-card" [class.highlight-card]="blog.id === '1'">
-            <!-- Tooltip especial para el post del chatbot -->
-            @if (blog.id === '1' && showChatbotTooltip()) {
-              <div class="chatbot-tooltip">
-                ✨ ¡Nuevo! #Acompañame a ver esta triste historia!!
-              </div>
-            }
-            
-            <div class="blog-header">
-              <span class="blog-date">{{ blog.date }}</span>
-            </div>
-            <h3>{{ blog.title }}</h3>
-            <p>{{ blog.excerpt }}</p>
-
-            <div class="blog-tags">
-              @for (tag of blog.tags; track tag) {
-                <span class="tag">{{ tag }}</span>
+          @if (blog.showCard !== false) {
+            <article class="blog-card" [class.highlight-card]="blog.id === '3'">
+              <!-- Tooltip especial para el post del chatbot -->
+              @if (blog.id === '3' && showChatbotTooltip()) {
+                <div class="chatbot-tooltip">
+                  ✨ This is the last one!
+                </div>
               }
-            </div>
+              
+              <div class="blog-header">
+                <span class="blog-date">{{ blog.date }}</span>
+                @if (blog.status) {
+                  <span class="status-badge" [class.in-progress]="blog.status === 'En progreso'">⚡ {{ blog.status }}</span>
+                }
+              </div>
+              <h3>{{ blog.title }}</h3>
+              <p>{{ blog.excerpt }}</p>
 
-            <div class="card-actions">
-              <a [routerLink]="['/blog', blog.id]" 
-                 [appTracker]="'btn-read-more-' + blog.id"
-                 class="button">
-                Leer más
-              </a>
-            </div>
-          </article>
+              @if (blog.chapters && blog.chapters.length > 0) {
+                <div class="card-chapters-index">
+                <!--  <div class="card-index-title">📌 Índice de Capítulos:</div>-->
+                  <ul class="card-chapters-list">
+                    @for (chap of blog.chapters; track chap.title) {
+                      <li class="card-chapter-item" 
+                          [class.status-read]="chap.status === 'Done'"
+                          [class.status-current]="chap.status === 'Actual'"
+                          [class.status-next]="chap.status === 'Próximo'">
+                        @if (chap.postId) {
+                          <a [routerLink]="['/blog', chap.postId]" 
+                             [appTracker]="'lnk-card-chap-' + chap.postId"
+                             class="chapter-link">
+                            <span class="chapter-text">{{ chap.title }}</span>
+                            <span class="chapter-pill">{{ chap.status }}</span>
+                          </a>
+                        } @else {
+                          <div class="chapter-link disabled">
+                            <span class="chapter-text">{{ chap.title }}</span>
+                            <span class="chapter-pill">{{ chap.status }}</span>
+                          </div>
+                        }
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+
+              <div class="blog-tags">
+                @for (tag of blog.tags; track tag) {
+                  <span class="tag">{{ tag }}</span>
+                }
+              </div>
+
+              <div class="card-actions">
+                @if (!blog.chapters) {
+                  <a [routerLink]="['/blog', blog.id]" 
+                    [appTracker]="'btn-read-more-' + blog.id"
+                    class="button">Leer más
+                  <!-- {{ blog.chapters ? 'Ver Resumen' : 'Leer más' }}
+                  Aun no pienso ponerle resumen 
+                  -->
+                </a> 
+                }
+               
+              </div>
+            </article>
+          }
         } @empty {
           <div class="no-blogs">
             <p>Aún no hay entradas en el blog. ¡Pronto habrá contenido interesante!</p>

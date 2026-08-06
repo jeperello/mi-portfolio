@@ -105,12 +105,31 @@
 
 .blog-card .blog-header {
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   .blog-date {
     font-size: 0.85rem;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 1px;
+  }
+
+  .status-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+
+    &.in-progress {
+      background: rgba(56, 189, 248, 0.12);
+      color: #38bdf8;
+      border-color: rgba(56, 189, 248, 0.35);
+    }
   }
 }
 
@@ -125,7 +144,127 @@ p {
   color: var(--text-primary);
   line-height: 1.6;
   margin-bottom: 1.5rem;
-  flex-grow: 1;
+  flex-grow: 0;
+}
+
+.card-chapters-index {
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+
+  .card-index-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .card-chapters-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    max-height: 108px;
+    overflow-y: auto;
+    padding-right: 0.35rem;
+
+    // Scrollbar ultra discreto y elegante
+    scrollbar-width: thin;
+    scrollbar-color: rgba(56, 189, 248, 0.3) rgba(255, 255, 255, 0.03);
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.3);
+      border-radius: 4px;
+
+      &:hover {
+        background: rgba(56, 189, 248, 0.6);
+      }
+    }
+
+    .card-chapter-item {
+      border-radius: 8px;
+      transition: all 0.2s ease;
+
+      .chapter-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.45rem 0.75rem;
+        border-radius: 8px;
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.25s ease;
+
+        .chapter-text {
+          font-size: 0.85rem;
+          color: var(--text-primary);
+          font-weight: 500;
+        }
+
+        .chapter-pill {
+          font-size: 0.68rem;
+          font-weight: 600;
+          padding: 0.15rem 0.5rem;
+          border-radius: 9999px;
+        }
+
+        &:hover:not(.disabled) {
+          background: rgba(56, 189, 248, 0.12);
+          border-color: rgba(56, 189, 248, 0.35);
+          transform: translateX(4px);
+        }
+
+        &.disabled {
+          cursor: default;
+          opacity: 0.65;
+        }
+      }
+
+      &.status-read .chapter-pill {
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+
+      &.status-current {
+        .chapter-link {
+          background: rgba(56, 189, 248, 0.08);
+          border-color: rgba(56, 189, 248, 0.35);
+
+          .chapter-text {
+            color: var(--accent-color);
+            font-weight: 600;
+          }
+        }
+
+        .chapter-pill {
+          background: rgba(56, 189, 248, 0.2);
+          color: #38bdf8;
+          border: 1px solid rgba(56, 189, 248, 0.45);
+        }
+      }
+
+      &.status-next .chapter-pill {
+        background: rgba(255, 255, 255, 0.05);
+        color: #94a3b8;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+    }
+  }
 }
 
 .blog-tags {

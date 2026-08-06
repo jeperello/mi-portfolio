@@ -12,6 +12,41 @@ export class BlogService {
   // El "Plan B": Estos datos aparecerán si la API está vacía o se toma un descanso.
   private backupBlogs: Blog[] = [
     {
+      id: '3',
+      title: 'Construyendo Fleet-FiftyFifty',
+      subtitle: 'Del problema real a una aplicación completa con Java, Spring Boot, DDD, Arquitectura Hexagonal y TDD.',
+      status: 'En progreso',
+      excerpt:
+        'Del problema real a una aplicación completa con Java, Spring Boot, DDD, Arquitectura Hexagonal y TDD.',
+      chapters: [
+        { title: 'Capítulo 1 — Del problema a la idea', status: 'Done', postId: '4' },
+        { title: 'Capítulo 2 — La importancia del análisis', status: 'Actual', postId: '5' },
+        { title: 'Capítulo 3 — Entendiendo el dominio (DDD)', status: 'Próximo' },
+        { title: 'Capítulo 4 — ¿Por qué elegí Arquitectura Hexagonal?', status: 'Próximo' },
+        { title: 'Capítulo 5 — Modelando los primeros casos de uso', status: 'Próximo' },
+        { title: 'Capítulo 6 — Mi primera experiencia aplicando TDD', status: 'Próximo' },
+        { title: 'Capítulo 7 — Implementando la aplicación', status: 'Próximo' },
+      ],
+      content: `
+        <div class="subtitle-container">
+          <p class="blog-subtitle">Del problema real a una aplicación completa con Java, Spring Boot, DDD, Arquitectura Hexagonal y TDD.</p>
+        </div>
+
+        <div class="section">
+          <h3>🚀 Bienvenido a la bitácora de desarrollo</h3>
+          <p>En esta serie documentaremos paso a paso el diseño y construcción de <b>Fleet-FiftyFifty</b>. No es solo un proyecto teórico, es una aplicación completa nacida de un problema real de ingeniería de software.</p>
+        </div>
+
+        <div class="highlight">
+          <h3>📌 Estado actual de la serie</h3>
+          <p>Nos encontramos trabajando en el <b>Capítulo 2 — La importancia del análisis</b>. A continuación podés navegar por cada uno de los capítulos publicados en el índice.</p>
+        </div>
+      `,
+      date: '05 de agosto de 2026',
+      author: 'Jorge Perello',
+      tags: ['Java', 'Spring Boot', 'DDD', 'Hexagonal Architecture', 'TDD', 'En progreso'],
+    },
+    {
       id: '1',
       title: 'Chatbot: El Detrás de Escena (¿Adiós a Chatie en Node.js?)',
       excerpt:
@@ -192,6 +227,51 @@ export class BlogService {
       author: 'Jorge Perello',
       tags: ['Spring Boot', 'WebFlux', 'Virtual Threads', 'Java 21'],
     },
+    
+    {
+      id: '4',
+      title: 'Capítulo 1 — Del problema a la idea',
+      subtitle: 'Caso de Estudio Fleet-FiftyFifty',
+      status: 'Completado',
+      showCard: false,
+      excerpt:
+        'Todo gran proyecto nace de una necesidad insatisfecha. En logística de flota, repartir la carga al 50/50 requiere algoritmos robustos y una visión clara.',
+      content: `
+        <div class="section">
+          <h3>💡 El origen del problema</h3>
+          <p>En la gestión logística diaria, distribuir equitativamente los envíos y equilibrar la flota de vehículos es un problema clásico pero complejo. Sin una arquitectura clara, los costos de operación se disparan y el mantenimiento del software se vuelve una pesadilla.</p>
+        </div>
+        <div class="highlight">
+          <h3>🎯 La hipótesis de solución</h3>
+          <p>Diseñar <b>Fleet-FiftyFifty</b> desde cero aplicando Domain-Driven Design (DDD) para aislar la lógica de balanceo y Arquitectura Hexagonal para hacer que la infraestructura (bases de datos, APIs de mensajería, frameworks) sea totalmente intercambiable.</p>
+        </div>
+      `,
+      date: '01 de agosto de 2026',
+      author: 'Jorge Perello',
+      tags: ['Fleet-FiftyFifty', 'Capítulo 1', 'Java', 'Arquitectura'],
+    },
+    {
+      id: '5',
+      title: 'Capítulo 2 — La importancia del análisis',
+      subtitle: 'Caso de Estudio Fleet-FiftyFifty',
+      status: 'En progreso',
+      showCard: false,
+      excerpt:
+        'Antes de tirar código Java, analizamos las reglas de negocio y los límites de nuestro dominio para evitar refactorizaciones catastróficas.',
+      content: `
+        <div class="section">
+          <h3>📐 El análisis del Bounded Context</h3>
+          <p>En este segundo entrega analizamos los eventos del dominio, los agregados principales y las reglas de consistencia de la flota. Detenerse a modelar el dominio antes de elegir frameworks es lo que separa un prototipo de un sistema listo para producción.</p>
+        </div>
+        <div class="highlight">
+          <h3>⚙️ Avances del Sprint actual</h3>
+          <p>Estamos refinando los casos de uso principales e identificando los puertos de entrada/salida para la Arquitectura Hexagonal.</p>
+        </div>
+      `,
+      date: '05 de agosto de 2026',
+      author: 'Jorge Perello',
+      tags: ['Fleet-FiftyFifty', 'Capítulo 2', 'DDD', 'Spring Boot'],
+    },
   ];
 
   constructor(private http: HttpClient) {}
@@ -201,29 +281,12 @@ export class BlogService {
    */
   getBlogs(): Observable<Blog[]> {
     return of(this.backupBlogs);
-    /* return this.http.get<any[]>(`${this.baseUrl}/posts`).pipe(
-      map(posts => {
-        if (!posts || posts.length === 0) {
-          console.warn('⚠️ La API no devolvió posts. Usando el escuadrón de backup...');
-          return this.backupBlogs;
-        }
-        return posts.map(p => this.mapToBlog(p));
-      }),
-      catchError(err => {
-        console.error('🔥 Error al conectar con la API de posts:', err);
-        return of(this.backupBlogs);
-      })
-    );*/
   }
 
   /**
    * Busca un post por ID. Intenta en la API y si no, en el backup.
    */
   getBlogById(id: string): Observable<Blog | undefined> {
-    /*return this.http.get<any>(`${this.baseUrl}/posts/${id}`).pipe(
-      map(p => this.mapToBlog(p)),
-      catchError(() => of(this.backupBlogs.find(b => b.id === id)))
-    );*/
     return of(this.backupBlogs.find((b) => b.id === id));
   }
 
@@ -268,11 +331,15 @@ export class BlogService {
     return {
       id: apiPost.id.toString(),
       title: apiPost.title,
+      subtitle: apiPost.subtitle,
+      status: apiPost.status,
+      showCard: apiPost.showCard !== undefined ? apiPost.showCard : true,
       excerpt: apiPost.excerpt || apiPost.summary,
       content: apiPost.content,
       date: this.formatDate(apiPost.createdAt),
       author: apiPost.author,
       tags: apiPost.tags || [],
+      chapters: apiPost.chapters || [],
     };
   }
 

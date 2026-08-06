@@ -27,7 +27,7 @@ export class ProjectService {
       isNew: true,
       demoUrl: 'OPEN_DASHBOARD'
     },
-    {
+ /*   {
       name: 'API REST FULL',
       description: 'Este microservicio gestiona el motor de contenidos de mi portfolio personal (Blog & Comments). Está diseñado bajo principios de Clean Architecture, alta testabilidad y despliegue automatizado.',
       repositoryUrl: 'https://github.com/jeperello/comment-service',
@@ -42,7 +42,7 @@ export class ProjectService {
       ],
       //isNew: true,
       demoUrl: '/blog'
-    },
+    },*/
     {
       name: 'API Reactiva con Spring WebFlux',
       description: 'Una API REST reactiva construida con Java 21 y Spring Boot 3, utilizando programación funcional y comunicación no bloqueante para un alto rendimiento.',
@@ -91,7 +91,7 @@ export class ProjectService {
       ],
       //demoUrl: ''
       demoUrl: 'smart-batch'
-    },
+    },/*
     {
       name: 'Fleet-FiftyFifty (Consolidación de Ingresos)',
       description: 'Módulo de liquidación semanal 50/50 de ingresos de flota de transporte (Uber, DiDi) desarrollado con Angular 21, Signals y arquitectura SOLID.',
@@ -106,7 +106,7 @@ export class ProjectService {
       ],
       isNew: true,
       demoUrl: '/fleet'
-    }
+    }*/
   ];
 
   constructor() { }
