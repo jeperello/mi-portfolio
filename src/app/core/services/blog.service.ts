@@ -230,20 +230,55 @@ export class BlogService {
     
     {
       id: '4',
-      title: 'Capítulo 1 — Del problema a la idea',
-      subtitle: 'Caso de Estudio Fleet-FiftyFifty',
+      title: '🚀 Construyendo Fleet-FiftyFifty desde cero',
+      subtitle: 'Capítulo 1 — Del problema a la idea',
       status: 'Completado',
       showCard: false,
       excerpt:
         'Todo gran proyecto nace de una necesidad insatisfecha. En logística de flota, repartir la carga al 50/50 requiere algoritmos robustos y una visión clara.',
       content: `
         <div class="section">
-          <h3>💡 El origen del problema</h3>
-          <p>En la gestión logística diaria, distribuir equitativamente los envíos y equilibrar la flota de vehículos es un problema clásico pero complejo. Sin una arquitectura clara, los costos de operación se disparan y el mantenimiento del software se vuelve una pesadilla.</p>
+          <h3>🚀 Bienvenido a la bitácora de este desarrollo</h3>
+          <div class="highlight">
+            <p class="lead"><b>Los mejores proyectos no nacen porque queremos probar una tecnología nueva. Nacen porque alguien tiene un problema real, que vale la pena resolver.</b></p>
+          </div>
+    <h2 style="margin: 0px;important">¿Cómo nació la idea?</h2>
+    <p>Un amigo me comentó cómo organizaba las cuentas de una sociedad de Uber/Didi.<br/>
+    El acuerdo era muy simple:</p>
+    <ul class="agreement-list">
+      <li>🚕 Uno de los socios aporta el vehículo.</li>
+      <li>👨‍✈️ El otro aporta su tiempo y trabajo como conductor.</li>
+    </ul>
+    <p>Al finalizar cada semana debían sumar ingresos, descontar gastos y calcular cuánto dinero le correspondía a cada uno. Después de hacer las cuentas, determinaban quién debía transferir dinero al otro para que ambos terminaran exactamente con el reparto acordado.</p>
+
+    <p>La primera solución que le propuse fue bastante sencilla: una hoja de cálculo compartida.</p>
+    <p>La idea funcionó. Automatizaba gran parte de los cálculos y evitaba hacer cuentas manualmente todas las semanas.</p>
+
+    <p>Pero hubo una pregunta que no dejó de dar vueltas en mi cabeza:</p>
+    <blockquote><b>¿Y si, en lugar de mejorar una planilla, construyo una aplicación diseñada específicamente para resolver este problema?</b></blockquote>
+
+    <p>Así nació <strong>Fleet-FiftyFifty</strong>.</p>
+    <p>No porque haga falta otra aplicación más, sino porque creo que los mejores proyectos personales son aquellos que intentan resolver un problema real.</p>
+
+    <figure class="image-placeholder">
+      <figcaption>📷 <strong>Imagen 1:</strong> </figcaption>
+    </figure>
+
+    <h2>Mucho más que un proyecto personal</h2>
+    <p>Este proyecto también representa un desafío personal. Quiero aprovecharlo para incorporar prácticas que hace tiempo estudio y que ahora quiero aplicar de forma completa en un proyecto real.</p>
+    
+    <p>Entre ellas:</p>
+    <ul>
+      <li>Arquitectura Hexagonal.</li>
+      <li>Principios SOLID.</li>
+      <li>Desarrollo guiado por pruebas (TDD).</li>
+    </ul>
+
+    <p>No quiero aprender estos conceptos leyendo documentación o viendo ejemplos aislados. Quiero descubrir sus ventajas (y también sus dificultades) mientras construyo una aplicación desde cero.</p>
+
         </div>
         <div class="highlight">
-          <h3>🎯 La hipótesis de solución</h3>
-          <p>Diseñar <b>Fleet-FiftyFifty</b> desde cero aplicando Domain-Driven Design (DDD) para aislar la lógica de balanceo y Arquitectura Hexagonal para hacer que la infraestructura (bases de datos, APIs de mensajería, frameworks) sea totalmente intercambiable.</p>
+         <p>La idea es documentar todo el recorrido: las decisiones, los errores, los cambios de rumbo y todo lo que vaya aprendiendo durante el proceso.</p>
         </div>
       `,
       date: '01 de agosto de 2026',
