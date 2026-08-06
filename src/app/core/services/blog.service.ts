@@ -295,12 +295,89 @@ export class BlogService {
         'Antes de tirar código Java, analizamos las reglas de negocio y los límites de nuestro dominio para evitar refactorizaciones catastróficas.',
       content: `
         <div class="section">
-          <h3>📐 El análisis del Bounded Context</h3>
-          <p>En este segundo entrega analizamos los eventos del dominio, los agregados principales y las reglas de consistencia de la flota. Detenerse a modelar el dominio antes de elegir frameworks es lo que separa un prototipo de un sistema listo para producción.</p>
-        </div>
-        <div class="highlight">
-          <h3>⚙️ Avances del Sprint actual</h3>
-          <p>Estamos refinando los casos de uso principales e identificando los puertos de entrada/salida para la Arquitectura Hexagonal.</p>
+         <h2>La etapa que más subestimé como desarrollador</h2>
+    <p>Si hay algo que cambió mucho mi forma de trabajar en los últimos años fue la importancia que hoy le doy al análisis.</p>
+
+    <p>Durante mucho tiempo repetí el mismo patrón:</p>
+    <ol>
+      <li>Tenía una idea.</li>
+      <li>Abría el IDE.</li>
+      <li>Creaba un proyecto Spring Boot.</li>
+      <li>Generaba los primeros endpoints.</li>
+      <li>Y sentía que estaba avanzando.</li>
+    </ol>
+
+    <p>El problema era que, en realidad, todavía no entendía completamente qué estaba construyendo. Eso terminaba provocando exactamente lo mismo una y otra vez:</p>
+    <ul>
+      <li>Reescribir clases.</li>
+      <li>Cambiar modelos completos.</li>
+      <li>Eliminar código recién escrito.</li>
+      <li>Modificar pantallas.</li>
+      <li>Volver a empezar.</li>
+    </ul>
+
+    <p>No porque programara mal, sino porque estaba haciendo el análisis mientras escribía el código.</p>
+
+    <p>Hoy intento recorrer el camino inverso: primero entender el problema, después diseñar la solución, y recién entonces empezar a programar.</p>
+
+    <h2>¿Qué significa analizar?</h2>
+    <p>Para mí, analizar un proyecto implica responder preguntas como estas:</p>
+    <ul>
+      <li>¿Cuál es el verdadero problema que quiero resolver?</li>
+      <li>¿Qué funcionalidades tendrá la aplicación?</li>
+      <li>¿Qué funcionalidades todavía no tendrá?</li>
+      <li>¿Quiénes serán los usuarios?</li>
+      <li>¿Qué información necesita cada uno?</li>
+      <li>¿Cuáles son las reglas del negocio?</li>
+    </ul>
+
+    <p>Responder estas preguntas lleva tiempo, pero cada minuto invertido aquí suele ahorrar muchas horas de desarrollo más adelante.</p>
+
+    <h2>La IA acelera el desarrollo, pero no reemplaza el análisis</h2>
+    <p>Hoy contamos con herramientas de Inteligencia Artificial capaces de generar código en cuestión de segundos. Eso es fantástico, pero también puede llevarnos a empezar demasiado rápido.</p>
+
+    <p>La IA puede escribir una clase, puede generar un controlador, puede crear una consulta... Lo que no puede hacer por nosotros es decidir cuál es el problema correcto que queremos resolver.</p>
+
+    <p>Esa responsabilidad sigue siendo del desarrollador. Y, en mi opinión, es una de las habilidades más valiosas que podemos desarrollar.</p>
+
+    <h2>Lo que ya hice antes de escribir código</h2>
+    <p>Aunque todavía no implementé la lógica de negocio, el proyecto ya avanzó bastante. Durante esta etapa me dediqué a:</p>
+    <ul>
+      <li>Escribir las primeras ideas.</li>
+      <li>Definir el alcance del producto.</li>
+      <li>Identificar los distintos usuarios.</li>
+      <li>Bosquejar las primeras pantallas.</li>
+      <li>Pensar las entidades principales del dominio.</li>
+      <li>Empezar a descubrir las reglas del negocio.</li>
+    </ul>
+
+    <p>Todo este trabajo servirá como base para las siguientes etapas.</p>
+
+    <figure class="image-placeholder">
+      <figcaption>📷 <strong>Imagen 2:</strong> </figcaption>
+    </figure>
+
+    <h2>Un pequeño spoiler</h2>
+    <p>Mientras avanzaba con el análisis descubrí algo que antes pasaba completamente por alto:</p>
+    <p><strong>La arquitectura no comienza cuando elegimos Spring Boot, ni cuando decidimos usar PostgreSQL o MongoDB, y mucho menos cuando creamos el primer controlador REST.</strong></p>
+    
+    <p><em>La arquitectura empieza entendiendo el dominio del problema.</em></p>
+
+    <p>En los próximos capítulos voy a profundizar en conceptos como Domain-Driven Design (DDD), Lenguaje Ubicuo, Modelado del Dominio y explicar por qué decidí utilizar Arquitectura Hexagonal para este proyecto.</p>
+
+    <p>Hoy ya no los veo como conceptos independientes. Empiezo a entender que todos forman parte de una misma idea: proteger las reglas del negocio y construir software que sea fácil de mantener y evolucionar.</p>
+
+    <h2>¿Qué sigue?</h2>
+    <p>El siguiente paso será comenzar a modelar el dominio de Fleet-FiftyFifty. Antes de pensar en frameworks, bases de datos o APIs REST, quiero asegurarme de comprender correctamente el negocio.</p>
+
+    <p>Porque estoy convencido de que una buena aplicación no se construye empezando por la infraestructura. Se construye entendiendo primero el problema que intenta resolver.</p>
+
+    <hr class="section-divider" />
+
+    <p>Gracias por acompañarme en esta serie. Mi objetivo no es mostrar únicamente el resultado final, sino compartir todo el recorrido, incluyendo los errores, los cambios de opinión y los aprendizajes que aparezcan en el camino.</p>
+
+    <p>Si tenés alguna idea o funcionalidad que te gustaría ver en <strong>Fleet-FiftyFifty</strong>, será más que bienvenida. Tal vez termine formando parte del proyecto.</p>
+  </div>
         </div>
       `,
       date: '05 de agosto de 2026',
