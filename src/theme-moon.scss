@@ -111,33 +111,116 @@
      ------------------------------------------------------------- */
   
   app-project-showcase {
-    // Redefining custom host variables inside the project component
+    /* Redefinir variables de host para modo claro dentro del componente de proyectos */
     --primary-blue: #0284c7;
     --primary-blue-hover: #0369a1;
     --text-main: #0f172a;
     --text-muted: #475569;
     --card-border: rgba(2, 132, 199, 0.15);
-    --badge-bg: #e0f2fe; // Light blue/sky pill background
-    --badge-text: #0369a1; // Contrast blue text
+    --badge-bg: #e0f2fe; /* Light blue/sky pill background */
+    --badge-text: #0369a1; /* Contrast blue text */
   }
 
-  // Override the hardcoded project cards gradient with a beautiful celestial sky blue glass layout
+  /* Contenedor principal del showcase en modo claro */
+  .project-showcase {
+    background-color: #f8fafc !important; /* Fondo gris muy claro y limpio */
+    color: #0f172a !important;
+
+    /* Título principal y subtítulo en modo claro */
+    .header-container {
+      .title-group {
+        h2 {
+          /* Preferencia por un azul marino muy oscuro, con opción a degradado que parte de ese tono */
+          background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%) !important;
+          background-clip: text !important;
+          -webkit-background-clip: text !important;
+          color: transparent !important;
+          -webkit-text-fill-color: transparent !important;
+          filter: none !important; /* Evitar el drop-shadow del tema oscuro */
+          text-shadow: none !important;
+        }
+
+        .subtitle {
+          color: #475569 !important; /* Gris neutro oscuro para buen contraste WCAG */
+        }
+      }
+    }
+
+    /* Etiquetas de tecnologías (badges) en modo claro: fondo tenue y texto oscuro */
+    .technologies-list {
+      li {
+        background: #f1f5f9 !important; /* Gris muy claro */
+        color: #334155 !important; /* Gris oscuro / azul corporativo */
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        border: none !important; /* Eliminar borde fuerte */
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        transition: background 0.18s ease, color 0.18s ease;
+      }
+
+      li:hover {
+        background: #e0f2fe !important; /* Variante azulina muy tenue al pasar */
+        color: #334155 !important;
+      }
+    }
+
+    /* Botones de tarjetas en modo claro */
+    .button {
+      &.primary {
+        background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important; /* Azul llamativo */
+        color: #ffffff !important;
+        border: none !important;
+        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.12) !important;
+        transition: transform 0.18s ease, box-shadow 0.18s ease !important;
+      }
+
+      /* Botón secundario: transparente o solo texto con borde fino */
+      &:not(.primary) {
+        background: transparent !important;
+        color: #0f172a !important; /* Texto oscuro */
+        border: 1px solid rgba(51, 65, 85, 0.08) !important; /* Borde fino y sutil */
+        box-shadow: none !important;
+        padding: 0.6rem 1rem !important;
+        transition: background 0.16s ease, color 0.16s ease, transform 0.12s ease !important;
+      }
+
+      &:hover {
+        transform: translateY(-2px) !important;
+      }
+
+      &:not(.primary):hover {
+        background: rgba(224, 242, 254, 0.6) !important; /* sutil fondo azul claro al pasar */
+        color: #0f172a !important;
+        border-color: rgba(51, 65, 85, 0.12) !important;
+      }
+    }
+  }
+
+  /* Tarjetas de proyectos: fondo blanco puro, esquinas redondeadas y sombra sutil */
   .project-card {
-    background: linear-gradient(145deg, rgba(224, 242, 254, 0.8) 0%, rgba(186, 230, 253, 0.8) 100%) !important;
-    border-color: rgba(2, 132, 199, 0.2) !important;
-    box-shadow: 0 15px 35px -5px rgba(2, 132, 199, 0.1) !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(2, 6, 23, 0.04) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 
     h3 {
-      color: #0369a1 !important;
+      color: #0f172a !important;
     }
 
     p {
-      color: #334155 !important;
+      color: #475569 !important;
     }
 
     &:hover {
-      border-color: #0284c7 !important;
-      box-shadow: 0 25px 50px -12px rgba(2, 132, 199, 0.15), 0 12px 24px -15px rgba(2, 132, 199, 0.2) !important;
+      transform: translateY(-4px) !important;
+      box-shadow: 0 10px 28px rgba(16, 24, 40, 0.08) !important;
+      border-color: rgba(2, 6, 23, 0.06) !important;
     }
   }
 
