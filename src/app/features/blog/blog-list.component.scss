@@ -27,6 +27,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
+  align-items: stretch;
+  grid-auto-rows: minmax(0, 1fr);
   //margin-top: 3rem;
 }
 
@@ -38,6 +40,8 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.3s ease, background 0.3s ease;
   border: 1px solid var(--border-color);
   position: relative;
@@ -170,7 +174,7 @@ p {
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
-    max-height: 108px;
+    max-height: 216px;
     overflow-y: auto;
     padding-right: 0.35rem;
 
@@ -271,7 +275,7 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 
   .tag {
     background: rgba(56, 189, 248, 0.12);
@@ -283,9 +287,19 @@ p {
   }
 }
 
+.blog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
 .card-actions {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 0;
 
   .button {
     background: var(--accent-color);

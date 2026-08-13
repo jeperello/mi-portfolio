@@ -20,9 +20,9 @@ export class BlogService {
         'Del problema real a una aplicación completa con Java, Spring Boot, DDD, Arquitectura Hexagonal y TDD.',
       chapters: [
         { title: 'Capítulo 1 — Del problema a la idea', status: 'Done', postId: '4' },
-        { title: 'Capítulo 2 — La importancia del análisis', status: 'Actual', postId: '5' },
-        { title: 'Capítulo 3 — Entendiendo el dominio (DDD)', status: 'Próximo' },
-        { title: 'Capítulo 4 — ¿Por qué elegí Arquitectura Hexagonal?', status: 'Próximo' },
+        { title: 'Capítulo 2 — La importancia del análisis', status: 'Done', postId: '5' },
+        { title: 'Capítulo 3 — Entendiendo el dominio (DDD)', status: 'Done', postId: '6' },
+        { title: 'Capítulo 4 — ¿Por qué elegí Arquitectura Hexagonal?', status: 'Actual', postId: '7' },
         { title: 'Capítulo 5 — Modelando los primeros casos de uso', status: 'Próximo' },
         { title: 'Capítulo 6 — Mi primera experiencia aplicando TDD', status: 'Próximo' },
         { title: 'Capítulo 7 — Implementando la aplicación', status: 'Próximo' },
@@ -39,7 +39,7 @@ export class BlogService {
 
         <div class="highlight">
           <h3>📌 Estado actual de la serie</h3>
-          <p>Nos encontramos trabajando en el <b>Capítulo 2 — La importancia del análisis</b>. A continuación podés navegar por cada uno de los capítulos publicados en el índice.</p>
+          <p>Nos encontramos trabajando en el <b>Capítulo 4 — ¿Por qué elegí Arquitectura Hexagonal?</b>. A continuación podés navegar por cada uno de los capítulos publicados en el índice.</p>
         </div>
       `,
       date: '05 de agosto de 2026',
@@ -383,7 +383,102 @@ export class BlogService {
       date: '05 de agosto de 2026',
       author: 'Jorge Perello',
       tags: ['Fleet-FiftyFifty', 'Capítulo 2', 'DDD', 'Spring Boot'],
-    },
+    }
+    ,
+    {
+      id: '6',
+      title: 'Capítulo 3',
+      subtitle: 'Enfoque DDD.',
+      status: 'En progreso',
+      showCard: false,
+      excerpt:
+        'Etapa de Análisis: Enfoque DDD.',
+      content: `
+   <article class="blog-post">
+
+  <div class="post-content">
+    <p class="lead">Antes de pensar en Spring Boot, crear endpoints o diseñar tablas en una base de datos, hay un paso clave y fundamental: definir el <strong>Lenguaje Ubicuo</strong>.</p>
+
+    <p>Y te preguntarás, al igual que yo en su momento: <em>¿De qué estás hablando Jorge? ¿Qué es eso?</em></p>
+    <p>Te lo explico rápidamente 👇</p>
+
+    <p><strong>DDD (Domain-Driven Design)</strong> significa <strong>Diseño Guiado por el Dominio</strong>. Por lo tanto, el código debe reflejar explícitamente cómo funciona el negocio, utilizando exactamente el mismo vocabulario que hablaría el dueño de una empresa o un usuario final.</p>
+
+    <h2>Primera etapa de DDD: Capturar el dominio</h2>
+    <p><strong>¿Cómo se logra?</strong> Hablando directamente con los expertos del dominio, quienes conocen de primera mano el negocio y para quienes estaríamos resolviendo sus problemas ("El Cliente").</p>
+
+    <p>En mi caso, hablando con los 2 futuros usuarios de mi app:</p>
+    <ul class="user-roles-list">
+      <li>🚗 <strong>Conductor</strong> &rarr; <code>DRIVER</code></li>
+      <li>🚕 <strong>Propietario</strong> &rarr; <code>OWNER</code></li>
+    </ul>
+
+    <p>Entender sus problemas desde su punto de vista es cómo se construye el <strong>Lenguaje Ubicuo</strong> para mi app.</p>
+
+    <h2>Descubriendo el dominio del negocio</h2>
+    <p>Al analizar cómo funciona el negocio de la calle, descubrimos conceptos clave que se convertirán en el corazón de nuestro código:</p>
+
+    <dl class="domain-concepts">
+      <dt>👥 <code>FleetRole</code> (<code>OWNER</code> vs <code>DRIVER</code>)</dt>
+      <dd>No son un simple "Usuario 1" y "Usuario 2". Son roles con responsabilidades financieras distintas.</dd>
+
+      <dt>💳 <code>PaymentMethod</code> (<code>CASH</code> vs <code>BANK_TRANSFER</code>)</dt>
+      <dd>El medio de pago no es un dato menor. En el transporte, quien cobra en efectivo retiene liquidez de la flota y, por lo tanto, genera una deuda hacia su socio.</dd>
+
+      <dt>⚖️ <code>ProfitSplit</code></dt>
+      <dd>El negocio nos demostró que harcodear un <code>/ 2</code> es un error. Un arreglo puede pactarse 50/50, pero también 60/40 según quién pague el seguro o el mantenimiento del auto.</dd>
+
+      <dt>📊 <code>WeeklyConsolidation</code></dt>
+      <dd>La entidad central donde convergen los ingresos para calcular el <strong>Debtor</strong> (Deudor) y el <strong>Creditor</strong> (Acreedor).</dd>
+    </dl>
+
+    <h2>Segunda etapa de DDD: Embeber la terminología del dominio en el código</h2>
+    <p><strong>¿El resultado?</strong> Nuestro código se leerá casi como un contrato: si lees un test unitario, entenderías cómo opera la flota sin necesidad de leer documentación externa ni lidiar con ruido de frameworks.</p>
+
+    <h2>¿Qué lograríamos?</h2>
+    <p>La tecnología y las bases de datos podrían cambiar; las reglas del negocio son las que hacen que un sistema sea verdaderamente mantenible y escalable. Así protegeríamos nuestra app del paso del tiempo. Todo podría cambiar, excepto el <strong>negocio</strong> (el <em>core</em> del código).</p>
+
+    <p>Esto es fundamental para la <strong>Arquitectura Hexagonal</strong> elegida para este proyecto —concepto que ampliaremos luego— y por eso me he tomado tanto tiempo en el análisis.</p>
+  </div>
+</article>
+      `,
+      date: '05 de agosto de 2026',
+      author: 'Jorge Perello',
+      tags: ['Fleet-FiftyFifty', 'Capítulo 3', 'DDD', 'Analisis', 'Lenguaje Ubicuo'],
+    }
+    ,
+    {
+      id: '7',
+      title: 'Capítulo 4 — ¿Por qué elegí Arquitectura Hexagonal?',
+      subtitle: 'Implementando la arquitectura Hexagonal.',
+      status: 'En progreso',
+      showCard: false,
+      excerpt:
+        'Etapa de desarrollo.',
+      content: `
+   <article class="blog-post">
+
+  <div class="post-content">
+    <p class="lead">Después de un análisis profundo del dominio y de definir el Lenguaje Ubicuo, es hora de comenzar a implementar la arquitectura Hexagonal en nuestra aplicación.</p>
+
+    <h2>Etapa de desarrollo</h2>
+    <p>En esta etapa, vamos a desarrollar la arquitectura Hexagonal con los componentes que hemos identificado en el análisis.</p>
+
+    <h2>Arquitectura Hexagonal</h2>
+    <p>El <strong>Arquitectura Hexagonal</strong> se compone de 5 capas:</p>
+
+    <ol>
+      <li><strong>Core</strong> (el <em>core</em> del código)</li>
+      <li><strong>Ports</strong> (puertos de entrada y salida)</li>
+      <li><strong>Adapters</strong> (adaptadores de puertos)</li>
+      <li><strong>Use Cases</strong> (casos de uso)</li>
+      <li><strong>Infrastructure</strong> (infraestructura)</li>
+    </ol>
+      `,
+      date: '13 de agosto de 2026',
+      author: 'Jorge Perello',
+      tags: ['Fleet-FiftyFifty', 'Capítulo 4', 'Hexa', 'Desa', 'Arquitectura Hexagonal'],
+    }
   ];
 
   constructor(private http: HttpClient) {}

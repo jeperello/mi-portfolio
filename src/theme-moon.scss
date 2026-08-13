@@ -106,6 +106,19 @@
     }
   }
 
+  .chat-fab {
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12) !important;
+    background: #0284c7 !important;
+    color: #ffffff !important;
+    animation: none !important;
+
+    &:hover {
+      background: #0369a1 !important;
+      transform: scale(1.05) !important;
+      box-shadow: 0 14px 24px rgba(15, 23, 42, 0.16) !important;
+    }
+  }
+
   /* -------------------------------------------------------------
      Specific component overrides for ProjectShowcase (Proyectos)
      ------------------------------------------------------------- */
@@ -268,7 +281,7 @@
   // Blog page overrides
   app-blog-list {
     --bg-color: transparent !important;
-    --card-bg: rgba(255, 255, 255, 0.7) !important;
+    --card-bg: #ffffff !important;
     --text-primary: #0f172a !important;
     --text-secondary: #475569 !important;
     --accent-color: #0284c7 !important;
@@ -278,7 +291,7 @@
 
   app-blog-post {
     --bg-color: transparent !important;
-    --card-bg: rgba(255, 255, 255, 0.75) !important;
+    --card-bg: rgba(255, 255, 255, 0.85) !important;
     --text-primary: #0f172a !important;
     --text-secondary: #475569 !important;
     --accent-color: #0284c7 !important;
@@ -292,42 +305,170 @@
   }
 
   .blog-card {
-    background: rgba(255, 255, 255, 0.7) !important;
-    border-color: rgba(2, 132, 199, 0.15) !important;
+    background: #ffffff !important;
+    border-color: rgba(2, 132, 199, 0.18) !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06) !important;
     color: #0f172a !important;
+
+    &.highlight-card {
+      border-color: #0284c7 !important;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.15) !important;
+    }
+
+    &:hover {
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1) !important;
+      border-color: #0284c7 !important;
+    }
+
+    h3 {
+      color: #0284c7 !important;
+    }
+
+    p {
+      color: #475569 !important;
+    }
+
+    .blog-header {
+      .blog-date {
+        color: #64748b !important;
+      }
+
+      .status-badge {
+        background: #fef3c7 !important;
+        color: #b45309 !important;
+        border-color: #fde68a !important;
+
+        &.in-progress {
+          background: #e0f2fe !important;
+          color: #0284c7 !important;
+          border-color: #93c5fd !important;
+        }
+      }
+    }
   }
 
-  .blog-card .blog-date,
-  .blog-card p,
-  .blog-card .blog-tags .tag,
-  .blog-post-container,
-  .blog-post-content,
-  .blog-post-header .blog-meta,
-  .comments-section h3,
-  .comments-section .comment-content,
-  .add-comment-container,
-  .not-found,
-  .loading-placeholder {
-    color: #0f172a !important;
+  /* Sección de índice de capítulos en tarjetas del blog (modo claro) */
+  .card-chapters-index {
+    background: #f8fafc !important; /* Fondo suave y limpio en lugar de azul oscuro */
+    border: 1px solid rgba(2, 132, 199, 0.2) !important;
+
+    .card-index-title {
+      color: #475569 !important;
+    }
+
+    .card-chapters-list {
+      scrollbar-color: rgba(2, 132, 199, 0.4) rgba(226, 232, 240, 0.5) !important;
+
+      &::-webkit-scrollbar-track {
+        background: rgba(226, 232, 240, 0.5) !important;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(2, 132, 199, 0.4) !important;
+
+        &:hover {
+          background: #0284c7 !important;
+        }
+      }
+
+      .card-chapter-item {
+        .chapter-link {
+          background: #ffffff !important;
+          border: 1px solid rgba(203, 213, 225, 0.8) !important;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+
+          .chapter-text {
+            color: #0f172a !important; /* Texto bien contrastado y legible */
+            font-weight: 500 !important;
+          }
+
+          &:hover:not(.disabled) {
+            background: #e0f2fe !important;
+            border-color: #0284c7 !important;
+            
+            .chapter-text {
+              color: #0369a1 !important;
+            }
+          }
+
+          &.disabled {
+            background: #f1f5f9 !important;
+            border-color: #e2e8f0 !important;
+
+            .chapter-text {
+              color: #64748b !important;
+            }
+          }
+        }
+
+        /* Pills de estado de cada capítulo */
+        &.status-read .chapter-pill {
+          background: #d1fae5 !important;
+          color: #047857 !important;
+          border: 1px solid #a7f3d0 !important;
+        }
+
+        &.status-current {
+          .chapter-link {
+            background: #e0f2fe !important;
+            border-color: #0284c7 !important;
+
+            .chapter-text {
+              color: #0284c7 !important;
+              font-weight: 600 !important;
+            }
+          }
+
+          .chapter-pill {
+            background: #0284c7 !important;
+            color: #ffffff !important;
+            border: 1px solid #0369a1 !important;
+          }
+        }
+
+        &.status-next .chapter-pill {
+          background: #e2e8f0 !important;
+          color: #475569 !important;
+          border: 1px solid #cbd5e1 !important;
+        }
+      }
+    }
+  }
+
+  .blog-tags .tag {
+    background: #e0f2fe !important;
+    color: #0369a1 !important;
+    border: 1px solid rgba(2, 132, 199, 0.25) !important;
+    font-weight: 500 !important;
   }
 
   .blog-post-container,
   .add-comment-container,
   .comment-card,
   .no-comments {
-    background: rgba(255, 255, 255, 0.75) !important;
+    background: rgba(255, 255, 255, 0.85) !important;
     border-color: rgba(2, 132, 199, 0.15) !important;
+    color: #0f172a !important;
+  }
+
+  .blog-post-content,
+  .blog-post-header .blog-meta,
+  .comments-section h3,
+  .comments-section .comment-content,
+  .not-found,
+  .loading-placeholder {
+    color: #0f172a !important;
   }
 
   .blog-post-header .back-link,
   .comments-anchor,
-  .blog-tags .tag,
   .card-actions .button,
   .blog-post-footer .button,
   .submit-button {
-    background: #0284c7 !important;
+    background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
     color: #ffffff !important;
-    border-color: #0284c7 !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2) !important;
   }
 
   .blog-post-header .back-link:hover,
@@ -335,7 +476,7 @@
   .card-actions .button:hover,
   .blog-post-footer .button:hover,
   .submit-button:hover:not(:disabled) {
-    background: #0369a1 !important;
+    background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%) !important;
   }
 
   /* -------------------------------------------------------------

@@ -9,7 +9,7 @@ export class ThemeService implements IThemeService {
   private readonly platformId = inject(PLATFORM_ID);
   
   // Signal to hold theme state (SRP: encapsulation of state)
-  private readonly themeSignal = signal<Theme>('dark');
+  private readonly themeSignal = signal<Theme>('light-moon');
   
   // Read-only computed signals (OCP: exposed for external components without direct modification rights)
   public readonly currentTheme = computed(() => this.themeSignal());

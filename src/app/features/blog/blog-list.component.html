@@ -54,23 +54,24 @@
                 </div>
               }
 
-              <div class="blog-tags">
-                @for (tag of blog.tags; track tag) {
-                  <span class="tag">{{ tag }}</span>
-                }
-              </div>
+              <div class="blog-footer">
+                <div class="blog-tags">
+                  @for (tag of blog.tags; track tag) {
+                    <span class="tag">{{ tag }}</span>
+                  }
+                </div>
 
-              <div class="card-actions">
-                @if (!blog.chapters) {
-                  <a [routerLink]="['/blog', blog.id]" 
-                    [appTracker]="'btn-read-more-' + blog.id"
-                    class="button">Leer más
-                  <!-- {{ blog.chapters ? 'Ver Resumen' : 'Leer más' }}
-                  Aun no pienso ponerle resumen 
-                  -->
-                </a> 
-                }
-               
+                <div class="card-actions">
+                  @if (!blog.chapters) {
+                    <a [routerLink]="['/blog', blog.id]" 
+                      [appTracker]="'btn-read-more-' + blog.id"
+                      class="button">Leer más
+                    <!-- {{ blog.chapters ? 'Ver Resumen' : 'Leer más' }}
+                    Aun no pienso ponerle resumen 
+                    -->
+                  </a> 
+                  }
+                </div>
               </div>
             </article>
           }
