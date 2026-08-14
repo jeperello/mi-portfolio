@@ -25,6 +25,7 @@ export interface Blog {
   showCard?: boolean;
   excerpt: string;
   content: string;
+  contentUrl?: string;
   date: string;
   author: string;
   tags: string[];

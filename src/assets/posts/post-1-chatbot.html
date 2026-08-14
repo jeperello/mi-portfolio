@@ -1,0 +1,56 @@
+<p>Si estás acá, es porque viste el post en LinkedIn y querés saber si realmente me volví loco. <b>¿Reemplazar un proxy de Node.js que ya funciona por Spring AI?</b> Parece un tiro en el pie, ¿no?</p>
+
+<div class="section">
+  <h3>El Punto de Partida: "Chatie", el humilde</h3>
+  <p>Actualmente, el chatbot que ves en este portfolio (al que cariñosamente llamo "Chatie") corre sobre un proxy muy simple en Node.js. Cumple su función: recibe mensajes, le pregunta a Gemini y te devuelve la respuesta. <i>(Atado con alambre, pero funcional).</i></p>
+</div>
+
+<div class="highlight">
+  <h3>La Gran Pregunta: ¿Java es "Demasiada Artillería"?</h3>
+  <p>Muchos colegas me dicen: <i>"Jorge, Java es para sistemas bancarios, no para un chat de portfolio"</i>. Y tienen parte de razón. Pero mi objetivo no es solo que funcione, es llevar la arquitectura al siguiente nivel.</p>
+</div>
+
+<div class="section">
+  <h3>Fase 1: El Diagnóstico</h3>
+  <p>Hoy estamos en la fase de "corazón abierto". Estoy analizando cómo Chatie maneja el historial de conversación en Node para replicarlo (y mejorarlo) con las <code>ChatMemory</code> de Spring AI.</p>
+  <p><b>Próxima parada:</b> Los primeros benchmarks. ¿Node.js vs Spring Boot? Se vienen los números.</p>
+</div>
+<img src="assets/blog/Chatie siendo remplazado.jpeg" class="blog-image">
+
+<h3>El Experimento: Los 3 pilares que voy a evaluar</h3>
+<ul>
+  <li><b>1. Curva de Aprendizaje:</b> ¿Qué tan difícil es saltar de un <code>fetch</code> en Node a las abstracciones de <code>Spring AI</code>?</li>
+  <li><b>2. Rendimiento Real:</b> ¿Los Virtual Threads de Java 21 realmente marcan la diferencia en un entorno de baja latencia?</li>
+  <li><b>3. Productividad:</b> ¿Las abstracciones de Spring me ahorran tiempo o me obligan a escribir "boilerplate" infinito?</li>
+</ul>
+
+<hr class="my-5">
+
+<div class="section">
+  <h3>🚀 Los hitos de este primer sprint</h3>
+  <ul>
+    <li><b>Java 21 & Virtual Threads:</b> Preparación para una concurrencia masiva con un consumo mínimo de recursos.</li>
+    <li><b>Spring AI (Google GenAI):</b> Se pasó de usar SDKs específicos a una capa de abstracción que permite cambiar de LLM (Gemini, OpenAI, Llama) cambiando solo una línea de configuración.</li>
+    <li><b>Arquitectura Profesional:</b> Implementación de DTOs con <b>Java Records</b>, servicios inyectados y desacoplamiento de lógica.</li>
+    <li><b>CI/CD desde el minuto 0:</b> Ya se tiene configurado un pipeline con <b>GitHub Actions</b> para asegurar que cada commit sea testeado automáticamente.</li>
+  </ul>
+</div>
+
+<div class="highlight">
+  <h3>💡 Aunque no todo es color de rosas</h3>
+  <p>Estuve peleando un poco con el error 429. Este error normalmente indica que se están realizando demasiadas peticiones. Pero luego de chequear la API KEy y el modelo, y las peticiones con google, estaba todo ok.
+   Sin embargo, en este caso, el error especificaba que el límite para el modelo gemini-2.0-flash era cero.
+   El detalle: Al usar librerías nuevas como Spring AI Google GenAI, el autoconfigurador a veces intenta usar la versión más reciente del modelo por defecto (la 2.0).
+   Y yo queria usar la versión 1.5, que es la que tengo habilitada. La solución fue explícitamente configurar el modelo a usar en el application.properties:
+   <code>spring.ai.google.model=gemini-1.5-pro</code>
+   Esto forzó a Spring AI a usar el modelo correcto y se solucionó el error 429.
+   <i>(Moraleja: Siempre revisen qué modelo está intentando usar la librería, a veces no es el que creen).</i>
+  </p>
+</div>
+
+<div class="highlight">
+  <h3>💡 El mayor aprendizaje hasta ahora</h3>
+  <p>La "magia" de las abstracciones de Spring AI tiene su precio: <b>la precisión</b>. Pelearse con los modelos en fase <i>v1beta</i> y los límites de cuota recordó que, al entender qué pasa bajo el capó (el SDK crudo de Google) es lo que realmente resuelve los problemas.</p>
+</div>
+
+<p class="mt-4"><i>Este post es parte de una serie. Si tenés algún consejo o creés que estoy cometiendo un error épico, ¡dejame un comentario abajo! 👇</i></p>
