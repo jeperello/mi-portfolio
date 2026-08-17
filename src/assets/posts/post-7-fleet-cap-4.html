@@ -1,24 +1,129 @@
 <article class="blog-post">
-  <div class="post-content">
-    <h2>Siendo cincero...</h2>
-    <p>Elegi la arquitectura porque esta de moda. Muchas son las empresas que la estan utilizando, y son muchas las empresas que buscan personas con experiencia en ella.
-    Por lo tanto, decidi implementarla. Aprenderla, entenderla y aplicarla en un proyecto real.<b> Que mejor forma de aprender algo que en la practica no?</b></p>
+  <!-- Encabezado / Titular Sincero -->
+  <header class="post-header">
+    <!--<span class="badge">Capítulo 4 — Diario de Desarrollo</span>
+    <h1>¿Por qué elegí Arquitectura Hexagonal? (¿Y por qué es sobreingeniería?)</h1>-->
+    <p class="lead">
+      Si bien desde la teoría ya entendía el concepto, siempre que realizo la práctica es cuando realmente lo comprendo.
+    </p>
+  </header>
 
-    <p class="lead">Después de un análisis profundo del dominio y de definir el Lenguaje Ubicuo, es hora de comenzar a implementar la arquitectura Hexagonal en nuestra aplicación.</p>
+  <hr />
 
+  <!-- Sección 1: La Confesión Sincera -->
+  <section class="content-section">
+    <h2>Siendo sincero... ¿Esto es sobreingeniería? 😥</h2>
+    <p>
+      Elegí la Arquitectura Hexagonal en parte porque está de moda. Es una realidad: muchas son las empresas que la están utilizando y muchas buscan profesionales con experiencia en ella. Por lo tanto, decidí implementarla, aprenderla, entenderla y aplicarla en un proyecto real. ¿Qué mejor forma de aprender algo que en la práctica misma?
+    </p>
+    <p>
+      Sin embargo, si piensan que es <strong>sobreingeniería</strong> implementar esto y separar el dominio en Hexagonal para <strong>Fleet-FiftyFifty</strong>, tienen toda la razón. Para la lógica del negocio de esta app que hoy resuelve una liquidación semanal de Uber/DiDi 50/50, es un exceso de arquitectura.
+    </p>
+    <blockquote class="highlight-quote">
+      <p>
+        <strong>100% podría haberlo resuelto con un <code>@Service</code> gigante y un par de entidades JPA en 20 minutos.</strong>
+      </p>
+    </blockquote>
+  </section>
 
-    <h2>Etapa de desarrollo</h2>
-    <p>En esta etapa, vamos a desarrollar la arquitectura Hexagonal con los componentes que hemos identificado en el análisis.</p>
+  <!-- Sección 2: El Descubrimiento del Core -->
+  <section class="content-section">
+    <h2>El descubrimiento al ordenar el código</h2>
+    <p>
+      Hay algo que descubrí al implementar esta arquitectura tan comentada. Al comenzar a ordenar el proyecto como esta lo exige, me di cuenta del verdadero potencial que tiene.
+    </p>
+    <p>
+      El código base, o el <strong>“core”</strong> como se conoce en mi aplicación, no debería de cambiar prácticamente nunca. La lógica principal (<code>calcularGastos</code>, <code>calcularGanancias</code>, <code>establecerDiferenciaDePago</code>) estará ligada a código puramente Java, para que nunca dependa de frameworks, de sus versiones ni de nada externo.
+    </p>
+  </section>
 
-    <h2>Arquitectura Hexagonal</h2>
-    <p>La <strong>Arquitectura Hexagonal</strong> se compone de 5 capas principales:</p>
+  <!-- Sección 3: Only Java Code -->
+  <section class="content-section">
+    <h2>Java Puro: Sin anotaciones ni frameworks (Only Java Code)</h2>
+    <p>
+      Para garantizar que mi dominio no sepa que existe Spring Boot, la regla fue estricta: en el paquete <code>domain</code> solo entra código Java puro. Nada de <code>@Entity</code>, <code>@Autowired</code>, <code>@Table</code> ni anotaciones de JSON.
+    </p>
 
-    <ol>
-      <li><strong>Core</strong> (el <em>core</em> del código y lógica de negocio pura)</li>
-      <li><strong>Ports</strong> (puertos de entrada y salida)</li>
-      <li><strong>Adapters</strong> (adaptadores controladores, repositorios, conectores)</li>
-      <li><strong>Use Cases</strong> (casos de uso de la aplicación)</li>
-      <li><strong>Infrastructure</strong> (configuración de frameworks e infraestructura)</li>
-    </ol>
-  </div>
+    <p>Un ejemplo de un objeto de dominio puro dentro del proyecto:</p>
+
+<pre><code class="language-java">public record ProfitSplit(BigDecimal ownerPercentage, BigDecimal driverPercentage) {
+    public ProfitSplit {
+        if (ownerPercentage.add(driverPercentage).compareTo(new BigDecimal("100")) != 0) {
+            throw new IllegalArgumentException("Los porcentajes deben sumar 100");
+        }
+    }
+}
+</code></pre>
+
+    <p>
+      Las reglas de redondeo (usando <code>HALF_UP</code> a escala 2) y la determinación de quién queda como <strong>Debtor</strong> y quién como <strong>Creditor</strong> se calculan directamente en entidades puras sin tocar infraestructura:
+    </p>
+
+<pre><code class="language-java">public class WeeklyConsolidation {
+    private final Money totalOwnerIncome;
+    private final Money totalDriverIncome;
+    private final ProfitSplit split;
+
+    public BalanceResult calculateBalance() {
+        Money total = totalOwnerIncome.add(totalDriverIncome);
+        Money targetShare = total.multiply(split.ownerPercentage());
+        
+        // Lógica pura de negocio para determinar las diferencias de pago
+        return BalanceResult.of(total, targetShare);
+    }
+}
+</code></pre>
+  </section>
+
+  <!-- Sección 4: Puertos y Adaptadores -->
+  <section class="content-section">
+    <h2>Desacoplando con Puertos y Adaptadores</h2>
+    <p>
+      Para conectar este mundo aislado con la infraestructura exterior definimos interfaces:
+    </p>
+    <ul>
+      <li><strong>Inbound Ports (Puertos de Entrada):</strong> Casos de uso como <code>ConsolidateWeeklyEarningsUseCase</code> (operaciones que expone la aplicación).</li>
+      <li><strong>Outbound Ports (Puertos de Salida):</strong> Interfaces como <code>SaveConsolidationPort</code> (lo que el dominio necesita guardar/recuperar sin saber qué BD se utiliza).</li>
+    </ul>
+    <p>
+      Spring Boot, los controladores REST y Spring Data JPA terminan siendo simples <strong>Adapters</strong> que viven fuera del núcleo, en el paquete de <code>infrastructure</code>.
+    </p>
+  </section>
+
+  <hr />
+
+  <!-- Sección 5: Ganancias Obtenidas -->
+  <section class="content-section">
+    <h2>Ganancias obtenidas hasta el momento 🚀</h2>
+    <ul class="benefits-list">
+      <li><strong>Dominio hiper-testeable:</strong> Puedo probar toda la lógica financiera con JUnit sin levantar el contexto de Spring en milisegundos.</li>
+      <li><strong>Cero impacto en el core:</strong> Si el día de mañana decidimos cambiar la BD, queremos que otra app consuma sus datos, o cambiar el frontend, el core no cambiará. Agregando un adapter podemos hacer lo que queramos sin impactar el código fuente de la lógica fundamental del negocio.</li>
+      <li><strong>Evolución mobile:</strong> El día de mañana sueño con tener una app en alguna Play Store, y este código es superadaptable y transportable.</li>
+      <li><strong>Desacople real:</strong> Experimentar la verdadera práctica del desacople en código de producción.</li>
+    </ul>
+  </section>
+
+  <!-- Sección 6: Lo que más me costó (Cambiar el Chip) -->
+  <section class="content-section reflection-card">
+    <h2>Lo que más me costó de este paso 🧠</h2>
+    <p>
+      Luego de años de práctica con Spring Boot, no usar anotaciones hoy en día me resulta raro: <strong>Only Java Puro</strong>.
+    </p>
+    <p>
+      Esto realmente, aunque suene raro viniendo de un Java Developer, escribir Java puro sin ningún framework hoy en día me resultó muy extraño. Fue lo que más me costó: <strong>cambiar el chip que tanto tiempo también me había costado crear.</strong>
+    </p>
+  </section>
+
+  <!-- Footer / Próximos Pasos -->
+  <footer class="post-footer">
+    <h3>Repositorio y próximos pasos</h3>
+    <p>
+      Pueden ver la estructura de paquetes y el aislamiento del paquete <code>domain</code> en vivo y en directo en el repositorio oficial del proyecto.
+    </p>
+    <p>
+      En el <strong>Capítulo 5</strong> nos meteremos de lleno en los <strong>Tests de Dominio y TDD</strong>: cómo verificar nuestras reglas financieras garantizando que la lógica sea indestructible antes de conectar la base de datos.
+    </p>
+    
+    <p class="to-be-continued"><strong>To be continued...</strong></p>
+  </footer>
 </article>

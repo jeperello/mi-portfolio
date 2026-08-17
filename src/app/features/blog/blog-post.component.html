@@ -48,7 +48,8 @@
             @for (chap of data.chapters; track chap.title) {
               <li class="chapter-item" 
                   [class.status-read]="chap.status === 'Done'"
-                  [class.status-current]="chap.status === 'Actual'"
+                  [class.status-current]="chap.status === 'Ultimo'"
+                  [class.status-in-progress]="chap.status === 'En proceso'"
                   [class.status-next]="chap.status === 'Próximo'">
                 <span class="chapter-title">{{ chap.title }}</span>
                 <span class="chapter-status-pill">{{ chap.status }}</span>

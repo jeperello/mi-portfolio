@@ -1,6 +1,6 @@
 export interface ChapterItem {
   title: string;
-  status: 'Done' | 'Actual' | 'Próximo';
+  status: 'Done' | 'Ultimo' | 'En proceso' | 'Próximo';
   postId?: string;
 }
 

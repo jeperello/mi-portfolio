@@ -33,7 +33,7 @@
                     @for (chap of blog.chapters; track chap.title) {
                       <li class="card-chapter-item" 
                           [class.status-read]="chap.status === 'Done'"
-                          [class.status-current]="chap.status === 'Actual'"
+                          [class.status-current]="chap.status === 'Ultimo'"
                           [class.status-next]="chap.status === 'Próximo'">
                         @if (chap.postId) {
                           <a [routerLink]="['/blog', chap.postId]" 
