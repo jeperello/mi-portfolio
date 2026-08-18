@@ -30,6 +30,12 @@
               <h3>{{ blog.title }}</h3>
               <p>{{ blog.excerpt }}</p>
 
+              @if (blog.imageCard) {
+                <div class="blog-card-image-wrap">
+                  <img [src]="blog.imageCard" [alt]="blog.title" class="blog-card-image" loading="lazy" />
+                </div>
+              }
+
               @if (blog.chapters && blog.chapters.length > 0) {
                 <div class="card-chapters-index">
                 <!--  <div class="card-index-title">📌 Índice de Capítulos:</div>-->

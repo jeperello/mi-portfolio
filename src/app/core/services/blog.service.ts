@@ -43,6 +43,7 @@ export class BlogService {
       excerpt:
         '¿Es Java demasiada artillería para un chatbot? Acompañame en este experimento migrando de un proxy en Node.js a la robustez de Spring AI.',
       contentUrl: 'assets/posts/post-1-chatbot.html',
+      imageCard: 'assets/blog/Chatie siendo remplazado.jpeg',
       content: '',
       date: '05 de mayo de 2026',
       author: 'Jorge Perello',
@@ -54,6 +55,7 @@ export class BlogService {
       excerpt:
         'Una comparativa profunda entre los diferentes paradigmas de concurrencia en Spring: desde el modelo thread-per-request tradicional hasta la reactividad de WebFlux y la revolución de los Virtual Threads.',
       contentUrl: 'assets/posts/post-2-spring-mvc.html',
+      imageCard: 'assets/blog/comparativa.png',
       content: '',
       date: '15 de abril de 2026',
       author: 'Jorge Perello',

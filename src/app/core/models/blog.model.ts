@@ -23,6 +23,7 @@ export interface Blog {
   subtitle?: string;
   status?: string;
   showCard?: boolean;
+  imageCard?: string;
   excerpt: string;
   content: string;
   contentUrl?: string;
