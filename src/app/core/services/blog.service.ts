@@ -17,8 +17,8 @@ export class BlogService {
   private backupBlogs: Blog[] = [
     {
       id: '3',
-      title: 'Construyendo Fleet-FiftyFifty',
-      subtitle: '<Del problema real a una aplicación completa con Java, Spring Boot, DDD, Arquitectura Hexagonal y TDD.</br>',
+      title: 'Construyendo una app real de cero. Construyendo Fleet-FiftyFifty',
+      subtitle: 'Construyendo una app real de cero. Del problema real a una aplicación completa con Java, Spring Boot, DDD, Arquitectura Hexagonal y TDD.',
       status: 'En progreso',
       excerpt:
         'Del problema real a una aplicación completa con Java, Spring Boot, DDD, Arquitectura Hexagonal y TDD.',
