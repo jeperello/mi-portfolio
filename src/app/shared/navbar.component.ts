@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { AnalyticsDirective } from './analytics.directive';
 
 @Component({
@@ -14,13 +15,54 @@ export class NavbarComponent implements OnInit {
   public showBlogTooltip = signal(false);
   public isMenuOpen = signal(false);
 
+  private tooltipOpenTimer?: ReturnType<typeof setTimeout>;
+  private tooltipHideTimer?: ReturnType<typeof setTimeout>;
+
+  constructor(private readonly router: Router) {}
+
   ngOnInit(): void {
-    // Mostramos el tooltip después de 2.5 segundos
-    setTimeout(() => {
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        const isProjectRoot = event.urlAfterRedirects === '/';
+
+        if (!isProjectRoot) {
+          this.clearTooltipTimers();
+          this.showBlogTooltip.set(false);
+          return;
+        }
+
+        this.scheduleBlogTooltip();
+      });
+
+    if (this.router.url === '/') {
+      this.scheduleBlogTooltip();
+    } else {
+      this.clearTooltipTimers();
+      this.showBlogTooltip.set(false);
+    }
+  }
+
+  private clearTooltipTimers(): void {
+    if (this.tooltipOpenTimer) {
+      clearTimeout(this.tooltipOpenTimer);
+      this.tooltipOpenTimer = undefined;
+    }
+
+    if (this.tooltipHideTimer) {
+      clearTimeout(this.tooltipHideTimer);
+      this.tooltipHideTimer = undefined;
+    }
+  }
+
+  private scheduleBlogTooltip(): void {
+    this.clearTooltipTimers();
+    this.showBlogTooltip.set(false);
+
+    this.tooltipOpenTimer = setTimeout(() => {
       this.showBlogTooltip.set(true);
 
-      // Lo ocultamos automáticamente tras 9 segundos
-      setTimeout(() => {
+      this.tooltipHideTimer = setTimeout(() => {
         if (this.showBlogTooltip()) {
           this.showBlogTooltip.set(false);
         }
@@ -29,6 +71,7 @@ export class NavbarComponent implements OnInit {
   }
 
   hideTooltip(): void {
+    this.clearTooltipTimers();
     if (this.showBlogTooltip()) {
       this.showBlogTooltip.set(false);
     }

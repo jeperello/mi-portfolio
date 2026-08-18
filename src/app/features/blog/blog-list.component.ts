@@ -5,11 +5,12 @@ import { BlogService } from '../../core/services/blog.service';
 import { RouterLink } from '@angular/router';
 import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 import { AnalyticsDirective } from '../../shared/analytics.directive';
+import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-blog-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, ApiWarmingComponent, AnalyticsDirective],
+  imports: [CommonModule, RouterLink, ApiWarmingComponent, AnalyticsDirective, ThemeToggleComponent],
   templateUrl: './blog-list.component.html',
   styleUrls: ['./blog-list.component.scss']
 })
