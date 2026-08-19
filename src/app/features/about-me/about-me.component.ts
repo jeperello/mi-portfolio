@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BlogService } from '../../core/services/blog.service';
 import { AnalyticsDirective } from '../../shared/analytics.directive';
+import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-about-me',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, AnalyticsDirective],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, AnalyticsDirective, ThemeToggleComponent],
   templateUrl: './about-me.html',
   styleUrls: ['./about-me.scss']
 })

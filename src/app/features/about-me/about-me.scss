@@ -56,8 +56,67 @@
       color: #64748b;
     }
 
+    .map-button {
+      --map-glow-color: rgba(56, 189, 248, 0.18);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 14px;
+      background: rgba(56, 189, 248, 0.08);
+      color: #7dd3fc;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      animation: map-button-breathe 5s ease-in-out infinite;
+
+      &:hover {
+        background: rgba(56, 189, 248, 0.16);
+        border-color: #38bdf8;
+        box-shadow: 0 10px 30px rgba(56, 189, 248, 0.18);
+        transform: translateY(-2px);
+      }
+
+      i {
+        font-size: 1.3rem;
+        font-style: normal;
+      }
+    }
+
+    @keyframes map-button-breathe {
+      0%, 100% {
+        box-shadow: 0 0 0 0 transparent;
+      }
+      50% {
+        box-shadow: 0 0 0 4px var(--map-glow-color);
+      }
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+
+      h2 {
+        margin-bottom: 20px;
+      }
+
+      .map-button {
+        flex-shrink: 0;
+        margin-bottom: 20px;
+      }
+    }
+
     .section {
       margin-top: 60px;
+    }
+
+    .theme-control {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
     }
 
     .grid {
@@ -176,6 +235,28 @@
     .fade-in {
       opacity: 0;
       animation: fadeIn 1s ease forwards;
+    }
+
+    @media (max-width: 600px) {
+      .theme-control {
+        justify-content: center;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0;
+
+        .map-button {
+          margin-bottom: 20px;
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .map-button {
+        animation: none;
+      }
     }
 
     /* Scroll reveal */

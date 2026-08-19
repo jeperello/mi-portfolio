@@ -2,7 +2,7 @@ import { Component, signal, computed, inject, HostListener, OnInit } from '@angu
 import { CommonModule } from '@angular/common';
 import { Project } from '../../core/models/project.model';
 import { ProjectService } from '../../core/services/project.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AnalyticsDirective } from '../../shared/analytics.directive';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -11,7 +11,7 @@ import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle';
 @Component({
   selector: 'app-project-showcase',
   standalone: true,
-  imports: [CommonModule, RouterLink, AnalyticsDirective, ThemeToggleComponent],
+  imports: [CommonModule, AnalyticsDirective, ThemeToggleComponent],
   templateUrl: './project-showcase.component.html',
   styleUrls: ['./project-showcase.component.scss']
 })
