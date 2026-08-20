@@ -4,12 +4,14 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #0f172a;
+  background: rgba(2, 6, 23, 0.58);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 2;
   color: #f8fafc;
   font-family: 'Courier New', Courier, monospace;
   transition: opacity 1s ease-out, visibility 1s;
