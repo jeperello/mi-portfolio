@@ -2,9 +2,9 @@
 
 <!-- FONDO DE NIEVE - Optimizado con variables CSS -->
 <div class="snow-container" aria-hidden="true">
-  <div *ngFor="let snowflake of snowflakes; let i = index" class="snowflake" [style.--left]="(i * 2) + '%'"
-    [style.--duration]="(10 + (i % 15)) + 's'" [style.--delay]="-(i * 0.4) + 's'" [style.--size]="(2 + (i % 5)) + 'px'"
-    [style.--opacity]="(0.6 + (i % 5) * 0.1)" [style.--drift]="((i % 100) - 50) + 'px'">
+  <div *ngFor="let snowflake of snowflakes; let i = index" class="snowflake" [style.--left]="((i * 47) % 100) + '%'"
+    [style.--duration]="(14 + ((i * 31) % 16)) + 's'" [style.--delay]="-((i * 17) % 12) + 's'" [style.--size]="(2 + ((i * 13) % 5)) + 'px'"
+    [style.--opacity]="(0.6 + ((i * 19) % 5) * 0.1)" [style.--drift]="(((i * 29) % 101) - 50) + 'px'">
   </div>
 </div>
 

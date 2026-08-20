@@ -4,3 +4,286 @@
     <p class="lead">Desarrollo guiado por pruebas (Test-Driven Development) en el núcleo de la aplicación.</p>
   </div>
 </article>
+<article class="fleet-chapter">
+
+    <header class="chapter-header">
+        <span class="chapter-label">Fleet-FiftyFifty · Parte 5</span>
+
+        <h1>
+            Pensé que hacer TDD era escribir el test antes que el código
+        </h1>
+
+        <p class="chapter-intro">
+            Mi primera experiencia aplicando TDD en Fleet-FiftyFifty
+            me hizo descubrir que el verdadero desafío no era escribir
+            el test, sino decidir qué debía probar.
+        </p>
+    </header>
+
+
+    <section>
+        <h2>¿Qué pruebo primero?</h2>
+
+        <p>
+            Bueno amigos, lo prometido es deuda.
+        </p>
+
+        <p>
+            Después de definir el dominio y elegir una arquitectura
+            hexagonal para Fleet-FiftyFifty, llegó el momento de empezar
+            a escribir código.
+        </p>
+
+        <p>
+            Y decidí probar algo que hasta ahora no había aplicado de esta
+            manera: <strong>TDD</strong>.
+        </p>
+
+        <p>
+            La idea parecía sencilla:
+            <strong>primero el test, después el código.</strong>
+        </p>
+
+        <p>
+            Pero cuando abrí el IDE apareció la pregunta:
+        </p>
+
+        <blockquote>
+            ¿Qué pruebo?
+        </blockquote>
+
+        <p>
+            Y ahí descubrí que ese era el verdadero desafío.
+        </p>
+    </section>
+
+
+    <section>
+        <h2>Empecé por los ingresos</h2>
+
+        <p>
+            Decidí comenzar por una de las partes más importantes del
+            negocio: los ingresos de la sociedad.
+        </p>
+
+        <p>
+            Un ingreso necesita representar algunas cosas muy concretas:
+        </p>
+
+        <ul>
+            <li>Quién recibió el dinero.</li>
+            <li>En qué plataforma se generó.</li>
+            <li>Cómo se recibió.</li>
+            <li>Cuánto dinero representa.</li>
+        </ul>
+
+        <p>
+            Por ejemplo:
+        </p>
+
+        <pre><code>new Income(
+    FleetRole.DRIVER,
+    Platform.DIDI,
+    PaymentMethod.CASH,
+    Money.of("50000.00")
+);</code></pre>
+
+        <p>
+            A partir de ahí pude construir mi primer escenario de prueba.
+        </p>
+    </section>
+
+
+    <section>
+        <h2>Mi primer escenario</h2>
+
+        <div class="scenario-card">
+
+            <div>
+                <strong>Total</strong>
+                <span>$141.000</span>
+            </div>
+
+            <div>
+                <strong>Owner</strong>
+                <span>$38.000</span>
+            </div>
+
+            <div>
+                <strong>Driver</strong>
+                <span>$103.000</span>
+            </div>
+
+            <div>
+                <strong>Reparto</strong>
+                <span>50 / 50</span>
+            </div>
+
+        </div>
+
+        <p>
+            Si el total es de <strong>$141.000</strong> y el reparto es
+            50/50, cada uno debería quedarse con:
+        </p>
+
+        <div class="highlight">
+            $70.500
+        </div>
+
+        <p>
+            Pero el dinero real ya fue recibido de forma diferente.
+            El Driver tiene $103.000 y el Owner $38.000.
+        </p>
+
+        <p>
+            Por lo tanto:
+        </p>
+
+        <ul>
+            <li><strong>Driver → Debtor</strong></li>
+            <li><strong>Owner → Creditor</strong></li>
+            <li><strong>Transferencia → $32.500</strong></li>
+        </ul>
+    </section>
+
+
+    <section>
+        <h2>Y todo eso terminó en un test</h2>
+
+        <p>
+            El escenario anterior terminó convirtiéndose en mi primer
+            test de dominio para <code>WeeklyConsolidation</code>.
+        </p>
+
+        <pre><code>@Test
+void shouldCalculateConsolidationWithDefaultFiftyFiftySplit() {
+
+    WeeklyConsolidation consolidation =
+            WeeklyConsolidation.ofDefaultSplit();
+
+    // Ingresos...
+
+    BalanceResult balance =
+            consolidation.calculateBalance();
+
+    assertEquals(FleetRole.DRIVER, balance.debtor());
+    assertEquals(FleetRole.OWNER, balance.creditor());
+    assertEquals(
+        Money.of("32500.00"),
+        balance.amount()
+    );
+}</code></pre>
+
+        <p>
+            El test comenzaba fallando porque todavía no existía toda la
+            implementación necesaria para satisfacer ese comportamiento.
+        </p>
+
+        <p>
+            Y ahí comenzó realmente el trabajo.
+        </p>
+    </section>
+
+
+    <section>
+        <h2>El test me obligó a pensar en el negocio</h2>
+
+        <p>
+            Esta fue probablemente la parte que más me sorprendió.
+        </p>
+
+        <p>
+            El test no solamente me servía para validar código.
+            Me estaba obligando a definir qué significaba que
+            <strong>Fleet-FiftyFifty funcionara correctamente</strong>.
+        </p>
+
+        <p>
+            Antes de poder comprobar el comportamiento tuve que tener
+            claro qué era un ingreso, quién lo recibía, cómo se calculaba
+            el total y cómo se determinaba el balance entre las dos partes.
+        </p>
+
+        <p>
+            Y eso terminó guiando la construcción de las entidades y
+            comportamientos del dominio.
+        </p>
+    </section>
+
+
+    <section>
+        <h2>No salió perfecto</h2>
+
+        <p>
+            Este tampoco es un post para decir que descubrí la fórmula
+            perfecta para hacer TDD.
+        </p>
+
+        <p>
+            Mi primer test terminó comprobando bastantes cosas dentro
+            del mismo escenario.
+        </p>
+
+        <p>
+            Viéndolo ahora, probablemente algunas responsabilidades
+            podrían probarse de forma más aislada.
+        </p>
+
+        <p>
+            Pero justamente de eso se trata esta saga.
+        </p>
+
+        <p>
+            Estoy construyendo una aplicación real, tomando decisiones,
+            equivocándome y aprendiendo durante el proceso.
+        </p>
+    </section>
+
+
+    <section class="chapter-reflection">
+
+        <h2>Lo que me llevo de esta etapa</h2>
+
+        <p>
+            Empecé pensando:
+        </p>
+
+        <blockquote>
+            "Tengo que escribir un test."
+        </blockquote>
+
+        <p>
+            Y terminé pensando:
+        </p>
+
+        <blockquote>
+            "Primero tengo que entender exactamente qué significa
+            que el negocio funcione."
+        </blockquote>
+
+        <p>
+            Para mí, ahí es donde TDD empezó a tener verdadero sentido.
+        </p>
+
+    </section>
+
+
+    <footer class="chapter-footer">
+
+        <p>
+            El código de este capítulo forma parte del backend de
+            <strong>Fleet-FiftyFifty</strong>.
+        </p>
+
+        <p>
+            Si querés seguir el proyecto paso a paso, podés encontrar
+            el código fuente en el repositorio del proyecto.
+        </p>
+
+        <p class="continuará">
+            Continuará... 🚗
+        </p>
+
+    </footer>
+
+</article>
