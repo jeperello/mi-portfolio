@@ -19,6 +19,7 @@ export class NavbarComponent implements OnInit {
 
   private tooltipOpenTimer?: ReturnType<typeof setTimeout>;
   private tooltipHideTimer?: ReturnType<typeof setTimeout>;
+  private hasShownBlogTooltip = false;
 
   constructor(private readonly router: Router) {}
 
@@ -58,10 +59,13 @@ export class NavbarComponent implements OnInit {
   }
 
   private scheduleBlogTooltip(): void {
+    if (this.hasShownBlogTooltip) return;
+
     this.clearTooltipTimers();
     this.showBlogTooltip.set(false);
 
     this.tooltipOpenTimer = setTimeout(() => {
+      this.hasShownBlogTooltip = true;
       this.showBlogTooltip.set(true);
 
       this.tooltipHideTimer = setTimeout(() => {
