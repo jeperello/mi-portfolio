@@ -46,6 +46,18 @@
              appTracker="nav-contact"
              fragment="contact"
              (click)="isMenuOpen.set(false)">Contacto</a></li>
+      <li>
+        <button class="sound-toggle"
+                type="button"
+                [class.is-playing]="themeService.isSoundPlaying()"
+                [class.is-muted]="!themeService.soundEnabled()"
+                [attr.aria-label]="themeService.soundEnabled() ? 'Apagar sonido' : 'Activar sonido'"
+                [attr.title]="themeService.soundEnabled() ? 'Apagar sonido' : 'Activar sonido'"
+                appTracker="btn-toggle-sound"
+                (click)="themeService.toggleSound()">
+          <span class="sound-icon" aria-hidden="true">{{ themeService.soundEnabled() ? '🔊' : '🔇' }}</span>
+        </button>
+      </li>
     </ul>
 
     <button class="navbar-toggle" 

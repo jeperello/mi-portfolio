@@ -129,6 +129,33 @@
       }
     }
   }
+
+  .sound-toggle {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: #cbd5e1;
+    cursor: pointer;
+    line-height: 1;
+
+    &:hover, &:focus-visible {
+      color: #38bdf8;
+    }
+
+    .sound-icon {
+      display: inline-block;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    &.is-playing .sound-icon {
+      animation: soundPulse 0.9s ease-in-out infinite alternate;
+    }
+
+    &.is-muted .sound-icon {
+      opacity: 0.55;
+    }
+  }
 }
 
 @keyframes bounceIn {
@@ -140,6 +167,11 @@
     opacity: 1;
     transform: translateX(-50%) translateY(0) scale(1);
   }
+}
+
+@keyframes soundPulse {
+  from { transform: scale(0.9); }
+  to { transform: scale(1.15); }
 }
 
 .navbar-toggle {

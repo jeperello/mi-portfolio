@@ -1,8 +1,9 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsDirective } from './analytics.directive';
+import { ThemeService } from '../core/services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,7 @@ import { AnalyticsDirective } from './analytics.directive';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  public readonly themeService = inject(ThemeService);
   public showBlogTooltip = signal(false);
   public isMenuOpen = signal(false);
 
