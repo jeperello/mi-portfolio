@@ -32,11 +32,90 @@
   animation: fall var(--duration) var(--delay) linear infinite;
 }
 
+.shooting-star {
+  position: absolute;
+  top: 18%;
+  left: -12%;
+  width: 150px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9));
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  transform: rotate(25deg);
+  transform-origin: right center;
+  animation: shooting-star 32s linear 4s infinite;
+}
+
+.shooting-star::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 10px 2px white;
+  transform: translateY(-50%);
+}
+
+.shooting-star-reverse {
+  left: auto;
+  right: -12%;
+  top: 34%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), transparent);
+  transform: rotate(-25deg);
+  animation-name: shooting-star-reverse;
+  animation-delay: 14s;
+}
+
+.shooting-star-reverse::after {
+  right: auto;
+  left: 0;
+}
+
 @keyframes fall {
   0% {
     transform: translateY(-5vh) translateX(0);
   }
   100% {
     transform: translateY(105vh) translateX(var(--drift));
+  }
+}
+
+@keyframes shooting-star {
+  0%, 3% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(25deg);
+  }
+  5% {
+    opacity: 1;
+  }
+  18% {
+    opacity: 0;
+    transform: translate(140vw, 55vh) rotate(25deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(140vw, 55vh) rotate(25deg);
+  }
+}
+
+@keyframes shooting-star-reverse {
+  0%, 3% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-25deg);
+  }
+  5% {
+    opacity: 1;
+  }
+  18% {
+    opacity: 0;
+    transform: translate(-140vw, 55vh) rotate(-25deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-140vw, 55vh) rotate(-25deg);
   }
 }
