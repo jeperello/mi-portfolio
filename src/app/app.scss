@@ -75,6 +75,23 @@
   left: 0;
 }
 
+.twinkle-star {
+  position: absolute;
+  top: var(--top);
+  left: var(--left);
+  width: var(--twinkle-size);
+  height: var(--twinkle-size);
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.9);
+  animation: twinkle var(--twinkle-duration) ease-in-out var(--twinkle-delay) infinite;
+}
+
+.twinkle-star.fixed {
+  opacity: 0.75;
+  animation: none;
+}
+
 @keyframes fall {
   0% {
     transform: translateY(-5vh) translateX(0);
@@ -118,4 +135,9 @@
     opacity: 0;
     transform: translate(-140vw, 55vh) rotate(-25deg);
   }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.35); }
 }

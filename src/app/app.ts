@@ -27,6 +27,14 @@ export class App implements OnInit {
   
   showIntro = true;
   snowflakes = new Array(80).fill(0);
+  twinkleStars = signal(Array.from({ length: 18 }, (_, index) => ({
+    fixed: index % 4 === 0,
+    top: 8 + Math.random() * 82,
+    left: 3 + Math.random() * 94,
+    duration: 3 + Math.random() * 6,
+    delay: -(Math.random() * 8),
+    size: 1 + (index % 3)
+  })));
 
   constructor() {
     this.trackNavigation();
@@ -52,5 +60,13 @@ export class App implements OnInit {
 
   onIntroFinished() {
     this.showIntro = false;
+  }
+
+  relocateTwinkleStar(index: number): void {
+    this.twinkleStars.update(stars => stars.map((star, starIndex) =>
+      starIndex === index && !star.fixed
+        ? { ...star, top: 8 + Math.random() * 82, left: 3 + Math.random() * 94 }
+        : star
+    ));
   }
 }
