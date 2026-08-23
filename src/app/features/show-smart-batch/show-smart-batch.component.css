@@ -154,6 +154,7 @@
 .stat-item.success .stat-value { color: var(--success-color); }
 .stat-item.error .stat-value { color: var(--error-color); }
 .stat-item.warning .stat-value { color: #f59e0b; }
+.stat-item.pending .stat-value { color: #38bdf8; }
 
 .progress-container { background: rgba(15, 23, 42, 0.4); padding: 20px; border-radius: 16px; }
 .progress-bar { height: 12px; background: rgba(255, 255, 255, 0.1); border-radius: 100px; overflow: hidden; margin-bottom: 12px; }

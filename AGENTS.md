@@ -29,14 +29,20 @@ Tus respuestas deben seguir estas reglas estrictas:
 ## 6. Mapa y Estado del Proyecto
 Para evitar exploraciones innecesarias, ten en cuenta la estructura actual:
 - **`src/app/core/`**: Servicios core, guards, interceptores.
-- **`src/app/shared/`**: Componentes reutilizables, directivas y pipes comunes.
+  - `ThemeService`: Manejo reactivo de temas (`light-moon` / `dark`) y pistas de sonido ambiental (`Pulsar-Dark.mp3`, `Densit-Light.mp3`) con signals (`soundEnabled`, `isSoundPlaying`).
+  - `BlogService`: Gestión de metadatos y carga asíncrona de artículos HTML desde `assets/posts/`.
+  - `AnalyticsService`: Envío de telemetría a cluster Kafka.
+  - `ChatService`, `ProjectService`, `ApiWarmingService`.
+- **`src/app/shared/`**: Componentes reutilizables (Navbar con control de sonido y theme, intro animada, etc.).
 - **`src/app/features/`**:
-  - `project-showcase/`: Sección principal que muestra la lista de proyectos de APIs de Java.
-  - `about-me/`: Información del perfil.
-  - `blog/`: Artículos técnicos.
+  - `project-showcase/`: Sección principal con tarjetas de proyectos de APIs de Java con efecto cristal.
+  - `about-me/`: Información de perfil con enlace al mapa semántico y modo Light Moon.
+  - `blog/`: Artículos técnicos (`blog-list` con cover images, scrollbar estilizada y vista individual `blog-post`).
   - `chat/`: Chatbot/asistente integrado en el portfolio.
-  - `project-map/`: Vista de relaciones/mapa de proyectos.
-  - `show-api-reactive/`, `show-smart-batch/`, `show-threads-api/`: Demos/detalles específicos de APIs de Java.
+  - `project-map/`: Vista interactiva del mapa semántico de proyectos.
+  - `fleet/`: Demo y consolidación de ingresos de flota (`/fleet`), con arquitectura modular (`fleet-kpi`, `income-form`, `income-table`, `partner-breakdown`, `platform-breakdown`, `settlement-card`, `architecture-explainer`).
+  - `show-api-reactive/`, `show-smart-batch/`, `show-threads-api/`: Demos/detalles específicos y benchmarks de APIs de Java.
+- **Efectos Visuales Globales (`app.html` / `app.scss`)**: Fondo con partículas cósmicas, twinkle stars, estrellas fugaces y sonido ambiental.
 
 ## 7. Analíticas y Control de Eventos de Kafka
 - **Formato del Evento:** Todos los eventos enviados al cluster llevan un campo `metadata` con la estructura:
@@ -51,3 +57,7 @@ Para evitar exploraciones innecesarias, ten en cuenta la estructura actual:
   * En entorno local, `isDeveloper` es `true` por defecto.
   * En producción, un usuario es marcado como developer si ingresa a la URL con el query param `?dev=true`. Esto almacena `'portfolio_is_developer' = 'true'` en `localStorage` y remueve el parámetro de la URL silenciosamente para mantener la limpieza.
 - **Acceso en Dashboard:** La barra de control de desarrollador (`dev-mode-bar`) en `AnalyticsDashboardComponent` se oculta bajo `@if (analytics.isDeveloper())` para que los usuarios comunes de producción no vean ni alteren este switch, garantizando que el resto del dashboard de analíticas permanezca público e interactivo.
+
+## 8. Documentos de Referencia
+- **`POSTS_DICTIONARY.md`**: Diccionario maestro de artículos del blog, mapeo a archivos HTML en `src/assets/posts/` y guía para publicar nuevos capítulos.
+
