@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, DatePipe, NgClass } from '@angular/common';
 import { SmartBatchService } from '../../core/services/smart-batch.service';
 import { timer, Subscription } from 'rxjs';
@@ -28,6 +28,7 @@ export class ShowSmartBatchComponent implements OnInit, OnDestroy {
   readonly isWarming = signal(false); // Flag para el café
   readonly response = signal<string | null>(null);
   readonly statusResponse = signal<any>(null);
+  readonly hasPendingRecords = computed(() => (this.statusResponse()?.pendingCount ?? 0) > 0);
   readonly error = signal<string | null>(null);
   readonly showInstructions = signal(false);
   
@@ -98,6 +99,10 @@ export class ShowSmartBatchComponent implements OnInit, OnDestroy {
   }
 
   runBatch(): void {
+    if (!this.hasPendingRecords()) {
+      return;
+    }
+
     this.isLoading.set(true);
     this.response.set(null);
     this.error.set(null);
