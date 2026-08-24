@@ -28,7 +28,10 @@ export class ShowSmartBatchComponent implements OnInit, OnDestroy {
   readonly isWarming = signal(false); // Flag para el café
   readonly response = signal<string | null>(null);
   readonly statusResponse = signal<any>(null);
-  readonly hasPendingRecords = computed(() => (this.statusResponse()?.pendingCount ?? 0) > 0);
+  readonly hasPendingRecords = computed(() => {
+    const status = this.statusResponse();
+    return (status?.pendingCount ?? 0) + (status?.retryCount ?? 0) > 0;
+  });
   readonly error = signal<string | null>(null);
   readonly showInstructions = signal(false);
   
