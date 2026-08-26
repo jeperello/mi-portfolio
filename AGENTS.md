@@ -60,4 +60,12 @@ Para evitar exploraciones innecesarias, ten en cuenta la estructura actual:
 
 ## 8. Documentos de Referencia
 - **`POSTS_DICTIONARY.md`**: Diccionario maestro de artículos del blog, mapeo a archivos HTML en `src/assets/posts/` y guía para publicar nuevos capítulos.
+- **`TESTING_PLAN_V7.md`**: Plan maestro y curriculum de testing para la versión 7 (Vitest, Signals, HttpTestingController, Playwright).
+
+## 9. Estándares de Testing (Angular 21 + Vitest)
+- Runner oficial: **Vitest** con `@angular/build:unit-test`. Karma y ZoneJS fakeAsync están obsoletos.
+- **Timers Asíncronos**: Usar `vi.useFakeTimers()`, `vi.advanceTimersByTime()` y restaurar con `vi.useRealTimers()` en `afterEach`.
+- **APIs de Navegador**: Proteger contra SSR / JSDOM comprobando `typeof API !== 'undefined'` o mockear en `beforeEach` / `beforeAll`.
+- **Routing & HTTP**: Siempre proveer `provideRouter([])` y `provideHttpClientTesting()` en los módulos de testeo según corresponda.
+- **Signals y OnPush**: En componentes OnPush, actualizar señales y llamar `fixture.detectChanges()` para propagar al DOM.
 

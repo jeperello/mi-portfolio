@@ -16,7 +16,7 @@ export class ProjectService {
       repositoryUrl: 'https://github.com/jeperello/portfolio-pulse-service',
       technologies: [
         'Java 21',
-        'Spring Boot 3.2.5',
+        'Spring Boot',
         'Apache Kafka',
         'Event-driven',
         'MongoDB',
@@ -33,11 +33,11 @@ export class ProjectService {
       repositoryUrl: 'https://github.com/jeperello/comment-service',
       technologies: [
         'Java 21',
-        'Spring Boot 3.5.13',
+        'Spring Boot',
         'Lombok',
         'JUnit 5',
         'Docker', 'Spring Data JPA',
-        'GitHub Actions: CI/CD',
+        'GitHub Actions',
         'DB', 'PostgreSQL'
       ],
       //isNew: true,
@@ -65,13 +65,12 @@ export class ProjectService {
       repositoryUrl: 'https://github.com/jeperello/log-ingestion-engin',
       technologies: [
         'Java 21',
+        'Virtual Threads',
+        'Producer-Consumer Pattern',
         'Lombok',
         'JUnit 5',
         'Docker',
-        'Virtual Threads',
-        'GitHub Actions: CI/CD',
-        'Producer-Consumer Pattern',
-
+        'GitHub Actions'
       ],
       demoUrl: '/show-threads-api'
     },
@@ -81,13 +80,13 @@ export class ProjectService {
       repositoryUrl: 'https://github.com/jeperello/smart-reprocessing-batch',
       technologies: [
         'Java 21',
+        'Spring Batch',
+        'Spring Data JPA',
+        'DB H2 en memoria',
         'Lombok',
         'JUnit 5',
         'Docker',
-        'Spring Batch', 'Spring Data JPA',
-        'GitHub Actions: CI/CD',
-        'DB H2 en memoria',
-
+        'GitHub Actions'
       ],
       //demoUrl: ''
       demoUrl: 'smart-batch'

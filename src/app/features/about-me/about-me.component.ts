@@ -31,6 +31,10 @@ export class AboutMeComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (typeof IntersectionObserver === 'undefined') {
+      return;
+    }
+
     // Configuramos el observador
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {

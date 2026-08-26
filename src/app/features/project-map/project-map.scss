@@ -2,7 +2,7 @@
     position: relative;
     width: 100%;
     height: calc(100vh - 80px);
-    background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+    background: transparent;
     overflow: hidden;
     color: white;
 
@@ -95,6 +95,7 @@
                 width: 12px;
                 height: 12px;
                 border-radius: 50%;
+                &.concept,
                 &.technology { background: #4facfe; }
                 &.experience { background: #ffeb3b; }
                 &.project { background: #ffffff; }

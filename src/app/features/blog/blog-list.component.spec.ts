@@ -1,5 +1,7 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import { BlogListComponent } from './blog-list.component';
 import { BlogService } from '../../core/services/blog.service';
@@ -9,9 +11,12 @@ describe('BlogListComponent', () => {
   let fixture: ComponentFixture<BlogListComponent>;
 
   beforeEach(async () => {
+    vi.useFakeTimers();
+
     await TestBed.configureTestingModule({
       imports: [BlogListComponent],
       providers: [
+        provideRouter([]),
         {
           provide: BlogService,
           useValue: {
@@ -37,17 +42,21 @@ describe('BlogListComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should render a card image when imageCard is defined', fakeAsync(() => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('should render a card image when imageCard is defined', () => {
     fixture.detectChanges();
-    tick(200);
-    tick(500);
-    tick(5000);
+    // Avanzamos 250ms para que termine isWarming timeout
+    vi.advanceTimersByTime(250);
     fixture.detectChanges();
 
-    const img = fixture.nativeElement.querySelector('img');
+    const img = fixture.nativeElement.querySelector('.blog-card-image');
 
     expect(component).toBeTruthy();
     expect(img).toBeTruthy();
-    expect(img.src).toContain('comparativa.png');
-  }));
+    expect(img.getAttribute('src')).toContain('comparativa.png');
+  });
 });
+

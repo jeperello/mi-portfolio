@@ -630,5 +630,73 @@
       color: #64748b !important;
     }
   }
+
+  /* -------------------------------------------------------------
+     Specific component overrides for ProjectMap (Mapa Semántico)
+     ------------------------------------------------------------- */
+  app-project-map {
+    .map-container {
+      background: transparent !important;
+      color: #0f172a !important;
+    }
+
+    .header {
+      h1 {
+        background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
+        background-clip: text !important;
+        -webkit-background-clip: text !important;
+        color: transparent !important;
+        -webkit-text-fill-color: transparent !important;
+      }
+      p {
+        color: #475569 !important;
+      }
+    }
+
+    .info-panel {
+      background: rgba(255, 255, 255, 0.9) !important;
+      border-color: rgba(2, 132, 199, 0.2) !important;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+
+      h2 { color: #0284c7 !important; }
+      h3 { color: #0369a1 !important; }
+      .period { color: #64748b !important; }
+      .tag { color: #0284c7 !important; }
+      .details p { color: #334155 !important; }
+
+      .stack-tags .stack-tag {
+        background: #e0f2fe !important;
+        border-color: rgba(2, 132, 199, 0.3) !important;
+        color: #0369a1 !important;
+      }
+
+      .close-btn {
+        background: #f1f5f9 !important;
+        border-color: rgba(203, 213, 225, 0.8) !important;
+        color: #0f172a !important;
+
+        &:hover {
+          background: #e0f2fe !important;
+          border-color: #0284c7 !important;
+          color: #0369a1 !important;
+        }
+      }
+    }
+
+    .legend {
+      background: rgba(255, 255, 255, 0.9) !important;
+      border-color: rgba(2, 132, 199, 0.2) !important;
+      color: #0f172a !important;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+
+      .item .dot.project {
+        background: #0284c7 !important;
+      }
+    }
+  }
 }
 
