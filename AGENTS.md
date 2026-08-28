@@ -33,7 +33,12 @@ Para evitar exploraciones innecesarias, ten en cuenta la estructura actual:
   - `BlogService`: Gestión de metadatos y carga asíncrona de artículos HTML desde `assets/posts/`.
   - `AnalyticsService`: Envío de telemetría a cluster Kafka.
   - `ChatService`, `ProjectService`, `ApiWarmingService`.
-- **`src/app/shared/`**: Componentes reutilizables (Navbar con control de sonido y theme, intro animada, etc.).
+- **`src/app/shared/`**: Componentes reutilizables:
+  - `navbar.component`: Navbar con control de sonido ambiental y theme toggle.
+  - `intro/`: Intro animada inicial.
+  - `ufo/`: Componente interactivo `<app-ufo />` (platillo volador cósmico con 3 trayectorias de vuelo, rayo abductor, cursor de mira táctica arcade SVG y diálogos humorísticos con signals `isAlarmed`, `message`, `trajectoryIndex`, `isBeamActive`).
+  - `analytics-dashboard/`: Dashboard interactivo de telemetría y métricas.
+  - `api-warming/`: Modal e indicador de estado para warming de microservicios Java.
 - **`src/app/features/`**:
   - `project-showcase/`: Sección principal con tarjetas de proyectos de APIs de Java con efecto cristal.
   - `about-me/`: Información de perfil con enlace al mapa semántico y modo Light Moon.
@@ -42,7 +47,7 @@ Para evitar exploraciones innecesarias, ten en cuenta la estructura actual:
   - `project-map/`: Vista interactiva del mapa semántico de proyectos.
   - `fleet/`: Demo y consolidación de ingresos de flota (`/fleet`), con arquitectura modular (`fleet-kpi`, `income-form`, `income-table`, `partner-breakdown`, `platform-breakdown`, `settlement-card`, `architecture-explainer`).
   - `show-api-reactive/`, `show-smart-batch/`, `show-threads-api/`: Demos/detalles específicos y benchmarks de APIs de Java.
-- **Efectos Visuales Globales (`app.html` / `app.scss`)**: Fondo con partículas cósmicas, twinkle stars, estrellas fugaces y sonido ambiental.
+- **Efectos Visuales Globales (`app.html` / `app.scss`)**: Fondo con partículas cósmicas, twinkle stars, estrellas fugaces, sonido ambiental y OVNI espacial interactivo `<app-ufo />`.
 
 ## 7. Analíticas y Control de Eventos de Kafka
 - **Formato del Evento:** Todos los eventos enviados al cluster llevan un campo `metadata` con la estructura:
