@@ -10,11 +10,12 @@ import { AnalyticsService } from './core/services/analytics.service';
 import { ThemeService } from './core/services/theme.service';
 
 import { AnalyticsDashboardComponent } from './shared/analytics-dashboard/analytics-dashboard';
+import { UfoComponent } from './shared/ufo/ufo.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ChatComponent, NavbarComponent, IntroComponent, CommonModule, AnalyticsDashboardComponent],
+  imports: [RouterOutlet, ChatComponent, NavbarComponent, IntroComponent, CommonModule, AnalyticsDashboardComponent, UfoComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
