@@ -15,8 +15,10 @@ export class UfoComponent implements OnInit, OnDestroy {
   private flightTimer: any;
   private messageTimer: any;
   private crashTimer: any;
+  private paratrooperEndTimer: any;
   private respawnTimer: any;
   private glitchTimer: any;
+  private paratrooperTimer: any;
 
   // Constantes de juego
   readonly maxHits = 3;
@@ -32,6 +34,9 @@ export class UfoComponent implements OnInit, OnDestroy {
   isCrashing = signal<boolean>(false);
   isRespawning = signal<boolean>(false);
   hudGlitch = signal<boolean>(false);
+
+  // Feature desacoplada: Marciano en paracaídas al caer el OVNI 🪂👽
+  showParatrooper = signal<boolean>(false);
 
   // Computed para estado legible en HUD
   hudStatusLabel = computed(() => {
@@ -67,13 +72,13 @@ export class UfoComponent implements OnInit, OnDestroy {
     '⚡ ¡Bajaste mi ancho de banda espacial! ¡Te veo en el próximo ping!',
   ];
 
-  // Frases cómicas de Caída Tranqui / Aterrizaje Forzoso 3/3
+  // Frases cómicas de Caída con Paracaídas 3/3
   private readonly crashQuotes = [
-    '🚨 ¡Houston, perdimos propulsión! ¡Aterrizaje de emergencia! 🛬💥',
-    '⚡ ¡Puf... puf! El Garbage Collector me apagó el motor cuántico... 😵💨',
-    '🛸 ¡Batería al 0%! Planeando hacia el footer del portfolio... 🍂',
-    '☕ ¡Código 500! ¡Me voy planeando a repostar café y vuelvo! 🛬☕',
-    '🏳️ ¡Mayday! Jorge, prepara una pista de aterrizaje en tu README... 🛸',
+    '🚨 ¡Eyección de emergencia! ¡Abriendo paracaídas! 🪂👽',
+    '⚡ ¡Houston, abandono la nave! ¡Nos vemos en el suelo! 🪂',
+    '🛸 ¡El Garbage Collector se llevó el motor! ¡Flotando en calma! 🪂🍃',
+    '☕ ¡Salvo el café espacial antes de que caiga el platillo! 🪂☕',
+    '🏳️ ¡Flotando suavemente hacia tu pantalla terrícola! 🪂✨',
   ];
 
   ngOnInit(): void {
@@ -86,13 +91,15 @@ export class UfoComponent implements OnInit, OnDestroy {
     if (this.flightTimer) clearTimeout(this.flightTimer);
     if (this.messageTimer) clearTimeout(this.messageTimer);
     if (this.crashTimer) clearTimeout(this.crashTimer);
+    if (this.paratrooperEndTimer) clearTimeout(this.paratrooperEndTimer);
     if (this.respawnTimer) clearTimeout(this.respawnTimer);
     if (this.glitchTimer) clearTimeout(this.glitchTimer);
+    if (this.paratrooperTimer) clearTimeout(this.paratrooperTimer);
   }
 
   private startUfoCycle(): void {
     const scheduleNextFlight = () => {
-      const nextDelay = 22000 + Math.random() * 10000; // Entre 22s y 32s
+      const nextDelay = 22000 + Math.random() * 10000;
       this.flightTimer = setTimeout(() => {
         if (!this.isAlarmed() && !this.isCrashing() && !this.isRespawning()) {
           const nextTraj = (this.trajectoryIndex() % 3) + 1;
@@ -113,12 +120,10 @@ export class UfoComponent implements OnInit, OnDestroy {
     scheduleNextFlight();
   }
 
-  // Interacción al hacer click (disparo) sobre el OVNI
   onUfoClick(event: MouseEvent): void {
     event.stopPropagation();
 
-    // Si ya está cayendo o reparándose, ignorar clicks extras
-    if (this.isCrashing() || this.isRespawning()) return;
+    if (this.isCrashing() || this.isRespawning() || this.showParatrooper()) return;
 
     const nextHits = this.hitCount() + 1;
     this.hitCount.set(nextHits);
@@ -130,7 +135,6 @@ export class UfoComponent implements OnInit, OnDestroy {
     if (this.messageTimer) clearTimeout(this.messageTimer);
 
     if (nextHits < this.maxHits) {
-      // Impacto 1 o 2
       const randomHitQuote = this.hitQuotes[Math.floor(Math.random() * this.hitQuotes.length)];
       this.message.set(randomHitQuote);
 
@@ -139,7 +143,6 @@ export class UfoComponent implements OnInit, OnDestroy {
         this.isAlarmed.set(false);
       }, 3500);
     } else {
-      // ¡Impacto 3/3! Secuencia de caída suave y cómica (caída en espiral / planeo)
       this.triggerCrashSequence();
     }
   }
@@ -155,26 +158,38 @@ export class UfoComponent implements OnInit, OnDestroy {
     const randomCrashQuote = this.crashQuotes[Math.floor(Math.random() * this.crashQuotes.length)];
     this.message.set(randomCrashQuote);
 
-    // 1. Mensaje legible durante la primera parte de la caída (3.8s)
+    // Salto en paracaídas a los 300ms tras el impacto
+    if (this.paratrooperTimer) clearTimeout(this.paratrooperTimer);
+    this.paratrooperTimer = setTimeout(() => {
+      this.showParatrooper.set(true);
+    }, 300);
+
+    // Mensaje legible durante la primera fase de la eyección (3.5s)
     if (this.messageTimer) clearTimeout(this.messageTimer);
     this.messageTimer = setTimeout(() => {
       this.message.set(null);
-    }, 3800);
+    }, 3500);
 
-    // 2. Caída tranquila y descenso suave durante 4.6 segundos
+    // 1. El OVNI termina su caída rápida a los 4.6s
     if (this.crashTimer) clearTimeout(this.crashTimer);
     this.crashTimer = setTimeout(() => {
       this.isAlarmed.set(false);
       this.isCrashing.set(false);
-      this.isRespawning.set(true); // Oculto en el taller de reparación interestelar
+    }, 4600);
 
-      // 3. Reaparece tras 10 segundos con nave restaurada y 0/3 impactos
+    // 2. El paracaidista flota ultra lento, lineal y disfrutable durante 11 segundos
+    if (this.paratrooperEndTimer) clearTimeout(this.paratrooperEndTimer);
+    this.paratrooperEndTimer = setTimeout(() => {
+      this.showParatrooper.set(false);
+      this.isRespawning.set(true); // En el taller de reparación interestelar
+
+      // 3. Reaparición 4s después con nave restaurada y 0/3 impactos
       if (this.respawnTimer) clearTimeout(this.respawnTimer);
       this.respawnTimer = setTimeout(() => {
         this.hitCount.set(0);
         this.isRespawning.set(false);
         this.trajectoryIndex.set((this.trajectoryIndex() % 3) + 1);
-      }, 10000);
-    }, 4600);
+      }, 4000);
+    }, 11000);
   }
 }

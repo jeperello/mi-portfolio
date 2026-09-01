@@ -44,7 +44,55 @@
       </div>
     }
 
-    <!-- Efectos de Humo y Chispas durante el Descenso Tranqui -->
+    <!-- Marciano en Paracaídas 🪂👽 (Eyaculación cómica desacoplada) -->
+    @if (showParatrooper() && isCrashing()) {
+      <div class="alien-paratrooper" aria-hidden="true">
+        <svg class="paratrooper-svg" viewBox="0 0 70 95" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Cúpula del Paracaídas con Franjas Brillantes -->
+          <path d="M5 36C5 14 18 4 35 4C52 4 65 14 65 36C54 32 44 33 35 36C26 33 16 32 5 36Z" 
+                fill="url(#chuteGradient)" 
+                stroke="#38bdf8" 
+                stroke-width="1.5"/>
+
+          <!-- Rayas decorativas del paracaídas -->
+          <path d="M22 6C20 16 20 28 22 34" stroke="rgba(255, 255, 255, 0.4)" stroke-width="1.2"/>
+          <path d="M48 6C50 16 50 28 48 34" stroke="rgba(255, 255, 255, 0.4)" stroke-width="1.2"/>
+
+          <!-- Cuerdas del Paracaídas -->
+          <line x1="6" y1="36" x2="33" y2="60" stroke="rgba(226, 232, 240, 0.7)" stroke-width="1"/>
+          <line x1="22" y1="34" x2="34" y2="60" stroke="rgba(226, 232, 240, 0.7)" stroke-width="1"/>
+          <line x1="48" y1="34" x2="36" y2="60" stroke="rgba(226, 232, 240, 0.7)" stroke-width="1"/>
+          <line x1="64" y1="36" x2="37" y2="60" stroke="rgba(226, 232, 240, 0.7)" stroke-width="1"/>
+
+          <!-- Marciano Piloto 👽 -->
+          <!-- Cabeza -->
+          <ellipse cx="35" cy="65" rx="6" ry="7" fill="#22c55e"/>
+          <!-- Ojos Alienígenas -->
+          <ellipse cx="32.5" cy="64" rx="1.5" ry="2.2" fill="#052e16"/>
+          <ellipse cx="37.5" cy="64" rx="1.5" ry="2.2" fill="#052e16"/>
+          <!-- Sonrisa / Expresión cómica -->
+          <path d="M33 68C34.5 69.5 35.5 69.5 37 68" stroke="#052e16" stroke-width="1" stroke-linecap="round"/>
+          <!-- Traje espacial y patitas -->
+          <rect x="32" y="72" width="6" height="8" rx="2.5" fill="#15803d"/>
+          <circle cx="33" cy="82" r="1.5" fill="#0f172a"/>
+          <circle cx="37" cy="82" r="1.5" fill="#0f172a"/>
+          <!-- Brazos sosteniendo las cuerdas -->
+          <path d="M32 73L27 63" stroke="#22c55e" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M38 73L43 63" stroke="#22c55e" stroke-width="1.6" stroke-linecap="round"/>
+
+          <!-- Gradiente del Paracaídas -->
+          <defs>
+            <linearGradient id="chuteGradient" x1="35" y1="4" x2="35" y2="36" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#f97316"/>
+              <stop offset="0.5" stop-color="#facc15"/>
+              <stop offset="1" stop-color="#38bdf8"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    }
+
+    <!-- Efectos de Humo y Chispas durante el Descenso -->
     @if (isCrashing()) {
       <div class="crash-fx" aria-hidden="true">
         <span class="smoke-puff smoke-1">💨</span>
@@ -79,10 +127,12 @@
               stroke="#38bdf8" 
               stroke-width="1.5"/>
 
-        <!-- Silueta del Marciano / Piloto Alien 👽 -->
-        <ellipse cx="60" cy="25" rx="5.5" ry="6.5" fill="#22c55e"/>
-        <ellipse cx="58" cy="24" rx="1.4" ry="2" fill="#052e16"/>
-        <ellipse cx="62" cy="24" rx="1.4" ry="2" fill="#052e16"/>
+        <!-- Silueta del Marciano / Piloto Alien (en cabina, desaparece cuando salta en paracaídas) -->
+        @if (!showParatrooper()) {
+          <ellipse cx="60" cy="25" rx="5.5" ry="6.5" fill="#22c55e"/>
+          <ellipse cx="58" cy="24" rx="1.4" ry="2" fill="#052e16"/>
+          <ellipse cx="62" cy="24" rx="1.4" ry="2" fill="#052e16"/>
+        }
 
         <!-- Brillo de la Cúpula -->
         <path d="M48 20C52 16 66 16 70 20" stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.5" stroke-linecap="round"/>

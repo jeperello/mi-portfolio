@@ -31,6 +31,7 @@ describe('UfoComponent', () => {
     expect(component.isAlarmed()).toBe(false);
     expect(component.hitCount()).toBe(0);
     expect(component.isCrashing()).toBe(false);
+    expect(component.showParatrooper()).toBe(false);
     expect(component.isRespawning()).toBe(false);
     expect(component.hudStatusLabel()).toBe('TARGET READY');
   });
@@ -62,7 +63,7 @@ describe('UfoComponent', () => {
     expect(component.isCrashing()).toBe(false);
   });
 
-  it('debe activar la secuencia de caída cómica y suave al alcanzar 3/3 impactos', () => {
+  it('debe activar la secuencia de caída cómica, eyección y descenso ultra lento del paracaidista al alcanzar 3/3 impactos', () => {
     component.onUfoClick(new MouseEvent('click')); // 1
     component.onUfoClick(new MouseEvent('click')); // 2
     component.onUfoClick(new MouseEvent('click')); // 3
@@ -71,13 +72,21 @@ describe('UfoComponent', () => {
     expect(component.isCrashing()).toBe(true);
     expect(component.hudStatusLabel()).toBe('CRITICAL DAMAGE!');
 
-    // 1. Termina el descenso y entra en taller de reparación
-    vi.advanceTimersByTime(4700);
+    // El marciano salta en paracaídas a los 300ms
+    vi.advanceTimersByTime(400);
+    expect(component.showParatrooper()).toBe(true);
+
+    // El OVNI termina su caída rápida a los 4.6s
+    vi.advanceTimersByTime(4300);
     expect(component.isCrashing()).toBe(false);
+
+    // El paracaidista termina su descenso suave y lineal a los 11s
+    vi.advanceTimersByTime(6500);
+    expect(component.showParatrooper()).toBe(false);
     expect(component.isRespawning()).toBe(true);
 
-    // 2. Tras 10s se repara y vuelve listo para otra ronda (0/3)
-    vi.advanceTimersByTime(10100);
+    // Tras 4s en taller se repara y vuelve listo para otra ronda (0/3)
+    vi.advanceTimersByTime(4100);
     expect(component.hitCount()).toBe(0);
     expect(component.isRespawning()).toBe(false);
     expect(component.hudStatusLabel()).toBe('TARGET READY');
