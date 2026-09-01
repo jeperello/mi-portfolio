@@ -36,7 +36,7 @@ Para evitar exploraciones innecesarias, ten en cuenta la estructura actual:
 - **`src/app/shared/`**: Componentes reutilizables:
   - `navbar.component`: Navbar con control de sonido ambiental y theme toggle.
   - `intro/`: Intro animada inicial.
-  - `ufo/`: Componente interactivo `<app-ufo />` (platillo volador cósmico con 3 trayectorias de vuelo, rayo abductor, cursor de mira táctica arcade SVG y diálogos humorísticos con signals `isAlarmed`, `message`, `trajectoryIndex`, `isBeamActive`).
+  - `ufo/`: Componente interactivo `<app-ufo />` (platillo volador cósmico con 3 trayectorias de vuelo, rayo abductor, cursor de mira táctica arcade SVG, mini badge táctico HUD de disparos `0/3` a `3/3`, secuencia cómica de aterrizaje forzoso/caída en espiral con humo/chispas y auto-reparación; reactivo con signals `isAlarmed`, `message`, `trajectoryIndex`, `isBeamActive`, `hitCount`, `isCrashing`, `isRespawning`, `hudGlitch`).
   - `analytics-dashboard/`: Dashboard interactivo de telemetría y métricas.
   - `api-warming/`: Modal e indicador de estado para warming de microservicios Java.
 - **`src/app/features/`**:

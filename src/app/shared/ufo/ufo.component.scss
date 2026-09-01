@@ -1,16 +1,157 @@
-// Estilos para el OVNI Cósmico (Angular 21 + Dart Sass)
+// Estilos para el OVNI Cósmico y Mini Badge Táctico HUD (Angular 21 + Dart Sass)
 
 :host {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   pointer-events: none;
-  z-index: 15; // Por encima del fondo cósmico, pero interactivo solo en la nave
+  z-index: 15;
   overflow: hidden;
 }
 
+/* ==========================================================================
+   1. MINI BADGE TÁCTICO HUD
+   ========================================================================== */
+.ufo-tactical-hud {
+  position: fixed;
+  top: 76px;
+  right: 20px;
+  pointer-events: auto;
+  z-index: 25;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 10px;
+  padding: 6px 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), 0 0 12px rgba(56, 189, 248, 0.2);
+  user-select: none;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba(56, 189, 248, 0.75);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.55), 0 0 18px rgba(56, 189, 248, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .hud-scanline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.8), transparent);
+    opacity: 0.6;
+    animation: scanline-move 3s linear infinite;
+  }
+
+  .hud-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .hud-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .hud-icon {
+    font-size: 0.95rem;
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.8));
+    animation: icon-float 2s ease-in-out infinite alternate;
+  }
+
+  .hud-tag {
+    font-family: monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    text-transform: uppercase;
+  }
+
+  .hud-score {
+    font-family: monospace;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #38bdf8;
+    letter-spacing: 0.5px;
+    margin-left: auto;
+    text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+  }
+
+  .hud-pips {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .pip {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(71, 85, 105, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      transition: all 0.3s ease;
+
+      &.active {
+        background: #facc15;
+        border-color: #fef08a;
+        box-shadow: 0 0 8px #facc15;
+        transform: scale(1.15);
+      }
+
+      &.danger {
+        background: #ef4444 !important;
+        border-color: #fca5a5 !important;
+        box-shadow: 0 0 10px #ef4444 !important;
+        animation: pip-blink 0.3s infinite alternate;
+      }
+    }
+
+    .hud-status-text {
+      font-family: monospace;
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: #64748b;
+      letter-spacing: 0.5px;
+      margin-left: 4px;
+    }
+  }
+
+  &.hud-warning {
+    border-color: rgba(250, 204, 21, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), 0 0 14px rgba(250, 204, 21, 0.35);
+    .hud-score { color: #facc15; text-shadow: 0 0 8px rgba(250, 204, 21, 0.7); }
+    .hud-status-text { color: #fbbf24; }
+  }
+
+  &.hud-critical {
+    border-color: rgba(239, 68, 68, 0.85);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.55), 0 0 20px rgba(239, 68, 68, 0.6);
+    animation: hud-alarm 0.5s ease-in-out infinite alternate;
+    .hud-score { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.9); }
+    .hud-status-text { color: #f87171; font-weight: 700; }
+  }
+
+  &.hud-glitch {
+    animation: hud-shake 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  }
+}
+
+@media (max-width: 640px) {
+  .ufo-tactical-hud {
+    top: 68px;
+    right: 12px;
+    padding: 5px 10px;
+    .hud-tag { display: none; }
+  }
+}
+
+/* ==========================================================================
+   2. PLATILLO VOLADOR & TRAYECTORIAS
+   ========================================================================== */
 .ufo-wrapper {
   position: absolute;
   width: 80px;
@@ -20,25 +161,11 @@
   will-change: transform, opacity;
   transform-origin: center center;
 
-  // Trayectoria 1: Entrada suave desde la izquierda, patrullaje con inclinación y salida a la derecha superior
-  &.trajectory-1 {
-    animation: flight-path-1 25s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
+  &.trajectory-1 { animation: flight-path-1 25s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+  &.trajectory-2 { animation: flight-path-2 28s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+  &.trajectory-3 { animation: flight-path-3 30s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 
-  // Trayectoria 2: Diagonal desde arriba a la derecha, sobrevuelo central y fuga curva
-  &.trajectory-2 {
-    animation: flight-path-2 28s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-
-  // Trayectoria 3: Cruce ondulante bajo con paradas de observación
-  &.trajectory-3 {
-    animation: flight-path-3 30s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-
-  // Al hacer click: se pausa exactamente en la posición donde fue clickeado
-  &.is-paused {
-    animation-play-state: paused !important;
-  }
+  &.is-paused { animation-play-state: paused !important; }
 }
 
 .saucer-ship {
@@ -46,7 +173,6 @@
   width: 100%;
   height: 100%;
   pointer-events: auto;
-  // Mira de disparo táctica Arcade (Círculo blanco + Cruz + Punto láser rojo en el centro)
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='white' stroke-width='1.5' opacity='0.95'/%3E%3Cline x1='16' y1='2' x2='16' y2='8' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='16' y1='24' x2='16' y2='30' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='2' y1='16' x2='8' y2='16' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='24' y1='16' x2='30' y2='16' stroke='white' stroke-width='1.5' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='16' r='1.8' fill='%23ef4444'/%3E%3C/svg%3E") 16 16, crosshair;
   filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.55)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
   transition: filter 0.3s ease, transform 0.3s ease;
@@ -57,41 +183,46 @@
     transform: scale(1.12);
   }
 
-  &:active {
-    transform: scale(0.95);
-  }
+  &:active { transform: scale(0.95); }
 
-  // Estado de Alarma al ser clickeado: giro 360°, destello de reactor y LEDs
+  // Impacto 1 o 2
   &.alarmed {
     animation: ship-alarm 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
     filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.95)) drop-shadow(0 0 30px rgba(56, 189, 248, 0.9));
 
-    .ufo-led {
-      animation: led-strobe 0.15s ease-in-out infinite alternate !important;
-    }
-
-    .reactor-core {
-      fill: #facc15 !important;
-      filter: drop-shadow(0 0 8px #facc15) !important;
-    }
-
+    .ufo-led { animation: led-strobe 0.15s ease-in-out infinite alternate !important; }
+    .reactor-core { fill: #facc15 !important; filter: drop-shadow(0 0 8px #facc15) !important; }
     .thruster-glow {
       background: radial-gradient(ellipse at center, rgba(250, 204, 21, 0.95) 0%, rgba(234, 179, 8, 0) 75%);
       transform: translateX(-50%) scaleX(1.6);
     }
   }
+
+  // Impacto 3/3: Caída suave en espiral / planeo cómico
+  &.crashing {
+    animation: gentle-crash-descent 4.6s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+    filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.85)) drop-shadow(0 0 30px rgba(249, 115, 22, 0.7));
+
+    .ufo-led {
+      animation: led-strobe 0.1s ease-in-out infinite alternate !important;
+      fill: #ef4444 !important;
+    }
+
+    .reactor-core {
+      animation: reactor-dying 1.8s ease-in-out infinite alternate !important;
+    }
+
+    .thruster-glow {
+      animation: thruster-sputter 1.5s ease-in-out infinite alternate !important;
+    }
+  }
 }
 
-.ufo-svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
+.ufo-svg { width: 100%; height: 100%; overflow: visible; }
 
-// Levitación y propulsión inferior
 .thruster-glow {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 32px;
@@ -102,14 +233,10 @@
   animation: thruster-pulse 1.8s ease-in-out infinite alternate;
 }
 
-.reactor-core {
-  animation: core-flash 1.2s ease-in-out infinite alternate;
-}
+.reactor-core { animation: core-flash 1.2s ease-in-out infinite alternate; }
 
-// Luces LED perimetrales
 .ufo-led {
   animation: led-blink 1.4s ease-in-out infinite alternate;
-
   &.led-1 { animation-delay: 0s; }
   &.led-2 { animation-delay: 0.25s; }
   &.led-3 { animation-delay: 0.5s; }
@@ -117,7 +244,38 @@
   &.led-5 { animation-delay: 1s; }
 }
 
-// Globo de diálogo cómico
+/* ==========================================================================
+   3. HUMO Y CHISPAS DE DESCENSO
+   ========================================================================== */
+.crash-fx {
+  position: absolute;
+  top: -15px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 30;
+
+  .smoke-puff {
+    position: absolute;
+    font-size: 1.3rem;
+    opacity: 0;
+    filter: drop-shadow(0 0 6px rgba(100, 116, 139, 0.8));
+
+    &.smoke-1 { left: 10%; top: -15px; animation: gentle-smoke-1 1.6s ease-out infinite; }
+    &.smoke-2 { left: 45%; top: -25px; animation: gentle-smoke-2 1.8s 0.4s ease-out infinite; }
+    &.smoke-3 { left: 70%; top: -10px; animation: gentle-smoke-1 1.5s 0.8s ease-out infinite; }
+  }
+
+  .spark {
+    position: absolute;
+    font-size: 1.1rem;
+    animation: spark-flash 0.5s infinite alternate;
+    &.spark-1 { left: -8px; top: 12px; }
+    &.spark-2 { right: -8px; top: 18px; animation-delay: 0.25s; }
+  }
+}
+
 .ufo-speech-bubble {
   position: absolute;
   bottom: 125%;
@@ -134,8 +292,15 @@
   z-index: 20;
   animation: bubble-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 
+  &.bubble-crash {
+    border-color: #f97316;
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.5), 0 8px 32px rgba(0, 0, 0, 0.7);
+    animation: bubble-wobble 1.2s infinite ease-in-out;
+    .bubble-tail { border-top-color: rgba(249, 115, 22, 0.9); }
+  }
+
   .bubble-text {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
     font-size: 0.85rem;
     font-weight: 600;
     color: #f8fafc;
@@ -156,7 +321,9 @@
   }
 }
 
-// Rayo Abductor (Tractor Beam)
+/* ==========================================================================
+   4. RAYO ABDUCTOR (TRACTOR BEAM)
+   ========================================================================== */
 .tractor-beam-container {
   position: absolute;
   top: 42px;
@@ -181,10 +348,7 @@
 
 .beam-particles {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
 
   .beam-dot {
     position: absolute;
@@ -202,18 +366,41 @@
   }
 }
 
-// ANIMACIONES CLAVE
+/* ==========================================================================
+   5. KEYFRAMES
+   ========================================================================== */
+@keyframes scanline-move {
+  0% { transform: translateY(-5px); opacity: 0; }
+  20%, 80% { opacity: 0.8; }
+  100% { transform: translateY(45px); opacity: 0; }
+}
+
+@keyframes icon-float {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-2px) rotate(6deg); }
+}
+
+@keyframes pip-blink {
+  0% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+@keyframes hud-alarm {
+  0% { box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+  100% { box-shadow: 0 0 22px rgba(239, 68, 68, 0.9); }
+}
+
+@keyframes hud-shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+  40%, 60% { transform: translate3d(3px, 0, 0); }
+}
 
 @keyframes quantum-wobble {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-4px) rotate(-3deg);
-  }
-  75% {
-    transform: translateY(3px) rotate(3deg);
-  }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-4px) rotate(-3deg); }
+  75% { transform: translateY(3px) rotate(3deg); }
 }
 
 @keyframes ship-alarm {
@@ -222,6 +409,74 @@
   50% { transform: scale(1.25) translateY(-8px) rotate(360deg); }
   75% { transform: scale(1.15) translateY(-4px) rotate(375deg); }
   100% { transform: scale(1.08) translateY(0) rotate(360deg); }
+}
+
+// Descenso y Caída Tranqui / Cómica (4.6s de planeo y pérdida de sustentación)
+@keyframes gentle-crash-descent {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1.1);
+  }
+  8% {
+    transform: translateY(-16px) rotate(-14deg) scale(1.18);
+  }
+  18% {
+    transform: translateY(-6px) rotate(16deg) scale(1.1);
+  }
+  30% {
+    transform: translateY(22px) translateX(-24px) rotate(-22deg) scale(1.05);
+  }
+  45% {
+    transform: translateY(70px) translateX(28px) rotate(26deg) scale(1);
+  }
+  60% {
+    transform: translateY(160px) translateX(-35px) rotate(-34deg) scale(0.95);
+  }
+  75% {
+    transform: translateY(300px) translateX(30px) rotate(45deg) scale(0.9);
+    opacity: 0.95;
+  }
+  90% {
+    transform: translateY(520px) translateX(-18px) rotate(-65deg) scale(0.85);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(850px) translateX(15px) rotate(90deg) scale(0.75);
+    opacity: 0;
+  }
+}
+
+@keyframes gentle-smoke-1 {
+  0% { opacity: 0.85; transform: translateY(0) scale(0.6); }
+  100% { opacity: 0; transform: translateY(-40px) translateX(-18px) scale(1.5); }
+}
+
+@keyframes gentle-smoke-2 {
+  0% { opacity: 0.85; transform: translateY(0) scale(0.6); }
+  100% { opacity: 0; transform: translateY(-45px) translateX(20px) scale(1.6); }
+}
+
+@keyframes spark-flash {
+  0% { opacity: 0.2; transform: scale(0.7) rotate(0deg); }
+  100% { opacity: 1; transform: scale(1.3) rotate(25deg); }
+}
+
+@keyframes bubble-wobble {
+  0%, 100% { transform: translateX(-50%) rotate(0deg); }
+  30% { transform: translateX(-53%) rotate(-3deg); }
+  70% { transform: translateX(-47%) rotate(3deg); }
+}
+
+@keyframes reactor-dying {
+  0% { fill: #ef4444; filter: drop-shadow(0 0 10px #ef4444); }
+  50% { fill: #f97316; filter: drop-shadow(0 0 4px #f97316); }
+  100% { fill: #78350f; filter: drop-shadow(0 0 1px #78350f); }
+}
+
+@keyframes thruster-sputter {
+  0% { opacity: 0.8; transform: translateX(-50%) scaleX(1.4); }
+  40% { opacity: 0.2; transform: translateX(-50%) scaleX(0.6); }
+  70% { opacity: 0.7; transform: translateX(-50%) scaleX(1.1); }
+  100% { opacity: 0.1; transform: translateX(-50%) scaleX(0.4); }
 }
 
 @keyframes thruster-pulse {
@@ -265,112 +520,32 @@
   100% { transform: translateY(-70px) scale(1.2); opacity: 0; }
 }
 
-// TRAYECTORIAS DE VUELO
-
 @keyframes flight-path-1 {
-  0% {
-    top: 18%;
-    left: -100px;
-    transform: rotate(10deg);
-    opacity: 0;
-  }
-  4% {
-    opacity: 1;
-  }
-  25% {
-    top: 24%;
-    left: 32vw;
-    transform: rotate(-4deg);
-  }
-  45% {
-    top: 15%;
-    left: 55vw;
-    transform: rotate(6deg);
-  }
-  70% {
-    top: 30%;
-    left: 75vw;
-    transform: rotate(-8deg);
-  }
-  92% {
-    opacity: 1;
-  }
-  100% {
-    top: 12%;
-    left: calc(100vw + 120px);
-    transform: rotate(18deg);
-    opacity: 0;
-  }
+  0% { top: 18%; left: -100px; transform: rotate(10deg); opacity: 0; }
+  4% { opacity: 1; }
+  25% { top: 24%; left: 32vw; transform: rotate(-4deg); }
+  45% { top: 15%; left: 55vw; transform: rotate(6deg); }
+  70% { top: 30%; left: 75vw; transform: rotate(-8deg); }
+  92% { opacity: 1; }
+  100% { top: 12%; left: calc(100vw + 120px); transform: rotate(18deg); opacity: 0; }
 }
 
 @keyframes flight-path-2 {
-  0% {
-    top: -80px;
-    left: 85vw;
-    transform: rotate(-15deg);
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-  }
-  30% {
-    top: 28%;
-    left: 60vw;
-    transform: rotate(5deg);
-  }
-  55% {
-    top: 20%;
-    left: 38vw;
-    transform: rotate(-6deg);
-  }
-  75% {
-    top: 40%;
-    left: 18vw;
-    transform: rotate(8deg);
-  }
-  92% {
-    opacity: 1;
-  }
-  100% {
-    top: 65%;
-    left: -120px;
-    transform: rotate(-25deg);
-    opacity: 0;
-  }
+  0% { top: -80px; left: 85vw; transform: rotate(-15deg); opacity: 0; }
+  5% { opacity: 1; }
+  30% { top: 28%; left: 60vw; transform: rotate(5deg); }
+  55% { top: 20%; left: 38vw; transform: rotate(-6deg); }
+  75% { top: 40%; left: 18vw; transform: rotate(8deg); }
+  92% { opacity: 1; }
+  100% { top: 65%; left: -120px; transform: rotate(-25deg); opacity: 0; }
 }
 
 @keyframes flight-path-3 {
-  0% {
-    top: 55%;
-    left: -100px;
-    transform: rotate(12deg);
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-  }
-  25% {
-    top: 38%;
-    left: 28vw;
-    transform: rotate(-8deg);
-  }
-  50% {
-    top: 48%;
-    left: 50vw;
-    transform: rotate(4deg);
-  }
-  75% {
-    top: 32%;
-    left: 72vw;
-    transform: rotate(-10deg);
-  }
-  92% {
-    opacity: 1;
-  }
-  100% {
-    top: 18%;
-    left: calc(100vw + 120px);
-    transform: rotate(20deg);
-    opacity: 0;
-  }
+  0% { top: 55%; left: -100px; transform: rotate(12deg); opacity: 0; }
+  5% { opacity: 1; }
+  25% { top: 38%; left: 28vw; transform: rotate(-8deg); }
+  50% { top: 48%; left: 50vw; transform: rotate(4deg); }
+  75% { top: 32%; left: 72vw; transform: rotate(-10deg); }
+  92% { opacity: 1; }
+  100% { top: 18%; left: calc(100vw + 120px); transform: rotate(20deg); opacity: 0; }
 }

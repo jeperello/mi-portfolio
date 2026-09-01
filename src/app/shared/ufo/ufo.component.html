@@ -1,89 +1,131 @@
-<div class="ufo-wrapper" 
-     [class.trajectory-1]="trajectoryIndex() === 1"
-     [class.trajectory-2]="trajectoryIndex() === 2"
-     [class.trajectory-3]="trajectoryIndex() === 3"
-     [class.is-paused]="isAlarmed()"
-     (click)="onUfoClick($event)"
-     aria-label="Platillo volador cósmico">
-
-  <!-- Globo de mensaje interactivo -->
-  @if (message()) {
-    <div class="ufo-speech-bubble" role="status">
-      <span class="bubble-text">{{ message() }}</span>
-      <div class="bubble-tail"></div>
+<!-- Mini Badge Táctico HUD (Contador de Disparos Discreto) -->
+<aside class="ufo-tactical-hud"
+       [class.hud-glitch]="hudGlitch()"
+       [class.hud-warning]="hitCount() === 1 || hitCount() === 2"
+       [class.hud-critical]="hitCount() >= 3"
+       aria-label="Contador táctico de impactos al OVNI">
+  <div class="hud-scanline"></div>
+  <div class="hud-inner">
+    <div class="hud-header">
+      <span class="hud-icon" aria-hidden="true">
+        @if (hitCount() === 0) { 🛸 }
+        @else if (hitCount() < 3) { 💥 }
+        @else { 🚨 }
+      </span>
+      <span class="hud-tag">UFO TARGET</span>
+      <span class="hud-score">{{ hitCount() }}/{{ maxHits }}</span>
     </div>
-  }
 
-  <!-- Rayo Abductor (Tractor Beam) -->
-  @if (isBeamActive() && !isAlarmed()) {
-    <div class="tractor-beam-container">
-      <div class="tractor-beam"></div>
-      <div class="beam-particles">
-        <span class="beam-dot"></span>
-        <span class="beam-dot"></span>
-        <span class="beam-dot"></span>
-      </div>
+    <!-- Barra de Pips / Escudo -->
+    <div class="hud-pips" aria-hidden="true">
+      <span class="pip" [class.active]="hitCount() >= 1"></span>
+      <span class="pip" [class.active]="hitCount() >= 2"></span>
+      <span class="pip" [class.active]="hitCount() >= 3" [class.danger]="hitCount() >= 3"></span>
+      <span class="hud-status-text">{{ hudStatusLabel() }}</span>
     </div>
-  }
-
-  <!-- Estructura del Platillo Volador (SVG Ultra Liviano y Detallado) -->
-  <div class="saucer-ship" [class.alarmed]="isAlarmed()">
-    <!-- Efecto de Propulsión / Levitación Cuántica Inferior -->
-    <div class="thruster-glow"></div>
-
-    <svg class="ufo-svg" viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Cúpula de Cristal / Cabina -->
-      <path d="M40 34C40 20 50 12 60 12C70 12 80 20 80 34Z" 
-            fill="url(#domeGrad)" 
-            stroke="#38bdf8" 
-            stroke-width="1.5"/>
-
-      <!-- Silueta del Marciano / Piloto Alien 👽 -->
-      <ellipse cx="60" cy="25" rx="5.5" ry="6.5" fill="#22c55e"/>
-      <ellipse cx="58" cy="24" rx="1.4" ry="2" fill="#052e16"/>
-      <ellipse cx="62" cy="24" rx="1.4" ry="2" fill="#052e16"/>
-
-      <!-- Brillo de la Cúpula -->
-      <path d="M48 20C52 16 66 16 70 20" stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.5" stroke-linecap="round"/>
-
-      <!-- Casco Superior Metálico -->
-      <ellipse cx="60" cy="36" rx="52" ry="14" fill="url(#hullGradTop)" stroke="#64748b" stroke-width="1"/>
-
-      <!-- Borde Ecuatorial / Anillo de Luces LED -->
-      <ellipse cx="60" cy="38" rx="55" ry="8" fill="url(#ringGrad)"/>
-
-      <!-- Luces LED Perimetrales Parpadeantes -->
-      <circle class="ufo-led led-1" cx="18" cy="38" r="2.2" fill="#38bdf8"/>
-      <circle class="ufo-led led-2" cx="35" cy="42" r="2.2" fill="#a855f7"/>
-      <circle class="ufo-led led-3" cx="60" cy="44" r="2.5" fill="#22c55e"/>
-      <circle class="ufo-led led-4" cx="85" cy="42" r="2.2" fill="#a855f7"/>
-      <circle class="ufo-led led-5" cx="102" cy="38" r="2.2" fill="#38bdf8"/>
-
-      <!-- Casco Inferior / Base del Reactor -->
-      <path d="M30 40C30 52 44 58 60 58C76 58 90 52 90 40Z" fill="url(#hullGradBottom)"/>
-      <ellipse cx="60" cy="56" rx="14" ry="4" fill="#06b6d4" class="reactor-core"/>
-
-      <!-- Gradientes SVG -->
-      <defs>
-        <linearGradient id="domeGrad" x1="60" y1="12" x2="60" y2="34" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#38bdf8" stop-opacity="0.8"/>
-          <stop offset="1" stop-color="#0284c7" stop-opacity="0.3"/>
-        </linearGradient>
-        <linearGradient id="hullGradTop" x1="60" y1="22" x2="60" y2="50" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#e2e8f0"/>
-          <stop offset="0.5" stop-color="#94a3b8"/>
-          <stop offset="1" stop-color="#475569"/>
-        </linearGradient>
-        <linearGradient id="ringGrad" x1="5" y1="38" x2="115" y2="38" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#0f172a"/>
-          <stop offset="0.5" stop-color="#1e293b"/>
-          <stop offset="1" stop-color="#0f172a"/>
-        </linearGradient>
-        <linearGradient id="hullGradBottom" x1="60" y1="40" x2="60" y2="58" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#334155"/>
-          <stop offset="1" stop-color="#0f172a"/>
-        </linearGradient>
-      </defs>
-    </svg>
   </div>
-</div>
+</aside>
+
+<!-- OVNI Cósmico (Oculto solo mientras se repara tras el aterrizaje) -->
+@if (!isRespawning()) {
+  <div class="ufo-wrapper" 
+       [class.trajectory-1]="trajectoryIndex() === 1"
+       [class.trajectory-2]="trajectoryIndex() === 2"
+       [class.trajectory-3]="trajectoryIndex() === 3"
+       [class.is-paused]="isAlarmed() || isCrashing()"
+       (click)="onUfoClick($event)"
+       aria-label="Platillo volador cósmico">
+
+    <!-- Globo de mensaje interactivo -->
+    @if (message()) {
+      <div class="ufo-speech-bubble" [class.bubble-crash]="isCrashing()" role="status">
+        <span class="bubble-text">{{ message() }}</span>
+        <div class="bubble-tail"></div>
+      </div>
+    }
+
+    <!-- Efectos de Humo y Chispas durante el Descenso Tranqui -->
+    @if (isCrashing()) {
+      <div class="crash-fx" aria-hidden="true">
+        <span class="smoke-puff smoke-1">💨</span>
+        <span class="smoke-puff smoke-2">💨</span>
+        <span class="smoke-puff smoke-3">💨</span>
+        <span class="spark spark-1">⚡</span>
+        <span class="spark spark-2">✨</span>
+      </div>
+    }
+
+    <!-- Rayo Abductor (Tractor Beam) -->
+    @if (isBeamActive() && !isAlarmed() && !isCrashing()) {
+      <div class="tractor-beam-container">
+        <div class="tractor-beam"></div>
+        <div class="beam-particles">
+          <span class="beam-dot"></span>
+          <span class="beam-dot"></span>
+          <span class="beam-dot"></span>
+        </div>
+      </div>
+    }
+
+    <!-- Estructura del Platillo Volador (SVG Ultra Liviano y Detallado) -->
+    <div class="saucer-ship" [class.alarmed]="isAlarmed() && !isCrashing()" [class.crashing]="isCrashing()">
+      <!-- Efecto de Propulsión / Levitación Cuántica Inferior -->
+      <div class="thruster-glow"></div>
+
+      <svg class="ufo-svg" viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Cúpula de Cristal / Cabina -->
+        <path d="M40 34C40 20 50 12 60 12C70 12 80 20 80 34Z" 
+              fill="url(#domeGrad)" 
+              stroke="#38bdf8" 
+              stroke-width="1.5"/>
+
+        <!-- Silueta del Marciano / Piloto Alien 👽 -->
+        <ellipse cx="60" cy="25" rx="5.5" ry="6.5" fill="#22c55e"/>
+        <ellipse cx="58" cy="24" rx="1.4" ry="2" fill="#052e16"/>
+        <ellipse cx="62" cy="24" rx="1.4" ry="2" fill="#052e16"/>
+
+        <!-- Brillo de la Cúpula -->
+        <path d="M48 20C52 16 66 16 70 20" stroke="rgba(255, 255, 255, 0.7)" stroke-width="1.5" stroke-linecap="round"/>
+
+        <!-- Casco Superior Metálico -->
+        <ellipse cx="60" cy="36" rx="52" ry="14" fill="url(#hullGradTop)" stroke="#64748b" stroke-width="1"/>
+
+        <!-- Borde Ecuatorial / Anillo de Luces LED -->
+        <ellipse cx="60" cy="38" rx="55" ry="8" fill="url(#ringGrad)"/>
+
+        <!-- Luces LED Perimetrales Parpadeantes -->
+        <circle class="ufo-led led-1" cx="18" cy="38" r="2.2" fill="#38bdf8"/>
+        <circle class="ufo-led led-2" cx="35" cy="42" r="2.2" fill="#a855f7"/>
+        <circle class="ufo-led led-3" cx="60" cy="44" r="2.5" fill="#22c55e"/>
+        <circle class="ufo-led led-4" cx="85" cy="42" r="2.2" fill="#a855f7"/>
+        <circle class="ufo-led led-5" cx="102" cy="38" r="2.2" fill="#38bdf8"/>
+
+        <!-- Casco Inferior / Base del Reactor -->
+        <path d="M30 40C30 52 44 58 60 58C76 58 90 52 90 40Z" fill="url(#hullGradBottom)"/>
+        <ellipse cx="60" cy="56" rx="14" ry="4" fill="#06b6d4" class="reactor-core"/>
+
+        <!-- Gradientes SVG -->
+        <defs>
+          <linearGradient id="domeGrad" x1="60" y1="12" x2="60" y2="34" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#38bdf8" stop-opacity="0.8"/>
+            <stop offset="1" stop-color="#0284c7" stop-opacity="0.3"/>
+          </linearGradient>
+          <linearGradient id="hullGradTop" x1="60" y1="22" x2="60" y2="50" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#e2e8f0"/>
+            <stop offset="0.5" stop-color="#94a3b8"/>
+            <stop offset="1" stop-color="#475569"/>
+          </linearGradient>
+          <linearGradient id="ringGrad" x1="5" y1="38" x2="115" y2="38" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#0f172a"/>
+            <stop offset="0.5" stop-color="#1e293b"/>
+            <stop offset="1" stop-color="#0f172a"/>
+          </linearGradient>
+          <linearGradient id="hullGradBottom" x1="60" y1="40" x2="60" y2="58" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#334155"/>
+            <stop offset="1" stop-color="#0f172a"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </div>
+}
