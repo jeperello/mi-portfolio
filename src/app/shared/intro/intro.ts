@@ -1,16 +1,18 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, output, signal } from '@angular/core';
 
 @Component({
   selector: 'app-intro',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './intro.html',
-  styleUrls: ['./intro.scss']
+  styleUrls: ['./intro.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IntroComponent implements OnInit {
-  isVisible = true;
-  @Output() finished = new EventEmitter<void>();
+export class IntroComponent implements OnInit, OnDestroy {
+  public readonly isVisible = signal(true);
+  public readonly finished = output<void>();
+
+  private dismissTimer?: ReturnType<typeof setTimeout>;
+  private completionTimer?: ReturnType<typeof setTimeout>;
 
   logs = [
     { message: 'Starting JVM...', type: 'info' },
@@ -25,12 +27,25 @@ export class IntroComponent implements OnInit {
     { message: '¡Bienvenido! Y gracias por pasar.', type: 'success' }
   ];
 
-  ngOnInit() {
-    // Después de 5.5 segundos empezamos el desvanecimiento
-    setTimeout(() => {
-      this.isVisible = false;
-      // Esperamos 1 segundo más (el tiempo de la transición CSS) para avisar al padre
-      setTimeout(() => this.finished.emit(), 1000);
-    }, 5500);
+  ngOnInit(): void {
+    // La intro es parte de la bienvenida, no una pantalla de carga: no debe retrasar el contenido.
+    this.dismissTimer = setTimeout(() => this.dismiss(), 3200);
+  }
+
+  ngOnDestroy(): void {
+    this.clearTimers();
+  }
+
+  public dismiss(): void {
+    if (!this.isVisible()) return;
+
+    this.clearTimers();
+    this.isVisible.set(false);
+    this.completionTimer = setTimeout(() => this.finished.emit(), 300);
+  }
+
+  private clearTimers(): void {
+    if (this.dismissTimer) clearTimeout(this.dismissTimer);
+    if (this.completionTimer) clearTimeout(this.completionTimer);
   }
 }

@@ -1,10 +1,13 @@
-<app-intro *ngIf="showIntro" (finished)="onIntroFinished()"></app-intro>
+@if (showIntro()) {
+  <app-intro (finished)="onIntroFinished()"></app-intro>
+}
 
 <!-- FONDO DE NIEVE - Optimizado con variables CSS -->
 <div class="snow-container" aria-hidden="true">
   <div class="shooting-star"></div>
   <div class="shooting-star shooting-star-reverse"></div>
-    <div *ngFor="let star of twinkleStars(); let i = index"
+  @for (star of twinkleStars(); track $index; let index = $index) {
+    <div
       class="twinkle-star"
       [class.fixed]="star.fixed"
       [style.--top]="star.top + '%'"
@@ -12,14 +15,17 @@
       [style.--twinkle-duration]="star.duration + 's'"
       [style.--twinkle-delay]="star.delay + 's'"
       [style.--twinkle-size]="star.size + 'px'"
-      (animationiteration)="relocateTwinkleStar(i)"></div>
-  <div *ngFor="let snowflake of snowflakes; let i = index" class="snowflake" [style.--left]="((i * 47) % 100) + '%'"
-    [style.--duration]="(16 + ((i * 31) % 16)) + 's'" [style.--delay]="-((i * 17) % 12) + 's'" [style.--size]="(2 + ((i * 13) % 5)) + 'px'"
-    [style.--opacity]="(0.6 + ((i * 19) % 5) * 0.1)" [style.--drift]="(((i * 29) % 101) - 50) + 'px'">
-  </div>
+      (animationiteration)="relocateTwinkleStar(index)"></div>
+  }
+  @for (snowflake of snowflakes; track $index; let index = $index) {
+    <div class="snowflake" [style.--left]="((index * 47) % 100) + '%'"
+      [style.--duration]="(16 + ((index * 31) % 16)) + 's'" [style.--delay]="-((index * 17) % 12) + 's'" [style.--size]="(2 + ((index * 13) % 5)) + 'px'"
+      [style.--opacity]="0.6 + ((index * 19) % 5) * 0.1" [style.--drift]="(((index * 29) % 101) - 50) + 'px'">
+    </div>
+  }
 </div>
 
-<div class="app-content" [style.display]="showIntro ? 'none' : 'block'">
+<div class="app-content" [style.display]="showIntro() ? 'none' : 'block'">
   <app-navbar></app-navbar>
 
   <main>

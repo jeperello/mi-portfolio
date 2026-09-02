@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, HostListener, OnInit } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, signal, computed, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Project } from '../../core/models/project.model';
 import { ProjectService } from '../../core/services/project.service';
@@ -12,9 +12,10 @@ import { AnalyticsService } from '../../core/services/analytics.service';
   standalone: true,
   imports: [CommonModule, AnalyticsDirective],
   templateUrl: './project-showcase.component.html',
-  styleUrls: ['./project-showcase.component.scss']
+  styleUrls: ['./project-showcase.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProjectShowcaseComponent implements OnInit {
+export class ProjectShowcaseComponent {
   private projectService = inject(ProjectService);
   private analyticsService = inject(AnalyticsService);
   private router = inject(Router);
@@ -26,16 +27,17 @@ export class ProjectShowcaseComponent implements OnInit {
   public currentIndex = signal(0);
   public itemsPerPage = signal(2);
 
-  ngOnInit() {
-    this.updateItemsPerPage();
+  constructor() {
+    afterNextRender(() => this.updateItemsPerPage());
   }
 
   @HostListener('window:resize')
-  onResize() {
+  onResize(): void {
     this.updateItemsPerPage();
   }
 
-  private updateItemsPerPage() {
+  private updateItemsPerPage(): void {
+    if (typeof window === 'undefined') return;
     // Si la pantalla es menor a 1024px (donde el CSS ya cambia a 1 columna), mostramos solo 1
     const newItemsPerPage = window.innerWidth < 1024 ? 1 : 2;
     

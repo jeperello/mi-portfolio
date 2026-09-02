@@ -170,6 +170,10 @@
     line-height: 1;
     margin-top: -5px;
   }
+
+  .nav-label {
+    display: none;
+  }
 }
 
 .projects-grid {
@@ -349,15 +353,45 @@
   color: #777;
 }
 
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.45);
+  cursor: pointer;
+  transition: width 0.2s ease, background-color 0.2s ease;
+
+  &.active {
+    width: 24px;
+    border-radius: 999px;
+    background: var(--primary-blue);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #f8fafc;
+    outline-offset: 3px;
+  }
+}
+
 @media (max-width: 768px) {
   .project-showcase {
-    padding: 2rem 1rem; /* Reduce horizontal padding on small screens */
+    min-height: auto;
+    padding: 1.5rem 1rem 2rem;
 
     .header-container {
       flex-direction: column;
       gap: 1.5rem;
       text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.5rem;
 
       h2 {
         font-size: 1.5rem;
@@ -367,10 +401,13 @@
 
   .projects-grid {
     grid-template-columns: 1fr; /* Stack cards in a single column on small screens */
+    min-height: 0;
+    max-width: none;
   }
 
   .project-card {
-    padding: 1.5rem; /* Adjust card padding for smaller screens */
+    min-height: 0;
+    padding: 1.25rem; /* Adjust card padding for smaller screens */
   }
 
   .project-card h3 {
@@ -383,7 +420,64 @@
   }
 
   .button {
-    padding: 0.5rem 0.8rem; /* Smaller buttons */
-    font-size: 0.8rem;
+    min-height: 44px;
+    padding: 0.65rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .carousel-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .projects-grid {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .nav-button {
+    grid-row: 1;
+    width: 100%;
+    height: 44px;
+    border-radius: 12px;
+    gap: 0.35rem;
+
+    .arrow {
+      font-size: 1.75rem;
+      margin-top: -0.15rem;
+    }
+
+    .nav-label {
+      display: inline;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+  }
+
+  .prev { grid-column: 1; }
+  .next { grid-column: 2; }
+
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(148, 163, 184, 0.45);
+    cursor: pointer;
+
+    &.active {
+      width: 24px;
+      border-radius: 999px;
+      background: var(--primary-blue);
+    }
   }
 }

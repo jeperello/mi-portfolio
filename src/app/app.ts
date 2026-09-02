@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, inject, OnInit } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
@@ -17,7 +17,8 @@ import { UfoComponent } from './shared/ufo/ufo.component';
   standalone: true,
   imports: [RouterOutlet, ChatComponent, NavbarComponent, IntroComponent, CommonModule, AnalyticsDashboardComponent, UfoComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App implements OnInit {
   protected readonly title = signal('portfolio-fullstack');
@@ -26,7 +27,7 @@ export class App implements OnInit {
   private router = inject(Router);
   private themeService = inject(ThemeService);
   
-  showIntro = true;
+  showIntro = signal(true);
   snowflakes = new Array(80).fill(0);
   twinkleStars = signal(Array.from({ length: 18 }, (_, index) => ({
     fixed: index % 4 === 0,
@@ -59,8 +60,8 @@ export class App implements OnInit {
     });
   }
 
-  onIntroFinished() {
-    this.showIntro = false;
+  onIntroFinished(): void {
+    this.showIntro.set(false);
   }
 
   relocateTwinkleStar(index: number): void {

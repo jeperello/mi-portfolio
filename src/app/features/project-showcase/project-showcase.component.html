@@ -10,11 +10,13 @@
 
   <div class="carousel-container">
     <button class="nav-button prev" 
+            type="button"
             (click)="prev()" 
             [disabled]="!canPrev()"
             appTracker="btn-carousel-prev"
             aria-label="Anterior">
-      <span class="arrow">‹</span>
+      <span class="arrow" aria-hidden="true">‹</span>
+      <span class="nav-label">Anterior</span>
     </button>
 
     <div class="projects-grid">
@@ -58,20 +60,25 @@
     </div>
 
     <button class="nav-button next" 
+            type="button"
             (click)="next()" 
             [disabled]="!canNext()"
             appTracker="btn-carousel-next"
             aria-label="Siguiente">
-      <span class="arrow">›</span>
+      <span class="arrow" aria-hidden="true">›</span>
+      <span class="nav-label">Siguiente</span>
     </button>
   </div>
 
   <div class="carousel-indicators">
     @for (dot of [].constructor(totalSteps()); track $index) {
-      <div class="dot" 
-           [class.active]="$index === currentIndex()"
-           (click)="currentIndex.set($index)">
-      </div>
+      <button type="button"
+              class="dot"
+              [class.active]="$index === currentIndex()"
+              [attr.aria-label]="'Ir al proyecto ' + ($index + 1)"
+              [attr.aria-current]="$index === currentIndex() ? 'true' : null"
+              (click)="currentIndex.set($index)">
+      </button>
     }
   </div>
 </section>

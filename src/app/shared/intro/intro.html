@@ -1,11 +1,13 @@
-<div class="intro-overlay" [class.fade-out]="!isVisible">
+<div class="intro-overlay" [class.fade-out]="!isVisible()">
   <div class="mini-cup">☕</div>
   
   <div class="terminal-window">
     <div class="log-container">
-      <div *ngFor="let log of logs; let i = index" class="log-line" [ngClass]="log.type" [style.animation-delay]="(i * 0.4) + 's'">
+      @for (log of logs; track log.message; let index = $index) {
+        <div [class]="'log-line ' + log.type" [style.animation-delay]="(index * 0.18) + 's'">
         {{ log.message }}
-      </div>
+        </div>
+      }
     </div>
 
     <div class="progress-section">
@@ -20,5 +22,9 @@
       <div>LOOM: <span>ACTIVE</span></div>
       <div>FLUX: <span>STREAMING</span></div>
     </div>
+
+    <button type="button" class="skip-intro" (click)="dismiss()">
+      Saltar introducción
+    </button>
   </div>
 </div>
