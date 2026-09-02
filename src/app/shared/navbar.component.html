@@ -1,13 +1,23 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <a routerLink="/about" class="navbar-logo">
-      <a href="https://www.linkedin.com/in/jorge-perello-sw-developer/" target="_blank">  
-        <img src="assets/profile/profile.jpeg" alt="Jorge Perello, Full Stack Developer (Java + Spring Boot + Angular)" class="navbar-profile-img">
+    <div class="navbar-logo">
+      <a class="navbar-profile-link"
+         href="https://www.linkedin.com/in/jorge-perello-sw-developer/"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="Abrir el perfil de LinkedIn de Jorge Perello">
+        <img src="assets/profile/profile.jpeg" alt="Jorge Perello" class="navbar-profile-img">
       </a>
-      <span>Jorge Perello</span><span class="full-title-suffix">Full Stack Developer (Java + Spring Boot + Angular)</span>
-    </a>
+      <a routerLink="/about" class="navbar-identity" (click)="isMenuOpen.set(false)">
+        <span>Jorge Perello</span>
+        <span class="full-title-suffix">Full Stack Developer (Java + Spring Boot + Angular)</span>
+      </a>
+    </div>
     
-    <ul class="navbar-links" [class.active]="isMenuOpen()">
+    <ul id="primary-navigation"
+        class="navbar-links"
+        [class.active]="isMenuOpen()"
+        (keydown.escape)="isMenuOpen.set(false)">
       <li><a routerLink="/" 
              appTracker="nav-projects"
              routerLinkActive="active" 
@@ -62,9 +72,11 @@
     </ul>
 
     <button class="navbar-toggle" 
+            type="button"
             (click)="isMenuOpen.set(!isMenuOpen())"
             [attr.aria-expanded]="isMenuOpen()"
-            aria-label="Toggle navigation">
+            aria-controls="primary-navigation"
+            [attr.aria-label]="isMenuOpen() ? 'Cerrar navegación' : 'Abrir navegación'">
       <div class="hamburger" [class.open]="isMenuOpen()">
         <span></span>
         <span></span>

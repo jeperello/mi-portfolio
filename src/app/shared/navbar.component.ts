@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -11,18 +11,18 @@ import { ThemeToggleComponent } from './theme-toggle/theme-toggle';
   standalone: true,
   imports: [CommonModule, RouterModule, AnalyticsDirective, ThemeToggleComponent],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent implements OnInit {
   public readonly themeService = inject(ThemeService);
+  private readonly router = inject(Router);
   public showBlogTooltip = signal(false);
   public isMenuOpen = signal(false);
 
   private tooltipOpenTimer?: ReturnType<typeof setTimeout>;
   private tooltipHideTimer?: ReturnType<typeof setTimeout>;
   private hasShownBlogTooltip = false;
-
-  constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
     this.router.events
