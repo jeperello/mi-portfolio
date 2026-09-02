@@ -46,7 +46,7 @@
              appTracker="nav-contact"
              fragment="contact"
              (click)="isMenuOpen.set(false)">Contacto</a></li>
-      <li>
+      <li class="nav-controls">
         <button class="sound-toggle"
                 type="button"
                 [class.is-playing]="themeService.isSoundPlaying()"
@@ -57,6 +57,7 @@
                 (click)="themeService.toggleSound()">
           <span class="sound-icon" aria-hidden="true">{{ themeService.soundEnabled() ? '🔊' : '🔇' }}</span>
         </button>
+        <app-theme-toggle></app-theme-toggle>
       </li>
     </ul>
 

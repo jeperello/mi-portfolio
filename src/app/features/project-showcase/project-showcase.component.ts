@@ -6,12 +6,11 @@ import { Router } from '@angular/router';
 import { AnalyticsDirective } from '../../shared/analytics.directive';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AnalyticsService } from '../../core/services/analytics.service';
-import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-project-showcase',
   standalone: true,
-  imports: [CommonModule, AnalyticsDirective, ThemeToggleComponent],
+  imports: [CommonModule, AnalyticsDirective],
   templateUrl: './project-showcase.component.html',
   styleUrls: ['./project-showcase.component.scss']
 })

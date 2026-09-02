@@ -5,7 +5,7 @@
 }
 
 .blog-list {
-  padding: 1.5rem 2rem 4rem;
+  padding: calc(70px + 1.75rem) 2rem 4rem;
   max-width: 1200px;
   margin: 0 auto;
 
@@ -34,6 +34,10 @@
 }
 
 @media (max-width: 760px) {
+  .blog-list {
+    padding-top: calc(70px + 1rem);
+  }
+
   .blog-grid {
     display: flex;
     gap: 1rem;

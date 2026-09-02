@@ -4,11 +4,12 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsDirective } from './analytics.directive';
 import { ThemeService } from '../core/services/theme.service';
+import { ThemeToggleComponent } from './theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, AnalyticsDirective],
+  imports: [CommonModule, RouterModule, AnalyticsDirective, ThemeToggleComponent],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
