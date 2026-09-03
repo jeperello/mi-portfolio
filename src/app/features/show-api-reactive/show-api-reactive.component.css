@@ -10,6 +10,28 @@
   padding: 3rem 2rem;
 }
 
+.back-link {
+  order: -2;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--accent-color);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.back-link:hover {
+  transform: translateX(-0.25rem);
+}
+
+.back-link:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
 /* Encabezado Principal - Ajustes específicos */
 .description-row {
   order: -1;
@@ -54,6 +76,7 @@
 }
 
 @media (max-width: 768px) {
+  .api-showcase { padding: 2rem 1rem; }
   .info-grid { grid-template-columns: 1fr; }
   .button-group-full { flex-direction: column; }
 }

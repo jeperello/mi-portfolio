@@ -8,11 +8,12 @@ import { ModalService } from '../../shared/modal'; // Import ModalService
 import { LoadTestResult } from '../../shared/load-test-results-modal/load-test-results-modal'; // Removed .ts extension
 import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 import { AnalyticsDirective } from '../../shared/analytics.directive';
+import { ExpandableDescriptionComponent } from '../../shared/expandable-description/expandable-description.component';
 
 @Component({
   selector: 'app-show-api-reactive',
   standalone: true,
-  imports: [CommonModule, FormsModule, ApiWarmingComponent, RouterLink, AnalyticsDirective], // Add AnalyticsDirective here
+  imports: [CommonModule, FormsModule, ApiWarmingComponent, RouterLink, AnalyticsDirective, ExpandableDescriptionComponent],
   templateUrl: './show-api-reactive.component.html',
   styleUrls: ['./show-api-reactive.component.css']
 })

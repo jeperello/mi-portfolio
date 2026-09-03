@@ -1,23 +1,39 @@
 <section class="api-showcase">
+  <a routerLink="/" 
+           appTracker="btn-back-to-blog-header"
+           class="back-link">← Volver a Proyectos</a>
   <!-- Cabecera Hero -->
   <div class="description-row hero-section">
     <h1>Virtual Threads vs Hilos Tradicionales</h1>
-    <p class="subtitle">
-      Java 21 Project Loom: ¿Cuántos hilos puede aguantar tu servidor sin morir? 
-      Compara la eficiencia de los hilos virtuales frente a los pesados hilos de plataforma.
-      <a href="https://github.com/jeperello/log-ingestion-engin" 
-         target="_blank" 
-         rel="noopener noreferrer" 
-         appTracker="btn-repo-threads-api"
-         class="repo-button">
-        Ver Repositorio
-      </a>
-      <a routerLink="/blog/2" 
-         appTracker="btn-view-analysis-threads"
-         class="repo-button">
+    <app-expandable-description label="Ver detalles del proyecto" expandedLabel="Ocultar detalles">
+      <div actions class="project-header-actions">
+        <a href="https://github.com/jeperello/log-ingestion-engin" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           appTracker="btn-repo-threads-api"
+           class="repo-button">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+          Ver Repositorio
+        </a>
+        <a routerLink="/blog/2" 
+           appTracker="btn-view-analysis-threads"
+           class="repo-button">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
           Ver Analisis
-      </a>
-    </p>
+        </a>
+      </div>
+
+      <p class="subtitle">
+        Java 21 Project Loom: ¿Cuántos hilos puede aguantar tu servidor sin morir? 
+        Compara la eficiencia de los hilos virtuales frente a los pesados hilos de plataforma.
+      </p>
+    </app-expandable-description>
   </div>
 
   <!-- Despertador de API -->

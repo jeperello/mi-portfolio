@@ -1,0 +1,40 @@
+<div class="expandable-wrapper">
+  <div class="expandable-header-bar">
+    <button 
+      type="button" 
+      class="expandable-toggle-btn" 
+      [class.is-expanded]="isExpanded()"
+      (click)="toggle()"
+      [attr.aria-expanded]="isExpanded()"
+      aria-label="Alternar descripción"
+    >
+      <span class="btn-icon">
+        <svg class="chevron-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </span>
+      <span class="btn-text">
+        @if (isExpanded()) {
+          {{ expandedLabel() }}
+        } @else {
+          {{ label() }}
+        }
+      </span>
+    </button>
+
+    <div class="expandable-actions">
+      <ng-content select="[actions]" />
+    </div>
+  </div>
+
+  <div class="expandable-drawer" [class.open]="isExpanded()">
+    <div class="drawer-inner">
+      <div class="drawer-content">
+        @if (text()) {
+          <p class="description-text">{{ text() }}</p>
+        }
+        <ng-content />
+      </div>
+    </div>
+  </div>
+</div>

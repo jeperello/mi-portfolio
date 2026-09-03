@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, DatePipe, NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { SmartBatchService } from '../../core/services/smart-batch.service';
 import { timer, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 import { AnalyticsDirective } from '../../shared/analytics.directive';
+import { ExpandableDescriptionComponent } from '../../shared/expandable-description/expandable-description.component';
 
 export interface BatchLog {
   message: string;
@@ -14,7 +16,7 @@ export interface BatchLog {
 @Component({
   selector: 'app-show-smart-batch',
   standalone: true,
-  imports: [CommonModule, DatePipe, NgClass, ApiWarmingComponent, AnalyticsDirective],
+  imports: [CommonModule, DatePipe, NgClass, RouterLink, ApiWarmingComponent, AnalyticsDirective, ExpandableDescriptionComponent],
   templateUrl: './show-smart-batch.component.html',
   styleUrls: ['./show-smart-batch.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush

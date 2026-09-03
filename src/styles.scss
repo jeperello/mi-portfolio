@@ -53,25 +53,55 @@ body {
 .repo-button {
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.7rem;
-  background-color: rgba(56, 189, 248, 0.1);
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.45rem 1.15rem;
+  background-color: rgba(56, 189, 248, 0.08);
   color: var(--accent-color);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 9999px;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.75rem;
-  transition: all 0.3s ease;
-  margin-left: 0.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.015em;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
   vertical-align: middle;
-}
 
-.repo-button:hover {
-  background-color: var(--accent-color);
-  color: #0f172a;
-  border-color: var(--accent-color);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+  .btn-svg {
+    display: inline-block;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover {
+    background-color: rgba(56, 189, 248, 0.18);
+    color: #ffffff;
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.25);
+
+    .btn-svg {
+      transform: scale(1.1);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+  }
 }
 
 @keyframes flashUpdate {

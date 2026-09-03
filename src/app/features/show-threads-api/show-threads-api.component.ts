@@ -6,11 +6,12 @@ import { Subscription, timer, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { ApiWarmingComponent } from '../../shared/api-warming/api-warming';
 import { AnalyticsDirective } from '../../shared/analytics.directive';
+import { ExpandableDescriptionComponent } from '../../shared/expandable-description/expandable-description.component';
 
 @Component({
   selector: 'show-threads-api',
   standalone: true,
-  imports: [CommonModule, ApiWarmingComponent, RouterLink, AnalyticsDirective],
+  imports: [CommonModule, ApiWarmingComponent, RouterLink, AnalyticsDirective, ExpandableDescriptionComponent],
   templateUrl: './show-threads-api.component.html',
   styleUrls: ['./show-threads-api.component.css']
 })
