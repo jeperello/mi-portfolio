@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, signal, computed, inject, PLATFORM_ID, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-ufo',
@@ -11,7 +12,9 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 })
 export class UfoComponent implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
+  private themeService = inject(ThemeService);
   private isBrowser = isPlatformBrowser(this.platformId);
+  private shotSound?: HTMLAudioElement;
   private flightTimer: any;
   private messageTimer: any;
   private crashTimer: any;
@@ -83,6 +86,7 @@ export class UfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.isBrowser) {
+      this.shotSound = new Audio('assets/sound/driken5482-retro-laser-1-236669.mp3');
       this.startUfoCycle();
     }
   }
@@ -95,6 +99,9 @@ export class UfoComponent implements OnInit, OnDestroy {
     if (this.respawnTimer) clearTimeout(this.respawnTimer);
     if (this.glitchTimer) clearTimeout(this.glitchTimer);
     if (this.paratrooperTimer) clearTimeout(this.paratrooperTimer);
+    this.shotSound?.pause();
+    this.shotSound?.removeAttribute('src');
+    this.shotSound?.load();
   }
 
   private startUfoCycle(): void {
@@ -125,6 +132,7 @@ export class UfoComponent implements OnInit, OnDestroy {
 
     if (this.isCrashing() || this.isRespawning() || this.showParatrooper()) return;
 
+    this.playShotSound();
     const nextHits = this.hitCount() + 1;
     this.hitCount.set(nextHits);
     this.isBeamActive.set(false);
@@ -145,6 +153,13 @@ export class UfoComponent implements OnInit, OnDestroy {
     } else {
       this.triggerCrashSequence();
     }
+  }
+
+  private playShotSound(): void {
+    if (!this.isBrowser || !this.themeService.soundEnabled() || !this.shotSound) return;
+
+    this.shotSound.currentTime = 0;
+    this.shotSound.play().catch(() => undefined);
   }
 
   private triggerHudGlitch(): void {
