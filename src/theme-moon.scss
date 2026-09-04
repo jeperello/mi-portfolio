@@ -143,18 +143,20 @@
     .header-container {
       .title-group {
         h2 {
-          /* Preferencia por un azul marino muy oscuro, con opción a degradado que parte de ese tono */
-          background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%) !important;
-          background-clip: text !important;
-          -webkit-background-clip: text !important;
-          color: transparent !important;
-          -webkit-text-fill-color: transparent !important;
-          filter: none !important; /* Evitar el drop-shadow del tema oscuro */
+          background: none !important;
+          color: #172126 !important;
+          -webkit-text-fill-color: currentColor !important;
+          font-size: clamp(2.5rem, 5vw, 4rem);
+          line-height: 1;
+          letter-spacing: -0.03em;
+          filter: none !important;
           text-shadow: none !important;
         }
 
         .subtitle {
-          color: #475569 !important; /* Gris neutro oscuro para buen contraste WCAG */
+          color: #28613a !important;
+          font-size: 1.2rem;
+          line-height: 1.5;
         }
       }
     }
@@ -516,19 +518,41 @@
     }
 
     .hero {
-      background: linear-gradient(rgba(255, 255, 255, 0.75), rgba(248, 250, 252, 0.85)),
-                  url('https://images.unsplash.com/photo-1555066931-4365d14bab8c') !important;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      text-align: left;
+      padding: 5rem clamp(2rem, 7vw, 6rem);
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.72) 42%, rgba(255, 255, 255, 0.08) 72%),
+                  url('/assets/fondo hero light.png') center / cover no-repeat !important;
+      border: 1px solid rgba(23, 33, 38, 0.08);
+      box-shadow: 0 24px 60px rgba(23, 33, 38, 0.14);
+      overflow: hidden;
+      position: relative;
       
       h1 {
+        max-width: 520px;
+        margin-bottom: 1rem;
         color: #0f172a !important;
+        font-size: clamp(2.6rem, 5vw, 4.4rem);
+        line-height: 1;
+        letter-spacing: -0.04em;
       }
 
       .subtitle {
+        max-width: 460px;
         color: #0284c7 !important;
+        font-size: clamp(1.2rem, 2vw, 1.6rem);
+        line-height: 1.25;
       }
 
       .tagline {
+        max-width: 420px;
         color: #64748b !important;
+        font-size: 1.05rem;
+        line-height: 1.6;
       }
     }
 
