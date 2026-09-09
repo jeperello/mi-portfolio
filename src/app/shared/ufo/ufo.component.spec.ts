@@ -93,19 +93,17 @@ describe('UfoComponent', () => {
     vi.advanceTimersByTime(400);
     expect(component.showParatrooper()).toBe(true);
 
-    // El OVNI termina su caída rápida a los 4.6s
+    // El OVNI termina su caída rápida a los 4.6s y entra en respawn
     vi.advanceTimersByTime(4300);
     expect(component.isCrashing()).toBe(false);
+    expect(component.isRespawning()).toBe(true);
 
     // El paracaidista termina su descenso suave y lineal a los 11s
     vi.advanceTimersByTime(6500);
     expect(component.showParatrooper()).toBe(false);
-    expect(component.isRespawning()).toBe(true);
-
-    // Tras 4s en taller se repara y vuelve listo para otra ronda (0/3)
-    vi.advanceTimersByTime(4100);
-    expect(component.hitCount()).toBe(0);
     expect(component.isRespawning()).toBe(false);
-    expect(component.hudStatusLabel()).toBe('TARGET READY');
+    expect(component.isStopped()).toBe(true);
+    expect(component.controlButtonLabel()).toBe('RESTART');
+    expect(component.hudStatusLabel()).toBe('CRITICAL DAMAGE!');
   });
 });

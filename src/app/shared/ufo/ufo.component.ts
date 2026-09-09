@@ -252,21 +252,15 @@ export class UfoComponent implements OnInit, OnDestroy {
     this.crashTimer = setTimeout(() => {
       this.isAlarmed.set(false);
       this.isCrashing.set(false);
+      this.isRespawning.set(true);
     }, 4600);
 
     // 2. El paracaidista flota ultra lento, lineal y disfrutable durante 11 segundos
     if (this.paratrooperEndTimer) clearTimeout(this.paratrooperEndTimer);
     this.paratrooperEndTimer = setTimeout(() => {
       this.showParatrooper.set(false);
-      this.isRespawning.set(true); // En el taller de reparación interestelar
-
-      // 3. Reaparición 4s después con nave restaurada y 0/3 impactos
-      if (this.respawnTimer) clearTimeout(this.respawnTimer);
-      this.respawnTimer = setTimeout(() => {
-        this.hitCount.set(0);
-        this.isRespawning.set(false);
-        this.trajectoryIndex.set((this.trajectoryIndex() % 3) + 1);
-      }, 4000);
+      this.isRespawning.set(false);
+      this.stopUfo();
     }, 11000);
   }
 }
