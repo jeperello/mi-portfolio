@@ -23,11 +23,19 @@
       <span class="pip" [class.active]="hitCount() >= 3" [class.danger]="hitCount() >= 3"></span>
       <span class="hud-status-text">{{ hudStatusLabel() }}</span>
     </div>
+
+    <button
+      type="button"
+      class="ufo-control-btn"
+      [class.is-restart]="controlButtonLabel() === 'RESTART'"
+      (click)="onControlButtonClick()">
+      {{ controlButtonLabel() }}
+    </button>
   </div>
 </aside>
 
 <!-- OVNI Cósmico (Oculto solo mientras se repara tras el aterrizaje) -->
-@if (!isRespawning()) {
+@if (!isRespawning() && !isStopped()) {
   <div class="ufo-wrapper" 
        [class.trajectory-1]="trajectoryIndex() === 1"
        [class.trajectory-2]="trajectoryIndex() === 2"

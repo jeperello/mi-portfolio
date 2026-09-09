@@ -34,6 +34,22 @@ describe('UfoComponent', () => {
     expect(component.showParatrooper()).toBe(false);
     expect(component.isRespawning()).toBe(false);
     expect(component.hudStatusLabel()).toBe('TARGET READY');
+    expect(component.controlButtonLabel()).toBe('STOP');
+  });
+
+  it('debe alternar el control del OVNI entre STOP y RESTART', () => {
+    expect(component.controlButtonLabel()).toBe('STOP');
+
+    component.onControlButtonClick();
+
+    expect(component.isStopped()).toBe(true);
+    expect(component.controlButtonLabel()).toBe('RESTART');
+
+    component.onControlButtonClick();
+
+    expect(component.isStopped()).toBe(false);
+    expect(component.hitCount()).toBe(0);
+    expect(component.controlButtonLabel()).toBe('STOP');
   });
 
   it('debe registrar el primer impacto (1/3), mostrar queja y reanudar el vuelo tras 3.5s', () => {
@@ -70,6 +86,7 @@ describe('UfoComponent', () => {
 
     expect(component.hitCount()).toBe(3);
     expect(component.isCrashing()).toBe(true);
+    expect(component.controlButtonLabel()).toBe('RESTART');
     expect(component.hudStatusLabel()).toBe('CRITICAL DAMAGE!');
 
     // El marciano salta en paracaídas a los 300ms

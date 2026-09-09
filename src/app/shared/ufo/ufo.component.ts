@@ -36,6 +36,7 @@ export class UfoComponent implements OnInit, OnDestroy {
   hitCount = signal<number>(0);
   isCrashing = signal<boolean>(false);
   isRespawning = signal<boolean>(false);
+  isStopped = signal<boolean>(false);
   hudGlitch = signal<boolean>(false);
 
   // Feature desacoplada: Marciano en paracaídas al caer el OVNI 🪂👽
@@ -48,6 +49,10 @@ export class UfoComponent implements OnInit, OnDestroy {
     if (hits === 1) return 'SHIELD 66%';
     if (hits === 2) return 'SHIELD 33%';
     return 'CRITICAL DAMAGE!';
+  });
+
+  controlButtonLabel = computed(() => {
+    return this.isStopped() || this.hitCount() >= this.maxHits ? 'RESTART' : 'STOP';
   });
 
   // Frases cómicas habituales (vuelo libre)
@@ -92,13 +97,7 @@ export class UfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.flightTimer) clearTimeout(this.flightTimer);
-    if (this.messageTimer) clearTimeout(this.messageTimer);
-    if (this.crashTimer) clearTimeout(this.crashTimer);
-    if (this.paratrooperEndTimer) clearTimeout(this.paratrooperEndTimer);
-    if (this.respawnTimer) clearTimeout(this.respawnTimer);
-    if (this.glitchTimer) clearTimeout(this.glitchTimer);
-    if (this.paratrooperTimer) clearTimeout(this.paratrooperTimer);
+    this.clearPendingTimers();
     this.shotSound?.pause();
     this.shotSound?.removeAttribute('src');
     this.shotSound?.load();
@@ -108,6 +107,11 @@ export class UfoComponent implements OnInit, OnDestroy {
     const scheduleNextFlight = () => {
       const nextDelay = 22000 + Math.random() * 10000;
       this.flightTimer = setTimeout(() => {
+        if (this.isStopped()) {
+          scheduleNextFlight();
+          return;
+        }
+
         if (!this.isAlarmed() && !this.isCrashing() && !this.isRespawning()) {
           const nextTraj = (this.trajectoryIndex() % 3) + 1;
           this.trajectoryIndex.set(nextTraj);
@@ -127,10 +131,19 @@ export class UfoComponent implements OnInit, OnDestroy {
     scheduleNextFlight();
   }
 
+  onControlButtonClick(): void {
+    if (this.isStopped()) {
+      this.restartUfo();
+      return;
+    }
+
+    this.stopUfo();
+  }
+
   onUfoClick(event: MouseEvent): void {
     event.stopPropagation();
 
-    if (this.isCrashing() || this.isRespawning() || this.showParatrooper()) return;
+    if (this.isStopped() || this.isCrashing() || this.isRespawning() || this.showParatrooper()) return;
 
     this.playShotSound();
     const nextHits = this.hitCount() + 1;
@@ -155,11 +168,60 @@ export class UfoComponent implements OnInit, OnDestroy {
     }
   }
 
+  private stopUfo(): void {
+    this.isStopped.set(true);
+    this.isAlarmed.set(false);
+    this.isBeamActive.set(false);
+    this.message.set(null);
+    this.hudGlitch.set(false);
+    this.clearPendingTimers();
+  }
+
+  private restartUfo(): void {
+    this.clearPendingTimers();
+    this.hitCount.set(0);
+    this.isStopped.set(false);
+    this.isAlarmed.set(false);
+    this.isBeamActive.set(false);
+    this.message.set(null);
+    this.isCrashing.set(false);
+    this.isRespawning.set(false);
+    this.hudGlitch.set(false);
+    this.showParatrooper.set(false);
+    this.trajectoryIndex.set((this.trajectoryIndex() % 3) + 1);
+
+    if (this.isBrowser) {
+      this.startUfoCycle();
+    }
+  }
+
+  private clearPendingTimers(): void {
+    if (this.flightTimer) clearTimeout(this.flightTimer);
+    if (this.messageTimer) clearTimeout(this.messageTimer);
+    if (this.crashTimer) clearTimeout(this.crashTimer);
+    if (this.paratrooperEndTimer) clearTimeout(this.paratrooperEndTimer);
+    if (this.respawnTimer) clearTimeout(this.respawnTimer);
+    if (this.glitchTimer) clearTimeout(this.glitchTimer);
+    if (this.paratrooperTimer) clearTimeout(this.paratrooperTimer);
+
+    this.flightTimer = undefined;
+    this.messageTimer = undefined;
+    this.crashTimer = undefined;
+    this.paratrooperEndTimer = undefined;
+    this.respawnTimer = undefined;
+    this.glitchTimer = undefined;
+    this.paratrooperTimer = undefined;
+  }
+
   private playShotSound(): void {
     if (!this.isBrowser || !this.themeService.soundEnabled() || !this.shotSound) return;
 
     this.shotSound.currentTime = 0;
-    this.shotSound.play().catch(() => undefined);
+
+    const playPromise = this.shotSound.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(() => undefined);
+    }
   }
 
   private triggerHudGlitch(): void {
