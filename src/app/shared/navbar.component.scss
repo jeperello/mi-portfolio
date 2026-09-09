@@ -8,7 +8,6 @@
   height: 70px;
   display: flex;
   align-items: center;
-  overflow: visible; /* IMPORTANTE: Permite que el tooltip sobresalga */
 }
 .navbar-logo {
   display: flex;
@@ -44,7 +43,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  overflow: visible; /* IMPORTANTE: Permite que el tooltip sobresalga */
 }
 
 .navbar-identity {
@@ -83,41 +81,6 @@
     align-items: center;
     gap: 0.75rem;
     padding-left: 0.25rem;
-  }
-
-  .nav-item-relative {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  .nav-tooltip {
-    position: absolute;
-    top: 130%; /* Justo debajo del texto */
-    left: 50%;
-    transform: translateX(-50%);
-    background: #38bdf8; // Color cian
-    color: #0f172a; // Texto oscuro sobre cian
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
-    animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 1001;
-
-    .tooltip-arrow {
-      position: absolute;
-      top: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      border-bottom: 6px solid #38bdf8;
-    }
   }
 
   li {

@@ -33,19 +33,13 @@
            routerLinkActive="active" 
            (click)="isMenuOpen.set(false)">Mapa Semántico</a>
       </li>
-      <li class="nav-item-relative">
+      <li>
         <a routerLink="/blog" 
            appTracker="nav-blog"
            routerLinkActive="active" 
-           (mouseenter)="hideTooltip()" (click)="hideTooltip(); isMenuOpen.set(false)">
+           (click)="isMenuOpen.set(false)">
           Mi Blog
         </a>
-        @if (showBlogTooltip()) {
-          <div class="nav-tooltip">
-            ¡Nuevo Post! ✍️
-            <div class="tooltip-arrow"></div>
-          </div>
-        }
       </li>
       <li><a routerLink="/about" 
              appTracker="nav-about"
