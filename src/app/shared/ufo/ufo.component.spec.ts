@@ -79,6 +79,23 @@ describe('UfoComponent', () => {
     expect(component.isCrashing()).toBe(false);
   });
 
+  it('debe renderizar el paracaidista dentro del OVNI cuando el alien sale al alcanzar 3/3 impactos', () => {
+    component.onUfoClick(new MouseEvent('click')); // 1
+    component.onUfoClick(new MouseEvent('click')); // 2
+    component.onUfoClick(new MouseEvent('click')); // 3
+
+    expect(component.showParatrooper()).toBe(false);
+
+    vi.advanceTimersByTime(400);
+    fixture.detectChanges();
+
+    expect(component.showParatrooper()).toBe(true);
+
+    const wrapper = fixture.nativeElement.querySelector('.ufo-wrapper');
+    expect(wrapper).not.toBeNull();
+    expect(wrapper.querySelector('.alien-paratrooper')).not.toBeNull();
+  });
+
   it('debe activar la secuencia de caída cómica, eyección y descenso ultra lento del paracaidista al alcanzar 3/3 impactos', () => {
     component.onUfoClick(new MouseEvent('click')); // 1
     component.onUfoClick(new MouseEvent('click')); // 2
@@ -93,10 +110,15 @@ describe('UfoComponent', () => {
     vi.advanceTimersByTime(400);
     expect(component.showParatrooper()).toBe(true);
 
-    // El OVNI termina su caída rápida a los 4.6s y entra en respawn
+    // El OVNI termina su caída rápida a los 4.6s y pasa a respawn;
+    // el alien sigue activo durante ese tramo y desaparece luego con la secuencia completa.
     vi.advanceTimersByTime(4300);
     expect(component.isCrashing()).toBe(false);
     expect(component.isRespawning()).toBe(true);
+    expect(component.showParatrooper()).toBe(true);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.saucer-ship')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.alien-paratrooper')).not.toBeNull();
 
     // El paracaidista termina su descenso suave y lineal a los 11s
     vi.advanceTimersByTime(6500);

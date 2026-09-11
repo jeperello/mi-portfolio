@@ -15,6 +15,7 @@ export class UfoComponent implements OnInit, OnDestroy {
   private themeService = inject(ThemeService);
   private isBrowser = isPlatformBrowser(this.platformId);
   private shotSound?: HTMLAudioElement;
+  private crashSound?: HTMLAudioElement;
   private flightTimer: any;
   private messageTimer: any;
   private crashTimer: any;
@@ -92,6 +93,7 @@ export class UfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.isBrowser) {
       this.shotSound = new Audio('assets/sound/driken5482-retro-laser-1-236669.mp3');
+      this.crashSound = new Audio('assets/sound/freesound_community-what-are-you-doing-103117.mp3');
       this.startUfoCycle();
     }
   }
@@ -101,6 +103,9 @@ export class UfoComponent implements OnInit, OnDestroy {
     this.shotSound?.pause();
     this.shotSound?.removeAttribute('src');
     this.shotSound?.load();
+    this.crashSound?.pause();
+    this.crashSound?.removeAttribute('src');
+    this.crashSound?.load();
   }
 
   private startUfoCycle(): void {
@@ -164,6 +169,8 @@ export class UfoComponent implements OnInit, OnDestroy {
         this.isAlarmed.set(false);
       }, 3500);
     } else {
+      // sonido para Ali
+     //this.playCrashSound();
       this.triggerCrashSequence();
     }
   }
@@ -219,6 +226,17 @@ export class UfoComponent implements OnInit, OnDestroy {
     this.shotSound.currentTime = 0;
 
     const playPromise = this.shotSound.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(() => undefined);
+    }
+  }
+
+  private playCrashSound(): void {
+    if (!this.isBrowser || !this.themeService.soundEnabled() || !this.crashSound) return;
+
+    this.crashSound.currentTime = 0;
+
+    const playPromise = this.crashSound.play();
     if (playPromise && typeof playPromise.catch === 'function') {
       playPromise.catch(() => undefined);
     }
