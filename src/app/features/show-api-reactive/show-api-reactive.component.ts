@@ -22,6 +22,8 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
   metrics: ApiMetrics[] = [];
   technologies: ApiDescription[] = [];
   advantages: ApiDescription[] = [];
+  technologyLoadResults: LoadTestResult[] = [];
+  advantageLoadResults: LoadTestResult[] = [];
 
   numberOfConcurrentRequests: number = 10; // New property for load test
 
@@ -32,6 +34,22 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
   requestsCompleted: number = 0;
   loadTestElapsedTime: number = 0;
   private loadTestStartTime: number = 0;
+
+  private technologyLoadState = {
+    isLoading: false,
+    loadTestStatus: '',
+    requestsCompleted: 0,
+    loadTestElapsedTime: 0,
+    loadTestStartTime: 0
+  };
+
+  private advantageLoadState = {
+    isLoading: false,
+    loadTestStatus: '',
+    requestsCompleted: 0,
+    loadTestElapsedTime: 0,
+    loadTestStartTime: 0
+  };
 
   private subscriptions = new Subscription();
   private destroy$ = new Subject<void>(); // Used for managing subscriptions on destroy
@@ -101,22 +119,42 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
   }
 
   simulateTechnologiesLoad(): void {
-    this.runLoadTest('Tecnologías', () => this.reactiveApiService.getTechnologiesStream());
+    this.runLoadTest('Tecnologías', () => this.reactiveApiService.getTechnologiesStream(), 'technologies');
   }
 
   simulateAdvantagesLoad(): void {
-    this.runLoadTest('Ventajas', () => this.reactiveApiService.getAdvantagesStream());
+    this.runLoadTest('Ventajas', () => this.reactiveApiService.getAdvantagesStream(), 'advantages');
   }
 
-  private runLoadTest(testType: string, apiCallFactory: () => Observable<ApiDescription>): void {
-    this.resetLoadTestState();
-    this.isLoading = true;
-    this.loadTestStatus = `Iniciando simulación de carga para ${testType}...`;
-    this.loadTestStartTime = performance.now();
+  private runLoadTest(
+    testType: string,
+    apiCallFactory: () => Observable<ApiDescription>,
+    target: 'technologies' | 'advantages' = 'advantages'
+  ): void {
+    const loadState = target === 'technologies' ? this.technologyLoadState : this.advantageLoadState;
 
-    const resultsSubject = new Subject<LoadTestResult>(); // Subject to emit live results to modal
+    this.resetLoadTestState(target);
+    loadState.isLoading = true;
+    loadState.loadTestStatus = `Iniciando simulación de carga para ${testType}...`;
+    loadState.loadTestStartTime = performance.now();
 
-    this.modalService.open(testType, this.numberOfConcurrentRequests, resultsSubject.asObservable());
+    if (target === 'technologies') {
+      this.technologyLoadResults = Array.from({ length: this.numberOfConcurrentRequests }, (_, index) => ({
+        status: 'pending',
+        description: 'Cargando...',
+        timeElapsed: 0,
+        requestIndex: index
+      }));
+    }
+
+    if (target === 'advantages') {
+      this.advantageLoadResults = Array.from({ length: this.numberOfConcurrentRequests }, (_, index) => ({
+        status: 'pending',
+        description: 'Cargando...',
+        timeElapsed: 0,
+        requestIndex: index
+      }));
+    }
 
     let completedRequestsCount = 0;
 
@@ -151,34 +189,62 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       requestObservables.subscribe({
         next: result => {
-          //console.log('Emitting result to modal:', result); // Added log
-          resultsSubject.next(result); // Emit result live to modal
+          if (target === 'technologies') {
+            if (result.requestIndex !== undefined && this.technologyLoadResults[result.requestIndex]) {
+              this.technologyLoadResults[result.requestIndex] = result;
+            }
+          }
+
+          if (target === 'advantages') {
+            if (result.requestIndex !== undefined && this.advantageLoadResults[result.requestIndex]) {
+              this.advantageLoadResults[result.requestIndex] = result;
+            }
+          }
+
+          this.cdr.detectChanges();
+
           completedRequestsCount++;
-          this.requestsCompleted = completedRequestsCount;
-          this.loadTestStatus = `Progreso: ${completedRequestsCount} / ${this.numberOfConcurrentRequests} solicitudes completadas.`;
+          loadState.requestsCompleted = completedRequestsCount;
+          loadState.loadTestStatus = `Progreso: ${completedRequestsCount} / ${this.numberOfConcurrentRequests} solicitudes completadas.`;
         },
         error: err => {
-          this.loadTestStatus = `Error general durante la simulación para ${testType}.`;
+          loadState.loadTestStatus = `Error general durante la simulación para ${testType}.`;
           console.error(`Error general en simulación de carga para ${testType}:`, err);
-          this.isLoading = false; // Stop loading on general error
-          resultsSubject.error(err); // Propagate error to modal
+          loadState.isLoading = false;
         },
         complete: () => {
-          this.loadTestStatus = `Simulación de carga para ${testType} completada.`;
-          this.isLoading = false;
-          this.loadTestElapsedTime = performance.now() - this.loadTestStartTime;
-          resultsSubject.complete(); // Complete the subject when all requests are done
+          loadState.loadTestStatus = `Simulación de carga para ${testType} completada.`;
+          loadState.isLoading = false;
+          loadState.loadTestElapsedTime = performance.now() - loadState.loadTestStartTime;
         }
       })
     );
   }
 
-  private resetLoadTestState(): void {
+  private resetLoadTestState(target: 'technologies' | 'advantages'): void {
+    const loadState = target === 'technologies' ? this.technologyLoadState : this.advantageLoadState;
+
     this.isLoading = false;
     this.loadTestStatus = '';
     this.requestsCompleted = 0;
     this.loadTestElapsedTime = 0;
     this.loadTestStartTime = 0;
+
+    loadState.isLoading = false;
+    loadState.loadTestStatus = '';
+    loadState.requestsCompleted = 0;
+    loadState.loadTestElapsedTime = 0;
+    loadState.loadTestStartTime = 0;
+
+    if (target === 'technologies') {
+      this.technologyLoadResults = [];
+    } else {
+      this.advantageLoadResults = [];
+    }
+  }
+
+  trackLoadResult(index: number, result: LoadTestResult): number {
+    return result.requestIndex ?? index;
   }
 
   ngOnDestroy(): void {

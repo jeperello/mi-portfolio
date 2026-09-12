@@ -56,42 +56,90 @@
   <!-- Grid para las tarjetas de información -->
   <div class="info-grid">
 
-    <div class="showcase-card">
+    <div class="showcase-card technology-panel">
       <h3>Tecnologías Utilizadas</h3>
       <div class="table-container">
-        <table>
+        <table class="load-results-table">
           <thead>
             <tr>
+              <th>#</th>
+              <th>Estado</th>
               <th>Descripción</th>
+              <th>Tiempo (ms)</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let tech of technologies">
-              <td>{{ tech.description }}</td>
-            </tr>
-            <tr *ngIf="technologies.length === 0">
-              <td class="waiting-message">Esperando datos de tecnologías...</td>
-            </tr>
+            <ng-container *ngIf="technologyLoadResults.length > 0; else technologiesList">
+              <tr *ngFor="let result of technologyLoadResults; trackBy: trackLoadResult" class="load-result-row">
+                <td class="request-index">{{ result.requestIndex + 1 }}</td>
+                <td>
+                  <span
+                    [ngClass]="{
+                      'status-pill': true,
+                      'pending': result.status === 'pending',
+                      'success': result.status === 'success',
+                      'error': result.status === 'error'
+                    }">
+                    {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
+                  </span>
+                </td>
+                <td class="description-cell">{{ result.description || 'N/A' }}</td>
+                <td class="time-cell">{{ result.timeElapsed | number:'1.0-2' }}</td>
+              </tr>
+            </ng-container>
+
+            <ng-template #technologiesList>
+              <tr *ngFor="let tech of technologies">
+                <td colspan="4">{{ tech.description }}</td>
+              </tr>
+              <tr *ngIf="technologies.length === 0">
+                <td colspan="4" class="waiting-message">Esperando datos de tecnologías...</td>
+              </tr>
+            </ng-template>
           </tbody>
         </table>
       </div>
     </div>
-    <div class="showcase-card">
+    <div class="showcase-card advantages-panel">
       <h3>Ventajas</h3>
       <div class="table-container">
-        <table>
+        <table class="load-results-table">
           <thead>
             <tr>
+              <th>#</th>
+              <th>Estado</th>
               <th>Descripción</th>
+              <th>Tiempo (ms)</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let advantage of advantages">
-              <td>{{ advantage.description }}</td>
-            </tr>
-            <tr *ngIf="advantages.length === 0">
-              <td class="waiting-message">Esperando datos de ventajas...</td>
-            </tr>
+            <ng-container *ngIf="advantageLoadResults.length > 0; else advantagesList">
+              <tr *ngFor="let result of advantageLoadResults; trackBy: trackLoadResult" class="load-result-row">
+                <td class="request-index">{{ result.requestIndex + 1 }}</td>
+                <td>
+                  <span
+                    [ngClass]="{
+                      'status-pill': true,
+                      'pending': result.status === 'pending',
+                      'success': result.status === 'success',
+                      'error': result.status === 'error'
+                    }">
+                    {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
+                  </span>
+                </td>
+                <td class="description-cell">{{ result.description || 'N/A' }}</td>
+                <td class="time-cell">{{ result.timeElapsed | number:'1.0-2' }}</td>
+              </tr>
+            </ng-container>
+
+            <ng-template #advantagesList>
+              <tr *ngFor="let advantage of advantages">
+                <td colspan="4">{{ advantage.description }}</td>
+              </tr>
+              <tr *ngIf="advantages.length === 0">
+                <td colspan="4" class="waiting-message">Esperando datos de ventajas...</td>
+              </tr>
+            </ng-template>
           </tbody>
         </table>
       </div>
