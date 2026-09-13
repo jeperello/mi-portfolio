@@ -48,3 +48,14 @@ jobs:
 
       - name: Run production build
         run: npm run build
+
+  deploy:
+    needs: [test, build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Deployment gate
+        run: echo "Deployment will run here only after tests and build succeed on main."
