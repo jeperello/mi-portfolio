@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, signal, computed, inject, PLATFORM_ID, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ThemeService } from '../../core/services/theme.service';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'app-ufo',
@@ -13,6 +14,7 @@ import { ThemeService } from '../../core/services/theme.service';
 export class UfoComponent implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private themeService = inject(ThemeService);
+  private analyticsService = inject(AnalyticsService);
   private isBrowser = isPlatformBrowser(this.platformId);
   private shotSound?: HTMLAudioElement;
   private crashSound?: HTMLAudioElement;
@@ -137,11 +139,18 @@ export class UfoComponent implements OnInit, OnDestroy {
   }
 
   onControlButtonClick(): void {
-    if (this.isStopped()) {
+    const isRestart = this.isStopped() || this.hitCount() >= this.maxHits;
+    if (isRestart) {
+      this.analyticsService.trackEvent('CLICK', 'UFO-RESTART', {
+        previousHits: this.hitCount()
+      });
       this.restartUfo();
       return;
     }
 
+    this.analyticsService.trackEvent('CLICK', 'UFO-STOP', {
+      hitsAtStop: this.hitCount()
+    });
     this.stopUfo();
   }
 
@@ -156,6 +165,12 @@ export class UfoComponent implements OnInit, OnDestroy {
     this.isBeamActive.set(false);
     this.isAlarmed.set(true);
 
+    this.analyticsService.trackEvent('CLICK', 'UFO-SHOT', {
+      hit: nextHits,
+      maxHits: this.maxHits,
+      isCrash: nextHits >= this.maxHits
+    });
+
     this.triggerHudGlitch();
 
     if (this.messageTimer) clearTimeout(this.messageTimer);
@@ -169,6 +184,9 @@ export class UfoComponent implements OnInit, OnDestroy {
         this.isAlarmed.set(false);
       }, 3500);
     } else {
+      this.analyticsService.trackEvent('CLICK', 'UFO-CRASH', {
+        totalHits: nextHits
+      });
       // sonido para Ali
      //this.playCrashSound();
       this.triggerCrashSequence();

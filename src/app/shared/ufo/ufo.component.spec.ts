@@ -1,16 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UfoComponent } from './ufo.component';
+import { AnalyticsService } from '../../core/services/analytics.service';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 describe('UfoComponent', () => {
   let component: UfoComponent;
   let fixture: ComponentFixture<UfoComponent>;
 
+  const mockAnalyticsService = {
+    trackEvent: vi.fn(),
+  };
+
   beforeEach(async () => {
     vi.useFakeTimers();
+    mockAnalyticsService.trackEvent.mockClear();
 
     await TestBed.configureTestingModule({
-      imports: [UfoComponent]
+      imports: [UfoComponent],
+      providers: [
+        { provide: AnalyticsService, useValue: mockAnalyticsService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UfoComponent);
@@ -37,22 +46,24 @@ describe('UfoComponent', () => {
     expect(component.controlButtonLabel()).toBe('STOP');
   });
 
-  it('debe alternar el control del OVNI entre STOP y RESTART', () => {
+  it('debe alternar el control del OVNI entre STOP y RESTART y registrar métricas', () => {
     expect(component.controlButtonLabel()).toBe('STOP');
 
     component.onControlButtonClick();
 
     expect(component.isStopped()).toBe(true);
     expect(component.controlButtonLabel()).toBe('RESTART');
+    expect(mockAnalyticsService.trackEvent).toHaveBeenCalledWith('CLICK', 'UFO-STOP', expect.any(Object));
 
     component.onControlButtonClick();
 
     expect(component.isStopped()).toBe(false);
     expect(component.hitCount()).toBe(0);
     expect(component.controlButtonLabel()).toBe('STOP');
+    expect(mockAnalyticsService.trackEvent).toHaveBeenCalledWith('CLICK', 'UFO-RESTART', expect.any(Object));
   });
 
-  it('debe registrar el primer impacto (1/3), mostrar queja y reanudar el vuelo tras 3.5s', () => {
+  it('debe registrar el primer impacto (1/3), emitir evento de disparo, mostrar queja y reanudar el vuelo tras 3.5s', () => {
     const mockEvent = new MouseEvent('click');
     const stopPropagationSpy = vi.spyOn(mockEvent, 'stopPropagation');
 
@@ -63,6 +74,11 @@ describe('UfoComponent', () => {
     expect(component.isAlarmed()).toBe(true);
     expect(component.hudStatusLabel()).toBe('SHIELD 66%');
     expect(component.message()).not.toBeNull();
+    expect(mockAnalyticsService.trackEvent).toHaveBeenCalledWith('CLICK', 'UFO-SHOT', {
+      hit: 1,
+      maxHits: 3,
+      isCrash: false
+    });
 
     // Avanzamos el timer de lectura del mensaje
     vi.advanceTimersByTime(3600);
@@ -105,6 +121,9 @@ describe('UfoComponent', () => {
     expect(component.isCrashing()).toBe(true);
     expect(component.controlButtonLabel()).toBe('RESTART');
     expect(component.hudStatusLabel()).toBe('CRITICAL DAMAGE!');
+    expect(mockAnalyticsService.trackEvent).toHaveBeenCalledWith('CLICK', 'UFO-CRASH', {
+      totalHits: 3
+    });
 
     // El marciano salta en paracaídas a los 300ms
     vi.advanceTimersByTime(400);
