@@ -76,9 +76,111 @@
 }
 
 @media (max-width: 768px) {
-  .api-showcase { padding: 2rem 1rem; }
-  .info-grid { grid-template-columns: 1fr; }
-  .button-group-full { flex-direction: column; }
+  .api-showcase {
+    padding: 1.25rem 0.85rem;
+    gap: 1.25rem;
+  }
+
+  .description-row {
+    order: 0;
+    margin-bottom: 0;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .button-group-full {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0.5rem 0;
+  }
+
+  .button-tech,
+  .button.primary {
+    width: 100%;
+    min-width: 0;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .showcase-card h3 {
+    font-size: 0.9rem;
+  }
+
+  .load-results-table,
+  .load-results-table thead,
+  .load-results-table tbody,
+  .load-results-table th,
+  .load-results-table td,
+  .load-results-table tr {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .load-results-table thead {
+    display: none;
+  }
+
+  .load-results-table tbody {
+    border-spacing: 0;
+  }
+
+  .load-results-table tbody tr {
+    margin-bottom: 0.75rem;
+    border-radius: 0.85rem;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(15, 23, 42, 0.38);
+  }
+
+  .load-results-table tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0.8rem;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .load-results-table tbody td:first-child,
+  .load-results-table tbody td:last-child {
+    border-radius: 0;
+  }
+
+  .load-results-table tbody td + td {
+    border-top: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
+  .load-results-table tbody td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    min-width: 5.4rem;
+  }
+
+  .description-cell,
+  .time-cell,
+  .request-index {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .time-cell {
+    text-align: left;
+  }
 }
 
 /* --- Personalización de Tarjetas --- */

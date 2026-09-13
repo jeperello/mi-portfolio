@@ -45,12 +45,12 @@
     <button (click)="simulateTechnologiesLoad()" 
             appTracker="btn-simular-tecnologias" 
             class="button button-tech">
-      Simular Carga en Tecnologías
+      Simular Carga de Tecnologías x 10
     </button>
     <button (click)="simulateAdvantagesLoad()" 
             appTracker="btn-simular-ventajas" 
             class="button primary">
-      Simular Carga en Ventajas
+      Simular Carga de Ventajas x 10
     </button>
   </div>
   <!-- Grid para las tarjetas de información -->
@@ -71,8 +71,8 @@
           <tbody>
             <ng-container *ngIf="technologyLoadResults.length > 0; else technologiesList">
               <tr *ngFor="let result of technologyLoadResults; trackBy: trackLoadResult" class="load-result-row">
-                <td class="request-index">{{ result.requestIndex + 1 }}</td>
-                <td>
+                <td class="request-index" data-label="#">{{ result.requestIndex + 1 }}</td>
+                <td data-label="Estado">
                   <span
                     [ngClass]="{
                       'status-pill': true,
@@ -83,8 +83,8 @@
                     {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
                   </span>
                 </td>
-                <td class="description-cell">{{ result.description || 'N/A' }}</td>
-                <td class="time-cell">{{ result.timeElapsed | number:'1.0-2' }}</td>
+                <td class="description-cell" data-label="Descripción">{{ result.description || 'N/A' }}</td>
+                <td class="time-cell" data-label="Tiempo">{{ result.timeElapsed | number:'1.0-2' }}</td>
               </tr>
             </ng-container>
 
@@ -115,8 +115,8 @@
           <tbody>
             <ng-container *ngIf="advantageLoadResults.length > 0; else advantagesList">
               <tr *ngFor="let result of advantageLoadResults; trackBy: trackLoadResult" class="load-result-row">
-                <td class="request-index">{{ result.requestIndex + 1 }}</td>
-                <td>
+                <td class="request-index" data-label="#">{{ result.requestIndex + 1 }}</td>
+                <td data-label="Estado">
                   <span
                     [ngClass]="{
                       'status-pill': true,
@@ -127,8 +127,8 @@
                     {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
                   </span>
                 </td>
-                <td class="description-cell">{{ result.description || 'N/A' }}</td>
-                <td class="time-cell">{{ result.timeElapsed | number:'1.0-2' }}</td>
+                <td class="description-cell" data-label="Descripción">{{ result.description || 'N/A' }}</td>
+                <td class="time-cell" data-label="Tiempo">{{ result.timeElapsed | number:'1.0-2' }}</td>
               </tr>
             </ng-container>
 
