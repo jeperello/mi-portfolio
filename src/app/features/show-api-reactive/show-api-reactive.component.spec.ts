@@ -94,4 +94,34 @@ describe('ShowApiReactiveComponent', () => {
 
     expect(advantagesPanel.scrollIntoView).toHaveBeenCalledTimes(1);
   });
+
+  it('should hide panels and display warming component when isWarming is true', () => {
+    component.isWarming.set(true);
+    fixture.detectChanges();
+
+    const warming = fixture.nativeElement.querySelector('app-api-warming');
+    const metricsRow = fixture.nativeElement.querySelector('.metrics-row');
+    const buttonGroup = fixture.nativeElement.querySelector('.button-group-full');
+    const infoGrid = fixture.nativeElement.querySelector('.info-grid');
+
+    expect(warming).toBeTruthy();
+    expect(metricsRow).toBeNull();
+    expect(buttonGroup).toBeNull();
+    expect(infoGrid).toBeNull();
+  });
+
+  it('should display panels and hide warming component when isWarming is false', () => {
+    component.isWarming.set(false);
+    fixture.detectChanges();
+
+    const warming = fixture.nativeElement.querySelector('app-api-warming');
+    const metricsRow = fixture.nativeElement.querySelector('.metrics-row');
+    const buttonGroup = fixture.nativeElement.querySelector('.button-group-full');
+    const infoGrid = fixture.nativeElement.querySelector('.info-grid');
+
+    expect(warming).toBeNull();
+    expect(metricsRow).toBeTruthy();
+    expect(buttonGroup).toBeTruthy();
+    expect(infoGrid).toBeTruthy();
+  });
 });

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef, ViewChild, ElementRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable, Subscription, forkJoin, from, map, of, catchError, finalize, range, Subject, mergeMap, takeUntil } from 'rxjs'; // Added Observable to imports
@@ -32,7 +32,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
 
   // Load Test Indicator properties
   isLoading: boolean = false;
-  isWarming: boolean = false; // Flag for cold start animation
+  readonly isWarming = signal(false); // Flag for cold start animation
   loadTestStatus: string = '';
   requestsCompleted: number = 0;
   loadTestElapsedTime: number = 0;
@@ -56,6 +56,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
   private destroy$ = new Subject<void>(); // Used for managing subscriptions on destroy
+  private warmingTimeout?: ReturnType<typeof setTimeout>;
 
   constructor(
     private reactiveApiService: ReactiveApiService,
@@ -64,10 +65,17 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    const stopWarming = () => {
+      if (this.warmingTimeout) {
+        clearTimeout(this.warmingTimeout);
+      }
+      this.isWarming.set(false);
+    };
+
     // Si en 1 segundo no hay datos, mostramos la animación de "Warming"
-    setTimeout(() => {
-      if (this.technologies.length === 0 && this.advantages.length === 0) {
-        this.isWarming = true;
+    this.warmingTimeout = setTimeout(() => {
+      if (this.technologies.length === 0 && this.advantages.length === 0 && this.metrics.length === 0) {
+        this.isWarming.set(true);
         this.cdr.detectChanges();
       }
     }, 1000);
@@ -75,6 +83,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
     // Suscripción al stream de métricas (infinito)
     this.subscriptions.add(
       this.reactiveApiService.getMetricsStream().subscribe(metric => {
+        stopWarming();
         this.metrics = [metric, ...this.metrics];
         // Limitamos el array para que no crezca indefinidamente en la UI
         if (this.metrics.length > 5) {
@@ -88,7 +97,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.reactiveApiService.getTechnologiesStream().subscribe({
         next: tech => {
-          this.isWarming = false; // Ocultamos el warming al recibir el primer dato
+          stopWarming();
           this.technologies = [...this.technologies, tech]; // Actualización inmutable
           this.cdr.detectChanges(); // Re-introduce change detection
         },
@@ -106,7 +115,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.reactiveApiService.getAdvantagesStream().subscribe({
         next: advantage => {
-          this.isWarming = false; // Ocultamos el warming al recibir el primer dato
+          stopWarming();
           this.advantages = [...this.advantages, advantage]; // Actualización inmutable
           this.cdr.detectChanges(); // Re-introduce change detection
         },
@@ -281,6 +290,9 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.warmingTimeout) {
+      clearTimeout(this.warmingTimeout);
+    }
     this.subscriptions.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();

@@ -5,146 +5,149 @@
     <span aria-hidden="true">←</span>
     Volver a Proyectos
   </a>
+  @if (isWarming()) {
+    <app-api-warming></app-api-warming>
+  }
 
-  <app-api-warming *ngIf="isWarming"></app-api-warming>
-
-  <!-- Fila superior para la tabla de métricas -->
-  <div class="metrics-row">
-    <div class="showcase-card">
-      <h3>Métricas de Memoria</h3>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th class="text-right">Memoria Usada (MB)</th>
-              <th class="text-right">Memoria Libre (MB)</th>
-              <th class="text-right">Memoria Total (MB)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let metric of metrics">
-              <td class="text-right">
-                <span class="live-number">{{ metric.usedMemoryMB }}</span>
-              </td>
-              <td class="text-right">
-                <span class="live-number">{{ metric.freeMemoryMB }}</span>
-              </td>
-              <td class="text-right">
-                <span class="live-number">{{ metric.totalMemoryMB }}</span>
-              </td>
-            </tr>
-            <tr *ngIf="metrics.length === 0">
-              <td colspan="3" class="waiting-message">Esperando datos de métricas...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div class="button-group-full">
-    <button (click)="simulateTechnologiesLoad()" 
-            appTracker="btn-simular-tecnologias" 
-            class="button button-tech">
-      Simular Carga de Tecnologías x 10
-    </button>
-    <button (click)="simulateAdvantagesLoad()" 
-            appTracker="btn-simular-ventajas" 
-            class="button primary">
-      Simular Carga de Ventajas x 10
-    </button>
-  </div>
-  <!-- Grid para las tarjetas de información -->
-  <div class="info-grid">
-
-    <div #technologiesPanel class="showcase-card technology-panel">
-      <h3>Tecnologías Utilizadas</h3>
-      <div class="table-container">
-        <table class="load-results-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Estado</th>
-              <th>Descripción</th>
-              <th>Tiempo (ms)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngIf="technologyLoadResults.length > 0; else technologiesList">
-              <tr *ngFor="let result of technologyLoadResults; trackBy: trackLoadResult" class="load-result-row">
-                <td class="request-index" data-label="#">{{ result.requestIndex + 1 }}</td>
-                <td data-label="Estado">
-                  <span
-                    [ngClass]="{
-                      'status-pill': true,
-                      'pending': result.status === 'pending',
-                      'success': result.status === 'success',
-                      'error': result.status === 'error'
-                    }">
-                    {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
-                  </span>
+  @if (!isWarming()) {
+    <!-- Fila superior para la tabla de métricas -->
+    <div class="metrics-row">
+      <div class="showcase-card">
+        <h3>Métricas de Memoria</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th class="text-right">Memoria Usada (MB)</th>
+                <th class="text-right">Memoria Libre (MB)</th>
+                <th class="text-right">Memoria Total (MB)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let metric of metrics">
+                <td class="text-right">
+                  <span class="live-number">{{ metric.usedMemoryMB }}</span>
                 </td>
-                <td class="description-cell" data-label="Descripción">{{ result.description || 'N/A' }}</td>
-                <td class="time-cell" data-label="Tiempo">{{ result.timeElapsed | number:'1.0-2' }}</td>
-              </tr>
-            </ng-container>
-
-            <ng-template #technologiesList>
-              <tr *ngFor="let tech of technologies">
-                <td colspan="4">{{ tech.description }}</td>
-              </tr>
-              <tr *ngIf="technologies.length === 0">
-                <td colspan="4" class="waiting-message">Esperando datos de tecnologías...</td>
-              </tr>
-            </ng-template>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div #advantagesPanel class="showcase-card advantages-panel">
-      <h3>Ventajas</h3>
-      <div class="table-container">
-        <table class="load-results-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Estado</th>
-              <th>Descripción</th>
-              <th>Tiempo (ms)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngIf="advantageLoadResults.length > 0; else advantagesList">
-              <tr *ngFor="let result of advantageLoadResults; trackBy: trackLoadResult" class="load-result-row">
-                <td class="request-index" data-label="#">{{ result.requestIndex + 1 }}</td>
-                <td data-label="Estado">
-                  <span
-                    [ngClass]="{
-                      'status-pill': true,
-                      'pending': result.status === 'pending',
-                      'success': result.status === 'success',
-                      'error': result.status === 'error'
-                    }">
-                    {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
-                  </span>
+                <td class="text-right">
+                  <span class="live-number">{{ metric.freeMemoryMB }}</span>
                 </td>
-                <td class="description-cell" data-label="Descripción">{{ result.description || 'N/A' }}</td>
-                <td class="time-cell" data-label="Tiempo">{{ result.timeElapsed | number:'1.0-2' }}</td>
+                <td class="text-right">
+                  <span class="live-number">{{ metric.totalMemoryMB }}</span>
+                </td>
               </tr>
-            </ng-container>
-
-            <ng-template #advantagesList>
-              <tr *ngFor="let advantage of advantages">
-                <td colspan="4">{{ advantage.description }}</td>
+              <tr *ngIf="metrics.length === 0">
+                <td colspan="3" class="waiting-message">Esperando datos de métricas...</td>
               </tr>
-              <tr *ngIf="advantages.length === 0">
-                <td colspan="4" class="waiting-message">Esperando datos de ventajas...</td>
-              </tr>
-            </ng-template>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
+    <div class="button-group-full">
+      <button (click)="simulateTechnologiesLoad()" 
+              appTracker="btn-simular-tecnologias" 
+              class="button button-tech">
+        Simular Carga de Tecnologías x 10
+      </button>
+      <button (click)="simulateAdvantagesLoad()" 
+              appTracker="btn-simular-ventajas" 
+              class="button primary">
+        Simular Carga de Ventajas x 10
+      </button>
+    </div>
+    <!-- Grid para las tarjetas de información -->
+    <div class="info-grid">
+
+      <div #technologiesPanel class="showcase-card technology-panel">
+        <h3>Tecnologías Utilizadas</h3>
+        <div class="table-container">
+          <table class="load-results-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+                <th>Tiempo (ms)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngIf="technologyLoadResults.length > 0; else technologiesList">
+                <tr *ngFor="let result of technologyLoadResults; trackBy: trackLoadResult" class="load-result-row">
+                  <td class="request-index" data-label="#">{{ result.requestIndex + 1 }}</td>
+                  <td data-label="Estado">
+                    <span
+                      [ngClass]="{
+                        'status-pill': true,
+                        'pending': result.status === 'pending',
+                        'success': result.status === 'success',
+                        'error': result.status === 'error'
+                      }">
+                      {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
+                    </span>
+                  </td>
+                  <td class="description-cell" data-label="Descripción">{{ result.description || 'N/A' }}</td>
+                  <td class="time-cell" data-label="Tiempo">{{ result.timeElapsed | number:'1.0-2' }}</td>
+                </tr>
+              </ng-container>
+
+              <ng-template #technologiesList>
+                <tr *ngFor="let tech of technologies">
+                  <td colspan="4">{{ tech.description }}</td>
+                </tr>
+                <tr *ngIf="technologies.length === 0">
+                  <td colspan="4" class="waiting-message">Esperando datos de tecnologías...</td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div #advantagesPanel class="showcase-card advantages-panel">
+        <h3>Ventajas</h3>
+        <div class="table-container">
+          <table class="load-results-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+                <th>Tiempo (ms)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngIf="advantageLoadResults.length > 0; else advantagesList">
+                <tr *ngFor="let result of advantageLoadResults; trackBy: trackLoadResult" class="load-result-row">
+                  <td class="request-index" data-label="#">{{ result.requestIndex + 1 }}</td>
+                  <td data-label="Estado">
+                    <span
+                      [ngClass]="{
+                        'status-pill': true,
+                        'pending': result.status === 'pending',
+                        'success': result.status === 'success',
+                        'error': result.status === 'error'
+                      }">
+                      {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
+                    </span>
+                  </td>
+                  <td class="description-cell" data-label="Descripción">{{ result.description || 'N/A' }}</td>
+                  <td class="time-cell" data-label="Tiempo">{{ result.timeElapsed | number:'1.0-2' }}</td>
+                </tr>
+              </ng-container>
+
+              <ng-template #advantagesList>
+                <tr *ngFor="let advantage of advantages">
+                  <td colspan="4">{{ advantage.description }}</td>
+                </tr>
+                <tr *ngIf="advantages.length === 0">
+                  <td colspan="4" class="waiting-message">Esperando datos de ventajas...</td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  }
 
   <!-- New: Load Test Controls
   <div class="load-test-controls">
