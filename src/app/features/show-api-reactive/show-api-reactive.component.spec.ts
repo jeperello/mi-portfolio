@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
 import { provideRouter } from '@angular/router';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import { ReactiveApiService } from '../../core/services/reactive-api.service';
 import { ModalService } from '../../shared/modal';
@@ -41,6 +41,10 @@ describe('ShowApiReactiveComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -63,5 +67,31 @@ describe('ShowApiReactiveComponent', () => {
 
     expect(rows.length).toBe(component.numberOfConcurrentRequests);
     expect(rows[0].textContent).toContain('Ventaja mock');
+  });
+
+  it('should scroll to the technologies panel when simulating technologies load', () => {
+    const technologiesPanel = component.technologiesPanel?.nativeElement as HTMLElement & {
+      scrollIntoView?: () => void;
+    };
+
+    technologiesPanel.scrollIntoView = vi.fn();
+
+    component.simulateTechnologiesLoad();
+    fixture.detectChanges();
+
+    expect(technologiesPanel.scrollIntoView).toHaveBeenCalledTimes(1);
+  });
+
+  it('should scroll to the advantages panel when simulating advantages load', () => {
+    const advantagesPanel = component.advantagesPanel?.nativeElement as HTMLElement & {
+      scrollIntoView?: () => void;
+    };
+
+    advantagesPanel.scrollIntoView = vi.fn();
+
+    component.simulateAdvantagesLoad();
+    fixture.detectChanges();
+
+    expect(advantagesPanel.scrollIntoView).toHaveBeenCalledTimes(1);
   });
 });

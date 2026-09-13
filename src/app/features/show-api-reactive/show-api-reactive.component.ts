@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable, Subscription, forkJoin, from, map, of, catchError, finalize, range, Subject, mergeMap, takeUntil } from 'rxjs'; // Added Observable to imports
@@ -18,6 +18,9 @@ import { ExpandableDescriptionComponent } from '../../shared/expandable-descript
   styleUrls: ['./show-api-reactive.component.css']
 })
 export class ShowApiReactiveComponent implements OnInit, OnDestroy {
+
+  @ViewChild('technologiesPanel') technologiesPanel?: ElementRef<HTMLElement>;
+  @ViewChild('advantagesPanel') advantagesPanel?: ElementRef<HTMLElement>;
 
   metrics: ApiMetrics[] = [];
   technologies: ApiDescription[] = [];
@@ -120,10 +123,40 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
 
   simulateTechnologiesLoad(): void {
     this.runLoadTest('Tecnologías', () => this.reactiveApiService.getTechnologiesStream(), 'technologies');
+    this.scrollToPanel('technologies');
   }
 
   simulateAdvantagesLoad(): void {
     this.runLoadTest('Ventajas', () => this.reactiveApiService.getAdvantagesStream(), 'advantages');
+    this.scrollToPanel('advantages');
+  }
+
+  private scrollToPanel(target: 'technologies' | 'advantages'): void {
+    const panel = target === 'technologies' ? this.technologiesPanel : this.advantagesPanel;
+
+    if (!panel) {
+      return;
+    }
+
+    const element = panel.nativeElement as HTMLElement & {
+      scrollIntoView?: (options?: ScrollIntoViewOptions) => void;
+    };
+
+    if (typeof element.scrollIntoView === 'function') {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+      return;
+    }
+
+    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+      const rect = element.getBoundingClientRect();
+      window.scrollTo({
+        top: window.scrollY + rect.top - 24,
+        behavior: 'smooth'
+      });
+    }
   }
 
   private runLoadTest(
