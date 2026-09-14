@@ -284,6 +284,54 @@
   background: rgba(16, 185, 129, 0.08);
 }
 
+.comparison-summary {
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.summary-item {
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.summary-item.platform {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.summary-item.virtual {
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.summary-engine {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin-bottom: 0.2rem;
+}
+
+.summary-item strong {
+  font-size: 1.1rem;
+  color: #f8fafc;
+}
+
+.summary-winner {
+  margin: 0.75rem 0 0;
+  font-weight: 700;
+  color: #c4b5fd;
+}
+
 /* Alertas */
 .alert {
   padding: 1rem;

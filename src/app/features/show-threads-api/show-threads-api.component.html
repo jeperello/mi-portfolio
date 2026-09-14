@@ -72,6 +72,23 @@
         <p>{{ comparisonMessage }}</p>
       </div>
 
+      <div *ngIf="comparisonSummary" class="comparison-summary">
+        <span class="comparison-label">Resumen de rendimiento</span>
+        <div class="summary-grid">
+          <div class="summary-item platform">
+            <span class="summary-engine">Platform Threads</span>
+            <strong>{{ formatMs(comparisonSummary.platform) }}</strong>
+          </div>
+          <div class="summary-item virtual">
+            <span class="summary-engine">Virtual Threads</span>
+            <strong>{{ formatMs(comparisonSummary.virtual) }}</strong>
+          </div>
+        </div>
+        <p class="summary-winner">
+          Ganador: {{ comparisonSummary.winner === 'platform' ? 'Platform Threads' : 'Virtual Threads' }}
+        </p>
+      </div>
+
       <div class="engine-duel">
         <!-- Motor Tradicional -->
         <div class="engine-card platform">

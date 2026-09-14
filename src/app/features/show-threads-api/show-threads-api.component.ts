@@ -24,6 +24,11 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
   public isComparisonActive: boolean = false;
   public comparisonState: 'idle' | 'platform' | 'virtual' | 'finished' = 'idle';
   public comparisonMessage: string = '';
+  public comparisonSummary: {
+    platform: number | null;
+    virtual: number | null;
+    winner: 'platform' | 'virtual' | null;
+  } | null = null;
 
   private metricsSubscription?: Subscription;
   private destroy$ = new Subject<void>();
@@ -32,6 +37,13 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
   private comparisonTargetCount: number | null = null;
   private comparisonStablePolls = 0;
   private readonly comparisonStablePollsRequired = 2;
+  private comparisonRuns: Array<{
+    engine: 'platform' | 'virtual';
+    startedAt: number;
+    finishedAt: number | null;
+    elapsedMs: number | null;
+    count: number;
+  }> = [];
 
   constructor(private threadsService: ThreadsApiService, private cdr: ChangeDetectorRef) { }
 
@@ -79,9 +91,11 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
     this.isComparisonActive = false;
     this.comparisonState = 'idle';
     this.comparisonMessage = '';
+    this.comparisonSummary = null;
     this.activeComparisonEngine = null;
     this.comparisonTargetCount = null;
     this.comparisonStablePolls = 0;
+    this.comparisonRuns = [];
   }
 
   compareLogs(countValue: string): void {
@@ -102,6 +116,8 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
     this.comparisonTargetCount = count;
     this.comparisonStablePolls = 0;
     this.comparisonState = 'platform';
+    this.comparisonSummary = null;
+    this.comparisonRuns = [];
     this.comparisonMessage = `Comparación iniciada: lanzando Platform Threads con ${count} logs.`;
 
     this.runComparisonStep(count, 'platform');
@@ -116,6 +132,16 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
 
   private runComparisonStep(count: number, engineType: 'platform' | 'virtual'): void {
     this.comparisonStablePolls = 0;
+    const startedAt = Date.now();
+
+    this.comparisonRuns = this.comparisonRuns.filter((run) => run.engine !== engineType);
+    this.comparisonRuns.push({
+      engine: engineType,
+      startedAt,
+      finishedAt: null,
+      elapsedMs: null,
+      count
+    });
 
     this.threadsService.ingestLogs({ count, engineType }).subscribe({
       next: () => {
@@ -166,6 +192,12 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
 
           if (this.activeComparisonEngine === 'platform') {
             const nextCount = this.comparisonTargetCount;
+            const platformRun = this.comparisonRuns.find((run) => run.engine === 'platform');
+
+            if (platformRun) {
+              platformRun.finishedAt = Date.now();
+              platformRun.elapsedMs = platformRun.finishedAt - platformRun.startedAt;
+            }
 
             if (nextCount === null) {
               this.clearComparisonPoll();
@@ -183,6 +215,14 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
           }
 
           const finishedCount = this.comparisonTargetCount ?? 0;
+          const virtualRun = this.comparisonRuns.find((run) => run.engine === 'virtual');
+
+          if (virtualRun) {
+            virtualRun.finishedAt = Date.now();
+            virtualRun.elapsedMs = virtualRun.finishedAt - virtualRun.startedAt;
+          }
+
+          this.comparisonSummary = this.buildComparisonSummary();
           this.clearComparisonPoll();
           this.isComparisonActive = false;
           this.comparisonState = 'finished';
@@ -205,6 +245,37 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
         }
       });
     }, 2000);
+  }
+
+  formatMs(value: number | null): string {
+    if (value === null || value === undefined) {
+      return '—';
+    }
+
+    return value < 1000 ? `${value} ms` : `${(value / 1000).toFixed(2)} s`;
+  }
+
+  private buildComparisonSummary(): {
+    platform: number | null;
+    virtual: number | null;
+    winner: 'platform' | 'virtual' | null;
+  } {
+    const platform = this.comparisonRuns.find((run) => run.engine === 'platform')?.elapsedMs ?? null;
+    const virtual = this.comparisonRuns.find((run) => run.engine === 'virtual')?.elapsedMs ?? null;
+
+    if (platform === null || virtual === null) {
+      return {
+        platform,
+        virtual,
+        winner: null
+      };
+    }
+
+    return {
+      platform,
+      virtual,
+      winner: platform <= virtual ? 'platform' : 'virtual'
+    };
   }
 
   ingestLogs(countValue: string, engineType: 'virtual' | 'platform'): void {
