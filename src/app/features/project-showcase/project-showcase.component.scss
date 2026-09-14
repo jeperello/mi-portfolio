@@ -236,15 +236,37 @@
   p {
     color: rgba(203, 213, 225, 0.82);
     font-size: 0.95rem;
-    &:hover {
-      background: rgba(56, 189, 248, 0.4);
-    }
+    line-height: 1.6;
+  }
+}
 
-    &.active {
-      background: var(--primary-blue);
-      width: 30px;
-      border-radius: 5px;
-    }
+.card-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.85rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.card-technologies {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  h4 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .technologies-list {
+    margin-bottom: 0;
   }
 }
 
@@ -267,7 +289,7 @@
   flex-wrap: wrap;
   gap: 0.35rem;
   margin-top: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 
   li {
     background: rgba(15, 23, 42, 0.5);
@@ -287,12 +309,6 @@
       color: #38bdf8;
     }
   }
-}
-
-.card-actions {
-  display: flex;
-  gap: 0.85rem;
-  margin-top: auto;
 }
 
 .button {
@@ -414,15 +430,24 @@
     font-size: 1.15rem; /* Slightly smaller title font for small screens */
   }
 
+  .card-actions {
+    margin: 1rem 0 1.25rem;
+  }
+
+  .card-technologies {
+    padding-top: 0.75rem;
+  }
+
   .technologies-list li {
     padding: 0.25rem 0.6rem; /* Smaller badges */
     font-size: 0.7rem;
   }
 
   .button {
-    min-height: 44px;
-    padding: 0.65rem 0.8rem;
-    font-size: 0.85rem;
+    min-height: 42px;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.8rem;
+    border-radius: 10px;
   }
 
   .carousel-container {
@@ -439,19 +464,30 @@
   .nav-button {
     grid-row: 1;
     width: 100%;
-    height: 44px;
+    height: 52px;
     border-radius: 12px;
     gap: 0.35rem;
+    background: rgba(15, 23, 42, 0.86);
+    border-color: rgba(56, 189, 248, 0.45);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.28);
+
+    &:hover:not(:disabled) {
+      background: rgba(56, 189, 248, 0.16);
+      border-color: rgba(56, 189, 248, 0.75);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(56, 189, 248, 0.18);
+    }
 
     .arrow {
-      font-size: 1.75rem;
+      font-size: 2.1rem;
       margin-top: -0.15rem;
     }
 
     .nav-label {
       display: inline;
-      font-size: 0.85rem;
-      font-weight: 600;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
     }
   }
 
