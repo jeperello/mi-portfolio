@@ -3,39 +3,59 @@
        [class.hud-glitch]="hudGlitch()"
        [class.hud-warning]="hitCount() === 1 || hitCount() === 2"
        [class.hud-critical]="hitCount() >= 3"
+       [class.is-hidden]="!isHudVisible()"
        aria-label="Contador táctico de impactos al OVNI">
-  <div class="hud-scanline"></div>
-  <div class="hud-inner">
-    <div class="hud-header">
-      <span class="hud-icon" aria-hidden="true">
-        @if (hitCount() === 0) { 🛸 }
-        @else if (hitCount() < 3) { 💥 }
-        @else { 🚨 }
-      </span>
-      <span class="hud-tag">UFO TARGET</span>
-      <span class="hud-score">{{ hitCount() }}/{{ maxHits }}</span>
-    </div>
-
-    <!-- Barra de Pips / Escudo -->
-    <div class="hud-pips" aria-hidden="true">
-      <span class="pip" [class.active]="hitCount() >= 1"></span>
-      <span class="pip" [class.active]="hitCount() >= 2"></span>
-      <span class="pip" [class.active]="hitCount() >= 3" [class.danger]="hitCount() >= 3"></span>
-      <span class="hud-status-text">{{ hudStatusLabel() }}</span>
-    </div>
-
+  @if (isHudVisible()) {
     <button
       type="button"
-      class="ufo-control-btn"
-      [class.is-restart]="controlButtonLabel() === 'RESTART'"
-      (click)="onControlButtonClick()"
-      [attr.aria-label]="controlButtonLabel() === 'RESTART' ? 'Reiniciar OVNI' : 'Detener OVNI'">
-      <span class="ufo-control-btn__icon" aria-hidden="true">
-        {{ controlButtonLabel() === 'RESTART' ? '⟲' : '■' }}
-      </span>
-      <span class="ufo-control-btn__text">{{ controlButtonLabel() }}</span>
+      class="ufo-hud-toggle"
+      (click)="toggleHudVisibility()"
+      aria-label="Ocultar panel del OVNI">
+      HIDE
     </button>
-  </div>
+    <div class="hud-scanline"></div>
+    <div class="hud-inner">
+      <div class="hud-header">
+        <span class="hud-icon" aria-hidden="true">
+          @if (hitCount() === 0) { 🛸 }
+          @else if (hitCount() < 3) { 💥 }
+          @else { 🚨 }
+        </span>
+        <span class="hud-tag">UFO TARGET</span>
+        <span class="hud-score">{{ hitCount() }}/{{ maxHits }}</span>
+      </div>
+
+      <!-- Barra de Pips / Escudo -->
+      <div class="hud-pips" aria-hidden="true">
+        <span class="pip" [class.active]="hitCount() >= 1"></span>
+        <span class="pip" [class.active]="hitCount() >= 2"></span>
+        <span class="pip" [class.active]="hitCount() >= 3" [class.danger]="hitCount() >= 3"></span>
+        <span class="hud-status-text">{{ hudStatusLabel() }}</span>
+      </div>
+
+      <div class="hud-actions">
+        <button
+          type="button"
+          class="ufo-control-btn"
+          [class.is-restart]="controlButtonLabel() === 'RESTART'"
+          (click)="onControlButtonClick()"
+          [attr.aria-label]="controlButtonLabel() === 'RESTART' ? 'Reiniciar OVNI' : 'Detener OVNI'">
+          <span class="ufo-control-btn__icon" aria-hidden="true">
+            {{ controlButtonLabel() === 'RESTART' ? '⟲' : '■' }}
+          </span>
+          <span class="ufo-control-btn__text">{{ controlButtonLabel() }}</span>
+        </button>
+      </div>
+    </div>
+  } @else {
+    <button
+      type="button"
+      class="ufo-hud-toggle collapsed"
+      (click)="toggleHudVisibility()"
+      aria-label="Mostrar panel del OVNI">
+      SHOW
+    </button>
+  }
 </aside>
 
 <!-- OVNI Cósmico (el paracaidista sale desde dentro del OVNI y ambos desaparecen juntos al final) -->
