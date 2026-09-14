@@ -34,7 +34,7 @@ export class UfoComponent implements OnInit, OnDestroy {
   isAlarmed = signal<boolean>(false);
   isBeamActive = signal<boolean>(false);
   message = signal<string | null>(null);
-  isHudVisible = signal<boolean>(true);
+  isHudVisible = signal<boolean>(false);
 
   // Contador de impactos y estados de combate Arcade
   hitCount = signal<number>(0);

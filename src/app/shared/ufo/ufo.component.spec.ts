@@ -35,15 +35,17 @@ describe('UfoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('debe inicializar con trayectoria 1, 0 impactos y HUD en estado listo', () => {
+  it('debe inicializar con trayectoria 1, 0 impactos y HUD oculto por defecto', () => {
     expect(component.trajectoryIndex()).toBe(1);
     expect(component.isAlarmed()).toBe(false);
     expect(component.hitCount()).toBe(0);
     expect(component.isCrashing()).toBe(false);
     expect(component.showParatrooper()).toBe(false);
     expect(component.isRespawning()).toBe(false);
+    expect(component.isHudVisible()).toBe(false);
     expect(component.hudStatusLabel()).toBe('TARGET READY');
     expect(component.controlButtonLabel()).toBe('STOP');
+    expect(fixture.nativeElement.querySelector('.ufo-hud-toggle.collapsed')).not.toBeNull();
   });
 
   it('debe alternar el control del OVNI entre STOP y RESTART y registrar métricas', () => {
