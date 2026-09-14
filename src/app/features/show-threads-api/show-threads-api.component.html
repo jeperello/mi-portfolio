@@ -51,11 +51,25 @@
       <div class="stress-config">
         <div class="form-group">
           <label for="log-amount">Carga de Logs (Sugerido: 1000 - 5000):</label>
-          <div class="input-wrapper">
-            <input #logCountInput id="log-amount" type="number" value="1000" class="log-input" min="1" max="5000" step="100">
-            <span class="input-unit">logs</span>
+          <div class="compare-actions">
+            <div class="input-wrapper">
+              <input #logCountInput id="log-amount" type="number" value="1000" class="log-input" min="1" max="5000" step="100" [disabled]="isComparisonActive">
+              <span class="input-unit">logs</span>
+            </div>
+            <button class="button button-compare"
+                    appTracker="btn-compare-rendimientos"
+                    type="button"
+                    [disabled]="isComparisonActive"
+                    (click)="compareLogs(logCountInput.value)">
+              Comparar rendimientos
+            </button>
           </div>
         </div>
+      </div>
+
+      <div *ngIf="comparisonMessage" class="comparison-status" [class.is-finished]="comparisonState === 'finished'">
+        <span class="comparison-label">Estado de comparación</span>
+        <p>{{ comparisonMessage }}</p>
       </div>
 
       <div class="engine-duel">
@@ -66,6 +80,7 @@
           <p class="engine-desc">Hilos del SO. Pesados (1MB c/u). Límite rápido.</p>
           <button class="button button-platform" 
                   appTracker="btn-ingest-logs-platform"
+                  [disabled]="isComparisonActive"
                   (click)="ingestLogs(logCountInput.value, 'platform')">
             Lanzar con Platform
           </button>
@@ -80,6 +95,7 @@
           <p class="engine-desc">Ligeros (Project Loom). ¡Millones en el mismo hardware!</p>
           <button class="button button-virtual" 
                   appTracker="btn-ingest-logs-virtual"
+                  [disabled]="isComparisonActive"
                   (click)="ingestLogs(logCountInput.value, 'virtual')">
             Lanzar con Virtual
           </button>
