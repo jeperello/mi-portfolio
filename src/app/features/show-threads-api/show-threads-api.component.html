@@ -85,7 +85,11 @@
           </div>
         </div>
         <p class="summary-winner">
-          Ganador: {{ comparisonSummary.winner === 'platform' ? 'Platform Threads' : 'Virtual Threads' }}
+          {{ comparisonSummary.winner === 'virtual'
+            ? 'Virtual Threads fue un ' + formatImprovementPercent(comparisonSummary.improvementPercent) + ' más rápido que Platform Threads.'
+            : comparisonSummary.winner === 'platform'
+              ? 'Platform Threads fue un ' + formatImprovementPercent(comparisonSummary.improvementPercent) + ' más rápido que Virtual Threads.'
+              : 'La comparación no muestra un ganador claro.' }}
         </p>
       </div>
 

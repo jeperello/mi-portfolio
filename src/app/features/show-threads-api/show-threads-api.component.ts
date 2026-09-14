@@ -28,6 +28,7 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
     platform: number | null;
     virtual: number | null;
     winner: 'platform' | 'virtual' | null;
+    improvementPercent: number | null;
   } | null = null;
 
   private metricsSubscription?: Subscription;
@@ -255,10 +256,19 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
     return value < 1000 ? `${value} ms` : `${(value / 1000).toFixed(2)} s`;
   }
 
+  formatImprovementPercent(value: number | null): string {
+    if (value === null || value === undefined) {
+      return '—';
+    }
+
+    return `${Math.abs(value).toFixed(1)}%`;
+  }
+
   private buildComparisonSummary(): {
     platform: number | null;
     virtual: number | null;
     winner: 'platform' | 'virtual' | null;
+    improvementPercent: number | null;
   } {
     const platform = this.comparisonRuns.find((run) => run.engine === 'platform')?.elapsedMs ?? null;
     const virtual = this.comparisonRuns.find((run) => run.engine === 'virtual')?.elapsedMs ?? null;
@@ -267,14 +277,18 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
       return {
         platform,
         virtual,
-        winner: null
+        winner: null,
+        improvementPercent: null
       };
     }
+
+    const improvementPercent = platform === 0 ? null : ((platform - virtual) / platform) * 100;
 
     return {
       platform,
       virtual,
-      winner: platform <= virtual ? 'platform' : 'virtual'
+      winner: platform <= virtual ? 'platform' : 'virtual',
+      improvementPercent
     };
   }
 
