@@ -16,6 +16,7 @@ import { AnalyticsService } from '../../core/services/analytics.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectShowcaseComponent {
+  private readonly currentIndexStorageKey = 'portfolio-project-showcase-index';
   private projectService = inject(ProjectService);
   private analyticsService = inject(AnalyticsService);
   private router = inject(Router);
@@ -24,7 +25,7 @@ export class ProjectShowcaseComponent {
   public allProjects = toSignal(this.projectService.getProjects(), { initialValue: [] });
   
   // Estado del carrusel
-  public currentIndex = signal(0);
+  public currentIndex = signal(this.getSavedIndex());
   public itemsPerPage = signal(2);
 
   constructor() {
@@ -43,8 +44,33 @@ export class ProjectShowcaseComponent {
     
     if (this.itemsPerPage() !== newItemsPerPage) {
       this.itemsPerPage.set(newItemsPerPage);
-      // Resetear el índice si es necesario para evitar quedar fuera de rango
-      this.currentIndex.set(0);
+    }
+
+    const validIndex = this.getValidIndex(this.currentIndex());
+    if (this.currentIndex() !== validIndex) {
+      this.currentIndex.set(validIndex);
+      this.saveCurrentIndex();
+    }
+  }
+
+  private getSavedIndex(): number {
+    if (typeof window === 'undefined') return 0;
+
+    const savedIndex = Number.parseInt(
+      window.sessionStorage.getItem(this.currentIndexStorageKey) ?? '',
+      10
+    );
+
+    return Number.isFinite(savedIndex) && savedIndex >= 0 ? savedIndex : 0;
+  }
+
+  private getValidIndex(index: number): number {
+    return Math.min(index, Math.max(0, this.totalSteps() - 1));
+  }
+
+  private saveCurrentIndex(): void {
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.setItem(this.currentIndexStorageKey, String(this.currentIndex()));
     }
   }
 
@@ -64,12 +90,14 @@ export class ProjectShowcaseComponent {
   public next() {
     if (this.canNext()) {
       this.currentIndex.update(v => v + 1);
+      this.saveCurrentIndex();
     }
   }
 
   public prev() {
     if (this.canPrev()) {
       this.currentIndex.update(v => v - 1);
+      this.saveCurrentIndex();
     }
   }
 
