@@ -31,6 +31,106 @@
   overflow-x: auto;
 }
 
+.metrics-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem 0.85rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.12);
+}
+
+.metrics-heading h3 {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.metrics-live-status {
+  flex: 0 0 auto;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--success-color);
+  border-radius: 999px;
+  color: var(--success-color);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.metrics-content {
+  padding: 1rem;
+}
+
+.metric-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+  padding: 0.85rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 0.75rem;
+  background: rgba(15, 23, 42, 0.24);
+}
+
+.metric-label,
+.memory-usage-header {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.metric-card strong {
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  white-space: nowrap;
+}
+
+.memory-usage {
+  margin-top: 1rem;
+}
+
+.memory-usage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.45rem;
+}
+
+.memory-usage-header strong {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.memory-usage-track {
+  height: 0.55rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.2);
+}
+
+.memory-usage-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent-color);
+  transition: width 0.35s ease;
+}
+
+.metrics-waiting {
+  margin: 0;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+
 .back-link {
   order: -2;
   align-self: flex-start;
@@ -103,7 +203,7 @@
   }
 
   .description-row {
-    order: 0;
+    order: -1;
     margin-bottom: 0;
   }
 
@@ -133,6 +233,22 @@
 
   .showcase-card h3 {
     font-size: 0.9rem;
+  }
+
+  .metrics-content {
+    padding: 0.8rem;
+  }
+
+  .metric-cards {
+    gap: 0.5rem;
+  }
+
+  .metric-card {
+    padding: 0.7rem 0.55rem;
+  }
+
+  .metric-card strong {
+    font-size: 0.95rem;
   }
 
   .load-results-table,
@@ -214,19 +330,6 @@
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-}
-
-/* Badge LIVE para métricas */
-.metrics-row .showcase-card h3::after {
-  content: "LIVE";
-  font-size: 0.6rem;
-  margin-left: 8px;
-  padding: 2px 6px;
-  background: rgba(16, 185, 129, 0.2);
-  color: var(--success-color);
-  border: 1px solid var(--success-color);
-  border-radius: 4px;
-  vertical-align: middle;
 }
 
 .info-grid .showcase-card:nth-child(1) {

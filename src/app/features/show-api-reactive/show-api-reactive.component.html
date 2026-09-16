@@ -10,51 +10,6 @@
   }
 
   @if (!isWarming()) {
-    <!-- Fila superior para la tabla de métricas -->
-    <div class="metrics-row">
-      <div class="showcase-card">
-        <h3>Métricas de Memoria</h3>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th class="text-right">Memoria Usada (MB)</th>
-                <th class="text-right">Memoria Libre (MB)</th>
-                <th class="text-right">Memoria Total (MB)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let metric of metrics">
-                <td class="text-right">
-                  <span class="live-number">{{ metric.usedMemoryMB }}</span>
-                </td>
-                <td class="text-right">
-                  <span class="live-number">{{ metric.freeMemoryMB }}</span>
-                </td>
-                <td class="text-right">
-                  <span class="live-number">{{ metric.totalMemoryMB }}</span>
-                </td>
-              </tr>
-              <tr *ngIf="metrics.length === 0">
-                <td colspan="3" class="waiting-message">Esperando datos de métricas...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div class="button-group-full">
-      <button (click)="simulateTechnologiesLoad()" 
-              appTracker="btn-simular-tecnologias" 
-              class="button button-tech">
-        Simular Carga de Tecnologías x 10
-      </button>
-      <button (click)="simulateAdvantagesLoad()" 
-              appTracker="btn-simular-ventajas" 
-              class="button primary">
-        Simular Carga de Ventajas x 10
-      </button>
-    </div>
     <!-- Grid para las tarjetas de información -->
     <div class="info-grid">
 
@@ -145,6 +100,62 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+
+    <div class="button-group-full">
+      <button (click)="simulateTechnologiesLoad()" 
+              appTracker="btn-simular-tecnologias" 
+              class="button button-tech">
+        Simular Carga de Tecnologías x 10
+      </button>
+      <button (click)="simulateAdvantagesLoad()" 
+              appTracker="btn-simular-ventajas" 
+              class="button primary">
+        Simular Carga de Ventajas x 10
+      </button>
+    </div>
+
+    <!-- Resumen actual de memoria del stream SSE -->
+    <div class="metrics-row">
+      <div class="showcase-card">
+        <div class="metrics-heading">
+          <h3>Métricas de Memoria</h3>
+          <span class="metrics-live-status" aria-label="Métricas en tiempo real">LIVE</span>
+        </div>
+        @if (metrics.length > 0) {
+          <div class="metrics-content">
+            <div class="metric-cards" aria-label="Resumen de memoria">
+              <div class="metric-card">
+                <span class="metric-label">Usada</span>
+                <strong class="live-number">{{ metrics[0].usedMemoryMB | number:'1.0-0' }} MB</strong>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Libre</span>
+                <strong class="live-number">{{ metrics[0].freeMemoryMB | number:'1.0-0' }} MB</strong>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Total</span>
+                <strong class="live-number">{{ metrics[0].totalMemoryMB | number:'1.0-0' }} MB</strong>
+              </div>
+            </div>
+            <div class="memory-usage" aria-label="Porcentaje de memoria utilizada">
+              <div class="memory-usage-header">
+                <span>Uso de memoria</span>
+                <strong>{{ memoryUsagePercentage(metrics[0]) | number:'1.0-0' }}%</strong>
+              </div>
+              <div class="memory-usage-track" role="progressbar"
+                   [attr.aria-valuenow]="memoryUsagePercentage(metrics[0])"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
+                <span class="memory-usage-fill"
+                      [style.width.%]="memoryUsagePercentage(metrics[0])"></span>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <p class="waiting-message metrics-waiting" role="status">Esperando datos de métricas...</p>
+        }
       </div>
     </div>
   }

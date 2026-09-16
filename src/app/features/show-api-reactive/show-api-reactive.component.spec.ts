@@ -49,6 +49,12 @@ describe('ShowApiReactiveComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should calculate the memory usage percentage within valid bounds', () => {
+    expect(component.memoryUsagePercentage({ usedMemoryMB: 128, freeMemoryMB: 384, totalMemoryMB: 512 })).toBe(25);
+    expect(component.memoryUsagePercentage({ usedMemoryMB: 900, freeMemoryMB: 0, totalMemoryMB: 512 })).toBe(100);
+    expect(component.memoryUsagePercentage({ usedMemoryMB: 128, freeMemoryMB: 384, totalMemoryMB: 0 })).toBe(0);
+  });
+
   it('should render technology load rows after simulating load', () => {
     component.simulateTechnologiesLoad();
     fixture.detectChanges();

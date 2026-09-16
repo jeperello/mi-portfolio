@@ -30,6 +30,14 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
 
   numberOfConcurrentRequests: number = 10; // New property for load test
 
+  memoryUsagePercentage(metric: ApiMetrics): number {
+    if (metric.totalMemoryMB <= 0) {
+      return 0;
+    }
+
+    return Math.min(100, Math.max(0, (metric.usedMemoryMB / metric.totalMemoryMB) * 100));
+  }
+
   // Load Test Indicator properties
   isLoading: boolean = false;
   readonly isWarming = signal(false); // Flag for cold start animation
