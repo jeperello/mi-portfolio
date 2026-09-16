@@ -1,0 +1,101 @@
+<b>Mi primera experiencia consumiendo una API reactiva con WebFlux desde Angular</b>
+<p>Cuando entramos a una página web normalmente esperamos una respuesta completa: hacemos clic en un botón, esperamos unos segundos y recibimos todos los datos juntos. Una API reactiva cambia un poco esta idea: puede comenzar a enviar información apenas la tiene disponible, sin esperar a construir una respuesta enorme.</p>
+
+<div class="section">
+  <p>En este artículo cuento, de forma sencilla, qué aprendí al conectar una aplicación Angular con una API construida con Spring WebFlux.</p>
+</div>
+
+<h3>¿Qué intentaba mostrar?</h3>
+<p>La demo tiene tres tipos de información:</p>
+<ul>
+  <li>Tecnologías utilizadas para construir la API.</li>
+  <li>Ventajas de utilizar un enfoque reactivo.</li>
+  <li>Métricas de memoria del servidor en tiempo real.</li>
+</ul>
+<p>La idea no era solamente mostrar una lista. Quería que el usuario pudiera ver cómo los datos llegan progresivamente desde el backend.</p>
+
+<h3>¿Qué significa que una API sea reactiva?</h3>
+<p>En lugar de pensar únicamente en una respuesta única, podemos pensar en un flujo de datos. Ese flujo puede emitir un mensaje, esperar un momento y emitir otro. El frontend escucha ese flujo y actualiza la pantalla cada vez que llega un nuevo elemento.</p>
+
+<p>Una forma simple de imaginarlo es esta:</p>
+<div class="highlight">
+  <p>El backend no dice solamente: “aquí tienes todos los datos”.</p>
+  <p>Dice: “aquí tienes el primer dato”, luego “aquí tienes el siguiente” y después “aquí tienes otro”.</p>
+</div>
+
+<h3>La conexión entre WebFlux y Angular</h3>
+<p>Para esta demostración utilicé Server-Sent Events, conocidos como SSE. El navegador abre una conexión con el servidor y queda escuchando los mensajes que llegan por ella.</p>
+<p>Desde Angular, el consumo se realiza mediante <b>EventSource</b>. Cada vez que el servidor envía un evento, Angular recibe el texto, lo convierte desde JSON y actualiza la vista.</p>
+
+<div class="highlight">
+  <p>Flujo básico:</p>
+  <ol>
+    <li>Angular abre la conexión.</li>
+    <li>WebFlux comienza a emitir datos.</li>
+    <li>El navegador recibe cada evento.</li>
+    <li>Angular actualiza la interfaz.</li>
+  </ol>
+</div>
+
+<h3>Lo primero que aparece en la pantalla</h3>
+<p>En la demo, la API puede comenzar enviando un mensaje de bienvenida:</p>
+<div class="highlight">Bienvenido y gracias por pasar por mi primera API REST reactiva.</div>
+<p>Después puede explicar qué está ocurriendo:</p>
+<ul>
+  <li>“Paso a comentarte brevemente las tecnologías utilizadas”.</li>
+  <li>“Java 21 aporta mejoras de rendimiento”.</li>
+  <li>“Spring WebFlux utiliza un modelo no bloqueante”.</li>
+</ul>
+<p>Para una persona que visita el portfolio, esta narración es importante. No tiene que conocer todos los detalles técnicos para entender que la información está llegando paso a paso.</p>
+
+<h3>Una conexión puede permanecer abierta</h3>
+<p>Durante las pruebas apareció una diferencia importante entre un stream finito y uno continuo.</p>
+<p>El stream de métricas está pensado para permanecer abierto, porque el servidor sigue enviando valores nuevos. En cambio, tecnologías y ventajas podrían enviar una cantidad limitada de mensajes, aunque la conexión no se cierre automáticamente.</p>
+
+<p>Esto tiene una consecuencia:</p>
+<div class="highlight">
+  <p>Que dejen de llegar mensajes no significa necesariamente que la conexión haya terminado.</p>
+</div>
+
+<p>Si el backend mantiene abierta la conexión, el frontend no puede adivinar si el stream terminó o si simplemente está esperando el próximo mensaje. Por eso no conviene utilizar un tiempo de espera como prueba definitiva de finalización.</p>
+
+<h3>¿Cómo se comunica el final de un stream?</h3>
+<p>Existen varias opciones:</p>
+<ul>
+  <li>El backend cierra la conexión cuando termina de enviar los datos.</li>
+  <li>El último mensaje incluye una marca como <b>isFinal: true</b>.</li>
+  <li>El protocolo utiliza un evento especial para indicar el final.</li>
+</ul>
+<p>La opción más clara para una aplicación que está aprendiendo es utilizar un mensaje explícito. De esa manera, el frontend sabe qué ocurrió y no tiene que contar mensajes ni suponer que una pausa significa el final.</p>
+
+<h3>Las métricas son otro tipo de stream</h3>
+<p>Las métricas de memoria funcionan de una manera diferente. La API puede enviar periódicamente la memoria usada, libre y total. Angular recibe el valor más reciente y lo presenta como un resumen visual.</p>
+<p>En lugar de mostrar solamente una tabla, la interfaz puede mostrar:</p>
+<ul>
+  <li>Memoria usada.</li>
+  <li>Memoria libre.</li>
+  <li>Memoria total.</li>
+  <li>Porcentaje de memoria utilizada.</li>
+</ul>
+<p>Este tipo de información es un buen ejemplo de cuándo tiene sentido una conexión continua: el usuario está observando el estado actual del servidor y no una respuesta que deba terminar.</p>
+
+<h3>Lo que aprendí desde Angular</h3>
+<ul>
+  <li>Un observable no siempre representa una respuesta inmediata; también puede representar un flujo que permanece abierto.</li>
+  <li>El frontend debe diferenciar entre datos, estados de conexión y errores.</li>
+  <li>Una conexión abierta no es necesariamente un problema.</li>
+  <li>La interfaz debe explicar al usuario qué está ocurriendo mientras llegan los datos.</li>
+  <li>No conviene inventar un final contando mensajes o esperando algunos segundos.</li>
+</ul>
+
+<h3>WebFlux no significa que todo sea automáticamente mejor</h3>
+<p>WebFlux resulta muy útil cuando necesitamos trabajar con muchas conexiones, operaciones de entrada y salida o datos que llegan progresivamente. Sin embargo, también agrega conceptos nuevos: publishers, subscribers, Mono, Flux, backpressure y conexiones que pueden permanecer abiertas.</p>
+<p>El beneficio aparece cuando el problema realmente necesita ese modelo. Si una operación es pequeña y debe devolver una respuesta completa, el modelo tradicional puede ser más simple de entender y mantener.</p>
+
+<h3>Conclusión</h3>
+<p>Consumir una API reactiva desde Angular no consiste únicamente en recibir JSON. También implica comprender el ciclo de vida del flujo: cuándo comienza, qué mensajes envía, cuánto tiempo permanece abierto y cómo comunica que terminó.</p>
+<p>Esta demo me ayudó a ver que la programación reactiva se entiende mejor cuando se observa el recorrido completo:</p>
+<div class="highlight">
+  <p>El backend produce eventos, la conexión los transporta y Angular los convierte en una experiencia visible para el usuario.</p>
+</div>
+<p>El siguiente paso será mejorar la comunicación de estados y continuar midiendo qué información ayuda realmente a entender el comportamiento de la API.</p>

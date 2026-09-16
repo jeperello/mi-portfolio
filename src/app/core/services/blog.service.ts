@@ -156,6 +156,19 @@ export class BlogService {
       author: 'Jorge Perello',
       tags: ['Fleet-FiftyFifty', 'Capítulo 7', 'Angular', 'Frontend', 'Signals'],
     },
+    {
+      id: '11',
+      title: 'Mi primera experiencia consumiendo una API reactiva con WebFlux desde Angular',
+      subtitle: 'Una explicación sencilla sobre SSE, streams y métricas en tiempo real.',
+      status: 'Borrador',
+      showCard: false,
+      excerpt: 'Qué aprendí al conectar una aplicación Angular con una API construida con Spring WebFlux.',
+      contentUrl: 'assets/docs/webflux-desde-angular-borrador.html',
+      content: '',
+      date: 'Borrador',
+      author: 'Jorge Perello',
+      tags: ['Angular', 'WebFlux', 'SSE', 'Programación Reactiva'],
+    },
   ];
 
   constructor(private http: HttpClient) {}
