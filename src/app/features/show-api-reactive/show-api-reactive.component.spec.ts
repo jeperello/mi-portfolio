@@ -117,12 +117,12 @@ describe('ShowApiReactiveComponent', () => {
 
     const warming = fixture.nativeElement.querySelector('app-api-warming');
     const metricsRow = fixture.nativeElement.querySelector('.metrics-row');
-    const buttonGroup = fixture.nativeElement.querySelector('.button-group-full');
+    const panelActions = fixture.nativeElement.querySelectorAll('.panel-actions');
     const infoGrid = fixture.nativeElement.querySelector('.info-grid');
 
     expect(warming).toBeTruthy();
     expect(metricsRow).toBeNull();
-    expect(buttonGroup).toBeNull();
+    expect(panelActions.length).toBe(0);
     expect(infoGrid).toBeNull();
   });
 
@@ -132,12 +132,12 @@ describe('ShowApiReactiveComponent', () => {
 
     const warming = fixture.nativeElement.querySelector('app-api-warming');
     const metricsRow = fixture.nativeElement.querySelector('.metrics-row');
-    const buttonGroup = fixture.nativeElement.querySelector('.button-group-full');
+    const panelActions = fixture.nativeElement.querySelectorAll('.panel-actions');
     const infoGrid = fixture.nativeElement.querySelector('.info-grid');
 
     expect(warming).toBeNull();
     expect(metricsRow).toBeTruthy();
-    expect(buttonGroup).toBeTruthy();
+    expect(panelActions.length).toBe(2);
     expect(infoGrid).toBeTruthy();
   });
 });

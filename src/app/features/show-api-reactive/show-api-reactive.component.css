@@ -208,7 +208,37 @@
   margin: 0 auto;
 }
 
-/* Botones con tamaños específicos para esta vista */
+/* Botones y acciones de cada panel */
+.panel-actions {
+  padding: 1rem 1.1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(15, 23, 42, 0.16);
+  display: flex;
+  justify-content: center;
+}
+
+.panel-actions .button {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
+}
+
+.panel-actions .button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.panel-actions .button:active {
+  transform: translateY(0);
+}
+
 .button-group-full {
   display: flex;
   gap: 1.5rem;
@@ -236,6 +266,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
+  align-items: start;
 }
 
 @media (max-width: 768px) {
@@ -560,6 +591,13 @@
   background: rgba(255, 255, 255, 0.18);
 }
 
+.light-moon-theme .panel-actions,
+.light-moon-theme .button-group-full {
+  background: rgba(255, 255, 255, 0.18);
+  border-top-color: rgba(148, 163, 184, 0.22);
+}
+
+.light-moon-theme .panel-actions .button,
 .light-moon-theme .button-group-full .button {
   background: rgba(255, 255, 255, 0.76);
   border: 1px solid rgba(148, 163, 184, 0.34);
@@ -567,12 +605,14 @@
   color: var(--text-primary);
 }
 
+.light-moon-theme .panel-actions .button-tech,
 .light-moon-theme .button-group-full .button-tech {
   background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(51, 65, 85, 0.92));
   border-color: rgba(51, 65, 85, 0.3);
   color: #f8fafc;
 }
 
+.light-moon-theme .panel-actions .button.primary,
 .light-moon-theme .button-group-full .button.primary {
   background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
   border-color: rgba(14, 165, 233, 0.4);

@@ -61,6 +61,11 @@
         {{ technologySimulationMessage }}
       </p>
       }
+      <div class="panel-actions">
+        <button (click)="simulateTechnologiesLoad()" appTracker="btn-simular-tecnologias" class="button button-tech">
+          Simular Carga de Tecnologías x 10
+        </button>
+      </div>
     </div>
     <div #advantagesPanel class="showcase-card advantages-panel">
       <h3>Ventajas</h3>
@@ -112,16 +117,12 @@
         {{ advantageSimulationMessage }}
       </p>
       }
+      <div class="panel-actions">
+        <button (click)="simulateAdvantagesLoad()" appTracker="btn-simular-ventajas" class="button primary">
+          Simular Carga de Ventajas x 10
+        </button>
+      </div>
     </div>
-  </div>
-
-  <div class="button-group-full">
-    <button (click)="simulateTechnologiesLoad()" appTracker="btn-simular-tecnologias" class="button button-tech">
-      Simular Carga de Tecnologías x 10
-    </button>
-    <button (click)="simulateAdvantagesLoad()" appTracker="btn-simular-ventajas" class="button primary">
-      Simular Carga de Ventajas x 10
-    </button>
   </div>
 
   <!-- Resumen actual de memoria del stream SSE -->
