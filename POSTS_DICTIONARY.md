@@ -18,6 +18,7 @@ Este archivo es tu guía rápida de referencia personal. Sirve para saber instan
 | **`8`** | [`post-8-fleet-cap-5.html`](file:///src/assets/posts/post-8-fleet-cap-5.html) | **Capítulo 5 — Mi primera experiencia con TDD** | Desarrollo guiado por pruebas en el dominio | ⚡ En progreso (`En proceso`) |
 | **`9`** | [`post-9-fleet-cap-6.html`](file:///src/assets/posts/post-9-fleet-cap-6.html) | **Capítulo 6 — Despliegue del backend** | Infraestructura, contenedores y despliegue | 📝 Borrador (`Próximo`) |
 | **`10`** | [`post-10-fleet-cap-7.html`](file:///src/assets/posts/post-10-fleet-cap-7.html) | **Capítulo 7 — Implementando desde Angular** | Conexión del frontend reactivo con el backend | 📝 Borrador (`Próximo`) |
+| **`11`** | [`webflux-desde-angular-borrador.html`](file:///src/assets/docs/webflux-desde-angular-borrador.html) | **Mi primera experiencia con WebFlux y Angular** | Análisis de SSE, streams finitos vs continuos y métricas en vivo | 📝 Borrador / Vinculado a demo |
 
 ---
 

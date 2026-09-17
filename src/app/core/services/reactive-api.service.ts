@@ -1,5 +1,5 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { Injectable, NgZone, inject } from '@angular/core';
+import { Observable } from 'rxjs';
 
 // Interfaces para tipar los datos que recibimos de la API
 export interface ApiDescription {
@@ -17,53 +17,70 @@ export interface ApiMetrics {
 })
 export class ReactiveApiService {
   private baseUrl = 'https://reactive-api-27c7.onrender.com/api';
+  private zone = inject(NgZone);
 
-  constructor(private zone: NgZone) { }
-
-private createStream<T>(url: string): Observable<T> {
-  return new Observable<T>(observer => {
-    const eventSource = new EventSource(url);
-
-    eventSource.onmessage = (event: MessageEvent) => {
-      //console.log(`Received message for ${url}:`, event.data); // Log received data
-      if (!event.data) return;
-      try {
-        const parsedData = JSON.parse(event.data);
-        ///console.log(`Emitting data for ${url}:`, parsedData); // Log data before emitting
-        this.zone.run(() => observer.next(parsedData));
-      } catch (error) {
-        console.error('Error parseando SSE:', error);
-      }
-    };
-
-    eventSource.onerror = (error) => {
-      // ESTA ES LA CLAVE: 
-      // Si el readyState es 2 (CLOSED) o incluso si el servidor cerró la conexión
-      // sin un error explícito, forzamos el cierre definitivo para que no reintente.
-      if (eventSource.readyState === EventSource.CLOSED) {
+  private createStream<T>(url: string, isFinite = false): Observable<T> {
+    return new Observable<T>(observer => {
+      if (typeof EventSource === 'undefined') {
         observer.complete();
-      } else {
-        // Si quieres que los finitos NO reintenten NUNCA, 
-        // puedes llamar a observer.complete() aquí también.
-        observer.error(error);
-        eventSource.close(); 
+        return;
       }
-    };
 
-    return () => eventSource.close();
-  });
-}
+      const eventSource = new EventSource(url);
+      let hasReceivedData = false;
 
+      eventSource.onmessage = (event: MessageEvent) => {
+        if (!event.data) return;
+        try {
+          const parsedData = JSON.parse(event.data);
+          hasReceivedData = true;
+          this.zone.run(() => observer.next(parsedData));
+        } catch (error) {
+          console.error('Error parseando SSE:', error);
+        }
+      };
+
+      eventSource.onerror = (error) => {
+        if (isFinite) {
+          // En streams SSE finitos, cuando el backend (Spring WebFlux) emite el último elemento
+          // y completa el Flux, cierra la conexión HTTP. La especificación SSE de los navegadores
+          // interpreta cualquier desconexión como un error con readyState = CONNECTING (0) para
+          // intentar reconectar. Por eso cerramos la conexión inmediatamente y, si ya se recibieron
+          // datos, lo tratamos como una finalización exitosa (complete).
+          eventSource.close();
+          this.zone.run(() => {
+            if (hasReceivedData) {
+              observer.complete();
+            } else {
+              // Si falló antes de recibir ningún mensaje, es un error real (ej. backend caído o 500)
+              observer.error(error);
+            }
+          });
+        } else {
+          // Para streams infinitos (como métricas), si el socket se cerró definitivamente reportamos error
+          if (eventSource.readyState === EventSource.CLOSED) {
+            this.zone.run(() => observer.error(error));
+          }
+        }
+      };
+
+      return () => {
+        if (eventSource.readyState !== EventSource.CLOSED) {
+          eventSource.close();
+        }
+      };
+    });
+  }
 
   getTechnologiesStream(): Observable<ApiDescription> {
-    return this.createStream<ApiDescription>(`${this.baseUrl}/technologies`); // Ensure it completes after 1 emission
+    return this.createStream<ApiDescription>(`${this.baseUrl}/technologies`, true);
   }
 
   getAdvantagesStream(): Observable<ApiDescription> {
-    return this.createStream<ApiDescription>(`${this.baseUrl}/advantages`); // Ensure it completes after 1 emission
+    return this.createStream<ApiDescription>(`${this.baseUrl}/advantages`, true);
   }
 
   getMetricsStream(): Observable<ApiMetrics> {
-    return this.createStream<ApiMetrics>(`${this.baseUrl}/metrics`);
+    return this.createStream<ApiMetrics>(`${this.baseUrl}/metrics`, false);
   }
 }

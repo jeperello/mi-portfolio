@@ -1,163 +1,168 @@
 <section class="api-showcase">
-  <a routerLink="/"
-     appTracker="btn-back-to-projects"
-     class="back-link">
+  <a routerLink="/" appTracker="btn-back-to-projects" class="back-link">
     <span aria-hidden="true">←</span>
     Volver a Proyectos
   </a>
   @if (isWarming()) {
-    <app-api-warming></app-api-warming>
+  <app-api-warming></app-api-warming>
   }
 
   @if (!isWarming()) {
-    <!-- Grid para las tarjetas de información -->
-    <div class="info-grid">
+  <!-- Grid para las tarjetas de información -->
+  <div class="info-grid">
 
-      <div #technologiesPanel class="showcase-card technology-panel">
-        <h3>Tecnologías Utilizadas</h3>
-        <div class="table-container">
-          <table class="load-results-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Estado</th>
-                <th>Descripción</th>
-                <th>Tiempo (ms)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngIf="technologyLoadResults.length > 0; else technologiesList">
-                <tr *ngFor="let result of technologyLoadResults; trackBy: trackLoadResult" class="load-result-row">
-                  <td class="request-index" data-label="#">{{ result.requestIndex + 1 }}</td>
-                  <td data-label="Estado">
-                    <span
-                      [ngClass]="{
+    <div #technologiesPanel class="showcase-card technology-panel">
+      <h3>Tecnologías Utilizadas</h3>
+      <p class="panel-explanation">
+        Carga inicial: 1 request, 1 conexión SSE, múltiples mensajes reactivos.
+      </p>
+      <div class="table-container">
+        <table class="load-results-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+              <th>Tiempo (ms)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="technologyLoadResults.length > 0; else technologiesList">
+              <tr *ngFor="let result of technologyLoadResults; trackBy: trackLoadResult" class="load-result-row">
+                <td class="request-index" data-label="#">{{ result.requestIndex + 1 }}</td>
+                <td data-label="Estado">
+                  <span [ngClass]="{
                         'status-pill': true,
                         'pending': result.status === 'pending',
                         'success': result.status === 'success',
                         'error': result.status === 'error'
                       }">
-                      {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
-                    </span>
-                  </td>
-                  <td class="description-cell" data-label="Descripción">{{ result.description || 'N/A' }}</td>
-                  <td class="time-cell" data-label="Tiempo">{{ result.timeElapsed | number:'1.0-2' }}</td>
-                </tr>
-              </ng-container>
-
-              <ng-template #technologiesList>
-                <tr *ngFor="let tech of technologies">
-                  <td colspan="4">{{ tech.description }}</td>
-                </tr>
-                <tr *ngIf="technologies.length === 0">
-                  <td colspan="4" class="waiting-message">Esperando datos de tecnologías...</td>
-                </tr>
-              </ng-template>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div #advantagesPanel class="showcase-card advantages-panel">
-        <h3>Ventajas</h3>
-        <div class="table-container">
-          <table class="load-results-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Estado</th>
-                <th>Descripción</th>
-                <th>Tiempo (ms)</th>
+                    {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
+                  </span>
+                </td>
+                <td class="description-cell" data-label="Descripción">{{ result.description || 'N/A' }}</td>
+                <td class="time-cell" data-label="Tiempo">{{ result.timeElapsed | number:'1.0-2' }}</td>
               </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngIf="advantageLoadResults.length > 0; else advantagesList">
-                <tr *ngFor="let result of advantageLoadResults; trackBy: trackLoadResult" class="load-result-row">
-                  <td class="request-index" data-label="#">{{ result.requestIndex + 1 }}</td>
-                  <td data-label="Estado">
-                    <span
-                      [ngClass]="{
+            </ng-container>
+
+            <ng-template #technologiesList>
+              <tr *ngFor="let tech of technologies">
+                <td colspan="4">{{ tech.description }}</td>
+              </tr>
+              <tr *ngIf="technologies.length === 0">
+                <td colspan="4" class="waiting-message">Esperando datos de tecnologías...</td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
+      </div>
+      @if (technologySimulationMessage) {
+      <p class="simulation-explanation" role="status" aria-live="polite">
+        {{ technologySimulationMessage }}
+      </p>
+      }
+    </div>
+    <div #advantagesPanel class="showcase-card advantages-panel">
+      <h3>Ventajas</h3>
+      <p class="panel-explanation">
+        Carga inicial: 1 request, 1 conexión SSE, múltiples mensajes reactivos.
+      </p>
+      <div class="table-container">
+        <table class="load-results-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+              <th>Tiempo (ms)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="advantageLoadResults.length > 0; else advantagesList">
+              <tr *ngFor="let result of advantageLoadResults; trackBy: trackLoadResult" class="load-result-row">
+                <td class="request-index" data-label="#">{{ result.requestIndex + 1 }}</td>
+                <td data-label="Estado">
+                  <span [ngClass]="{
                         'status-pill': true,
                         'pending': result.status === 'pending',
                         'success': result.status === 'success',
                         'error': result.status === 'error'
                       }">
-                      {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
-                    </span>
-                  </td>
-                  <td class="description-cell" data-label="Descripción">{{ result.description || 'N/A' }}</td>
-                  <td class="time-cell" data-label="Tiempo">{{ result.timeElapsed | number:'1.0-2' }}</td>
-                </tr>
-              </ng-container>
+                    {{ result.status === 'success' ? 'Éxito' : result.status === 'error' ? 'Error' : 'En espera' }}
+                  </span>
+                </td>
+                <td class="description-cell" data-label="Descripción">{{ result.description || 'N/A' }}</td>
+                <td class="time-cell" data-label="Tiempo">{{ result.timeElapsed | number:'1.0-2' }}</td>
+              </tr>
+            </ng-container>
 
-              <ng-template #advantagesList>
-                <tr *ngFor="let advantage of advantages">
-                  <td colspan="4">{{ advantage.description }}</td>
-                </tr>
-                <tr *ngIf="advantages.length === 0">
-                  <td colspan="4" class="waiting-message">Esperando datos de ventajas...</td>
-                </tr>
-              </ng-template>
-            </tbody>
-          </table>
-        </div>
+            <ng-template #advantagesList>
+              <tr *ngFor="let advantage of advantages">
+                <td colspan="4">{{ advantage.description }}</td>
+              </tr>
+              <tr *ngIf="advantages.length === 0">
+                <td colspan="4" class="waiting-message">Esperando datos de ventajas...</td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
       </div>
+      @if (advantageSimulationMessage) {
+      <p class="simulation-explanation" role="status" aria-live="polite">
+        {{ advantageSimulationMessage }}
+      </p>
+      }
     </div>
+  </div>
 
-    <div class="button-group-full">
-      <button (click)="simulateTechnologiesLoad()" 
-              appTracker="btn-simular-tecnologias" 
-              class="button button-tech">
-        Simular Carga de Tecnologías x 10
-      </button>
-      <button (click)="simulateAdvantagesLoad()" 
-              appTracker="btn-simular-ventajas" 
-              class="button primary">
-        Simular Carga de Ventajas x 10
-      </button>
-    </div>
+  <div class="button-group-full">
+    <button (click)="simulateTechnologiesLoad()" appTracker="btn-simular-tecnologias" class="button button-tech">
+      Simular Carga de Tecnologías x 10
+    </button>
+    <button (click)="simulateAdvantagesLoad()" appTracker="btn-simular-ventajas" class="button primary">
+      Simular Carga de Ventajas x 10
+    </button>
+  </div>
 
-    <!-- Resumen actual de memoria del stream SSE -->
-    <div class="metrics-row">
-      <div class="showcase-card">
-        <div class="metrics-heading">
-          <h3>Métricas de Memoria</h3>
-          <span class="metrics-live-status" aria-label="Métricas en tiempo real">LIVE</span>
-        </div>
-        @if (metrics.length > 0) {
-          <div class="metrics-content">
-            <div class="metric-cards" aria-label="Resumen de memoria">
-              <div class="metric-card">
-                <span class="metric-label">Usada</span>
-                <strong class="live-number">{{ metrics[0].usedMemoryMB | number:'1.0-0' }} MB</strong>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Libre</span>
-                <strong class="live-number">{{ metrics[0].freeMemoryMB | number:'1.0-0' }} MB</strong>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Total</span>
-                <strong class="live-number">{{ metrics[0].totalMemoryMB | number:'1.0-0' }} MB</strong>
-              </div>
-            </div>
-            <div class="memory-usage" aria-label="Porcentaje de memoria utilizada">
-              <div class="memory-usage-header">
-                <span>Uso de memoria</span>
-                <strong>{{ memoryUsagePercentage(metrics[0]) | number:'1.0-0' }}%</strong>
-              </div>
-              <div class="memory-usage-track" role="progressbar"
-                   [attr.aria-valuenow]="memoryUsagePercentage(metrics[0])"
-                   aria-valuemin="0"
-                   aria-valuemax="100">
-                <span class="memory-usage-fill"
-                      [style.width.%]="memoryUsagePercentage(metrics[0])"></span>
-              </div>
-            </div>
+  <!-- Resumen actual de memoria del stream SSE -->
+  <div class="metrics-row">
+    <div class="showcase-card">
+      <div class="metrics-heading">
+        <h3>Métricas de Memoria</h3>
+        <span class="metrics-live-status" aria-label="Métricas en tiempo real">LIVE</span>
+      </div>
+      @if (metrics.length > 0) {
+      <div class="metrics-content">
+        <div class="metric-cards" aria-label="Resumen de memoria">
+          <div class="metric-card">
+            <span class="metric-label">Usada</span>
+            <strong class="live-number">{{ metrics[0].usedMemoryMB | number:'1.0-0' }} MB</strong>
           </div>
-        } @else {
-          <p class="waiting-message metrics-waiting" role="status">Esperando datos de métricas...</p>
-        }
+          <div class="metric-card">
+            <span class="metric-label">Libre</span>
+            <strong class="live-number">{{ metrics[0].freeMemoryMB | number:'1.0-0' }} MB</strong>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Total</span>
+            <strong class="live-number">{{ metrics[0].totalMemoryMB | number:'1.0-0' }} MB</strong>
+          </div>
+        </div>
+        <div class="memory-usage" aria-label="Porcentaje de memoria utilizada">
+          <div class="memory-usage-header">
+            <span>Uso de memoria</span>
+            <strong>{{ memoryUsagePercentage(metrics[0]) | number:'1.0-0' }}%</strong>
+          </div>
+          <div class="memory-usage-track" role="progressbar" [attr.aria-valuenow]="memoryUsagePercentage(metrics[0])"
+            aria-valuemin="0" aria-valuemax="100">
+            <span class="memory-usage-fill" [style.width.%]="memoryUsagePercentage(metrics[0])"></span>
+          </div>
+        </div>
       </div>
+      } @else {
+      <p class="waiting-message metrics-waiting" role="status">Esperando datos de métricas...</p>
+      }
     </div>
+  </div>
   }
 
   <!-- New: Load Test Controls
@@ -175,20 +180,19 @@
     <h1>Demostración de API Reactiva (WebFlux)</h1>
     <app-expandable-description label="Ver descripcion de la API" expandedLabel="Ocultar detalles">
       <div actions class="project-header-actions">
-        <a href="https://github.com/jeperello/reactive-api" 
-           target="_blank" 
-           rel="noopener noreferrer"
-           appTracker="btn-ver-repositorio"
-           class="repo-button">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        <a href="https://github.com/jeperello/reactive-api" target="_blank" rel="noopener noreferrer"
+          appTracker="btn-ver-repositorio" class="repo-button">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+            </path>
           </svg>
           Ver Repositorio
         </a>
-        <a routerLink="/blog/11" 
-           appTracker="btn-ver-analisis"
-           class="repo-button">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <a routerLink="/blog/11" appTracker="btn-ver-analisis" class="repo-button">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="18" y1="20" x2="18" y2="10"></line>
             <line x1="12" y1="20" x2="12" y2="4"></line>
             <line x1="6" y1="20" x2="6" y2="14"></line>
@@ -196,13 +200,26 @@
           Ver Analisis
         </a>
       </div>
-
-      <p class="subtitle">
-        Los cuadrantes se conectan a endpoints de una API reactiva que emite eventos (Server-Sent Events).
-        <br>
-        Las tecnologías y ventajas se emiten cada 3 segundos y luego la conexión finaliza. Las métricas de memoria se
-        emiten continuamente para mostrar el estado del servidor en tiempo real.
-      </p>
+      <div class="reactive-explanation" role="note">
+        <strong>Flujo reactivo: </strong>
+        <p>
+          Tanto <b>Tecnologías como Ventajas</b> realizan 1 request inicial a la API reactiva diseña con Spring Web
+          Flux.
+        </p>
+        <p>
+          Cada request mantiene una conexión SSE (Server-Sent Events) con la API reactiva que emite eventos) y los datos
+          <b>FLUYEN</b> de a uno desde el backend hacia Angular.
+        </p>
+        <p class="subtitle">
+          Las tecnologías y ventajas se emiten cada 3 segundos y luego la conexión finaliza. 
+          Las métricas de memoria se emiten continuamente para mostrar el estado del servidor en tiempo real.
+        </p>
+        <p>
+          Puedes presionar cualquiera de los botones para ejecutar esa misma request
+          <b>{{ numberOfConcurrentRequests }} veces</b> y comparar el comportamiento y rendimiendo en MB utilizados por
+          la api.
+        </p>
+      </div>
     </app-expandable-description>
   </div>
 </section>

@@ -31,6 +31,48 @@
   overflow-x: auto;
 }
 
+.reactive-explanation {
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-left: 4px solid var(--accent-color);
+  border-radius: 0.8rem;
+  background: rgba(14, 116, 144, 0.14);
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.reactive-explanation strong {
+  color: var(--text-primary);
+}
+
+.reactive-explanation p {
+  margin: 0.35rem 0 0;
+}
+
+.reactive-explanation p + p {
+  margin-top: 0.65rem;
+}
+
+.panel-explanation,
+.simulation-explanation {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.panel-explanation {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(15, 23, 42, 0.12);
+}
+
+.simulation-explanation {
+  border-top: 1px solid rgba(56, 189, 248, 0.22);
+  color: var(--accent-color);
+  background: rgba(14, 116, 144, 0.1);
+}
+
 .metrics-heading {
   display: flex;
   align-items: center;

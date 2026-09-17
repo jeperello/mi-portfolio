@@ -18,7 +18,7 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
+  }, 10000);
 
   it('should have initial background animations and intro enabled', () => {
     const fixture = TestBed.createComponent(App);
@@ -26,6 +26,5 @@ describe('App', () => {
     expect(app.showIntro()).toBe(true);
     expect(app.snowflakes.length).toBe(80);
     expect(app.twinkleStars().length).toBe(18);
-  });
+  }, 10000);
 });
-

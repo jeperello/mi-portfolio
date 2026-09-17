@@ -60,13 +60,82 @@
 <p>Si el backend mantiene abierta la conexión, el frontend no puede adivinar si el stream terminó o si simplemente está esperando el próximo mensaje. Por eso no conviene utilizar un tiempo de espera como prueba definitiva de finalización.</p>
 
 <h3>¿Cómo se comunica el final de un stream?</h3>
-<p>Existen varias opciones:</p>
+<p>Cuando trabajamos con HTTP tradicional, una petición termina cuando el servidor envía la respuesta y cierra la conexión. En Server-Sent Events (SSE), la cosa cambia bastante y existen distintas estrategias:</p>
 <ul>
-  <li>El backend cierra la conexión cuando termina de enviar los datos.</li>
-  <li>El último mensaje incluye una marca como <b>isFinal: true</b>.</li>
-  <li>El protocolo utiliza un evento especial para indicar el final.</li>
+  <li><b>El backend cierra la conexión HTTP:</b> Al emitir el último elemento del <code>Flux</code>, Spring WebFlux da por completada la respuesta y cierra el socket TCP.</li>
+  <li><b>El último mensaje incluye una marca explícita:</b> Como por ejemplo un campo <code>"isFinal": true</code> o un evento especial como <code>event: complete</code>.</li>
+  <li><b>La conexión permanece abierta indefinidamente:</b> A la espera de nuevos eventos futuros (ideal para notificaciones o cotizaciones).</li>
 </ul>
-<p>La opción más clara para una aplicación que está aprendiendo es utilizar un mensaje explícito. De esa manera, el frontend sabe qué ocurrió y no tiene que contar mensajes ni suponer que una pausa significa el final.</p>
+
+<div class="highlight">
+  <p><b>El backend en Java (Spring WebFlux):</b></p>
+  <p>En el controlador de Spring Boot, emitir un stream finito requiere apenas unas líneas gracias al tipo de retorno <code>Flux&lt;T&gt;</code> y al content-type reactivo:</p>
+  <pre><code class="language-java">@GetMapping(value = "/technologies", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+public Flux&lt;ApiDescription&gt; getTechnologiesStream() {
+    return technologyService.getTechnologies()
+        .delayElements(Duration.ofSeconds(1)); // Emisión espaciada en el tiempo
+}</code></pre>
+</div>
+
+<h3>El caso real: La trampa de EventSource y el misterio de las 10 peticiones</h3>
+<p>Durante el desarrollo de esta demo me encontré con un problema fascinante que resume a la perfección el desafío de comunicar el fin de un flujo.</p>
+
+<p>Para demostrar que Netty y Spring WebFlux no bloquean hilos ante múltiples clientes, agregué un botón para simular <b>10 peticiones concurrentes</b> a Tecnologías. Cada una abre su propia conexión SSE en paralelo.</p>
+
+<div class="highlight">
+  <p><b>El síntoma desconcertante:</b></p>
+  <p>Al hacer clic, las 10 conexiones se abrían en simultáneo, los mensajes iban llegando fluidamente a cada fila de la tabla y el estado marcaba <b>"Éxito"</b>. Pero en la milésima de segundo en que llegaba el último mensaje... <b>¡las 10 solicitudes cambiaban su estado a "Error"!</b></p>
+</div>
+
+<p>¿Qué estaba pasando? ¿Por qué 10 peticiones que recibieron todos sus datos terminaban marcadas con error?</p>
+
+<h4>La paranoia de la especificación W3C</h4>
+<p>La API nativa del navegador <code>EventSource</code> fue concebida en su origen para flujos infinitos. Por especificación, cuando el servidor web completa su <code>Flux</code> y cierra la conexión HTTP, el navegador no piensa: <i>"¡Genial, ya terminó!"</i>. Al contrario, entra en pánico:</p>
+
+<div class="highlight">
+  <p><i>“¡Se cortó la conexión inesperadamente! Voy a poner el estado en <b>CONNECTING (0)</b>, disparar el evento <b>onerror</b> y reintentar reconectar en 3 segundos.”</i></p>
+</div>
+
+<p>Noten el detalle crucial: <code>eventSource.readyState</code> <b>nunca</b> pasa a <code>CLOSED (2)</code> por sí solo cuando el servidor corta la transmisión. Se queda en <code>CONNECTING</code>.</p>
+
+<p>Si en el frontend manejamos el error de forma ingenua:</p>
+<pre><code class="language-typescript">eventSource.onerror = (err) => {
+  // ❌ NUNCA da true porque el navegador lo tiene en 0 (CONNECTING) intentando reconectar
+  if (eventSource.readyState === EventSource.CLOSED) {
+    observer.complete();
+  } else {
+    // 💥 ¡PUM! Tratamos el cierre normal del backend como un error de red fatal
+    observer.error(err);
+    eventSource.close();
+  }
+};</code></pre>
+
+<p>El Observable de RxJS recibía una señal de <code>error()</code> justo al terminar, lo que provocaba que el bloque <code>catchError</code> reemplazara el resultado exitoso por un estado de fallo.</p>
+
+<h4>La solución en Angular + RxJS</h4>
+<p>Para solucionar esto de raíz, el servicio frontend debe distinguir entre streams <b>finitos</b> (como tecnologías y ventajas) y streams <b>infinitos</b> (como las métricas de memoria):</p>
+
+<ol>
+  <li>Llevamos el registro de si ya hemos recibido datos: <code>hasReceivedData = true</code>.</li>
+  <li>Cuando el stream es finito y se dispara <code>onerror</code> <b>después de haber recibido datos</b>: sabemos con 100% de certeza que el servidor completó el <code>Flux</code> y cerró la conexión HTTP limpiamente. Cerramos el <code>EventSource</code> y llamamos a <b><code>observer.complete()</code></b>.</li>
+  <li>Si <code>onerror</code> ocurre sin haber recibido ningún dato previo, entonces sí se trata de una falla auténtica (servidor caído, timeout, error 500) y emitimos <b><code>observer.error(err)</code></b>.</li>
+</ol>
+
+<pre><code class="language-typescript">// ✅ Manejo robusto de cierre de stream finito en Angular
+eventSource.onerror = (error) => {
+  if (isFinite) {
+    eventSource.close(); // Frenamos el reintento automático del navegador
+    this.zone.run(() => {
+      if (hasReceivedData) {
+        observer.complete(); // Terminación triunfal y limpia
+      } else {
+        observer.error(error); // Error real previo a la recepción
+      }
+    });
+  }
+};</code></pre>
+
+<p>Con este cambio, las 10 peticiones simultáneas reciben sus eventos reactivos y, al finalizar, permanecen orgullosamente en verde con estado de éxito.</p>
 
 <h3>Las métricas son otro tipo de stream</h3>
 <p>Las métricas de memoria funcionan de una manera diferente. La API puede enviar periódicamente la memoria usada, libre y total. Angular recibe el valor más reciente y lo presenta como un resumen visual.</p>
@@ -82,10 +151,11 @@
 <h3>Lo que aprendí desde Angular</h3>
 <ul>
   <li>Un observable no siempre representa una respuesta inmediata; también puede representar un flujo que permanece abierto.</li>
-  <li>El frontend debe diferenciar entre datos, estados de conexión y errores.</li>
-  <li>Una conexión abierta no es necesariamente un problema.</li>
-  <li>La interfaz debe explicar al usuario qué está ocurriendo mientras llegan los datos.</li>
-  <li>No conviene inventar un final contando mensajes o esperando algunos segundos.</li>
+  <li>El frontend debe diferenciar entre datos, estados de conexión y errores de transporte.</li>
+  <li>En SSE, el cierre normal de un stream finito por parte del servidor dispara <code>onerror</code> en el navegador; debemos interpretar ese cierre como una finalización (<code>complete</code>) si los datos ya fueron emitidos.</li>
+  <li>Una conexión abierta no es necesariamente un problema si transporta telemetría continua.</li>
+  <li>La interfaz debe explicar al usuario qué está ocurriendo mientras llegan los datos para brindar una experiencia fluida e interactiva.</li>
+  <li>No conviene inventar un final contando mensajes o esperando algunos segundos a ciegas.</li>
 </ul>
 
 <h3>WebFlux no significa que todo sea automáticamente mejor</h3>

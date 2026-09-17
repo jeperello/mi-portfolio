@@ -27,6 +27,8 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
   advantages: ApiDescription[] = [];
   technologyLoadResults: LoadTestResult[] = [];
   advantageLoadResults: LoadTestResult[] = [];
+  technologySimulationMessage = '';
+  advantageSimulationMessage = '';
 
   numberOfConcurrentRequests: number = 10; // New property for load test
 
@@ -110,8 +112,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges(); // Re-introduce change detection
         },
         error: err => {
-          console.log('End connection technologies stream:', err);
-          // Potentially set a flag for UI to show a message
+          console.error('Error en el stream de tecnologías:', err);
         },
         complete: () => {
           console.log('Technologies stream completed.');
@@ -128,8 +129,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges(); // Re-introduce change detection
         },
         error: err => {
-          console.log('End connection advantages stream:', err);
-          // Potentially set a flag for UI to show a message
+          console.error('Error en el stream de ventajas:', err);
         },
         complete: () => {
           console.log('Advantages stream completed.');
@@ -139,11 +139,13 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
   }
 
   simulateTechnologiesLoad(): void {
+    this.technologySimulationMessage = `La misma request de tecnologías ahora se ejecuta ${this.numberOfConcurrentRequests} veces. Cada ejecución abre su propia conexión reactiva.`;
     this.runLoadTest('Tecnologías', () => this.reactiveApiService.getTechnologiesStream(), 'technologies');
     this.scrollToPanel('technologies');
   }
 
   simulateAdvantagesLoad(): void {
+    this.advantageSimulationMessage = `La misma request de ventajas ahora se ejecuta ${this.numberOfConcurrentRequests} veces. Cada ejecución abre su propia conexión reactiva.`;
     this.runLoadTest('Ventajas', () => this.reactiveApiService.getAdvantagesStream(), 'advantages');
     this.scrollToPanel('advantages');
   }
@@ -212,13 +214,13 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
       mergeMap(index => {
         const startTime = performance.now();
         return apiCallFactory().pipe(
-          map((response: ApiDescription) => { // Cast response to ApiDescription
+          map((response: ApiDescription) => {
             const timeElapsed = performance.now() - startTime;
             return {
               status: 'success',
               description: response.description,
               timeElapsed: timeElapsed,
-              requestIndex: index // Add the requestIndex
+              requestIndex: index
             } as LoadTestResult;
           }),
           catchError(err => {
@@ -228,10 +230,16 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
               status: 'error',
               description: `Error: ${err?.message || 'Desconocido'}`,
               timeElapsed: timeElapsed,
-              requestIndex: index // Add the requestIndex
+              requestIndex: index
             } as LoadTestResult);
           }),
-          takeUntil(this.destroy$) // Ensure inner observable unsubscribes on destroy
+          finalize(() => {
+            completedRequestsCount++;
+            loadState.requestsCompleted = completedRequestsCount;
+            loadState.loadTestStatus = `Progreso: ${completedRequestsCount} / ${this.numberOfConcurrentRequests} solicitudes completadas.`;
+            this.cdr.detectChanges();
+          }),
+          takeUntil(this.destroy$)
         );
       })
     );
@@ -252,10 +260,6 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
           }
 
           this.cdr.detectChanges();
-
-          completedRequestsCount++;
-          loadState.requestsCompleted = completedRequestsCount;
-          loadState.loadTestStatus = `Progreso: ${completedRequestsCount} / ${this.numberOfConcurrentRequests} solicitudes completadas.`;
         },
         error: err => {
           loadState.loadTestStatus = `Error general durante la simulación para ${testType}.`;

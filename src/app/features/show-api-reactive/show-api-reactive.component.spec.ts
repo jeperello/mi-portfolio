@@ -55,6 +55,16 @@ describe('ShowApiReactiveComponent', () => {
     expect(component.memoryUsagePercentage({ usedMemoryMB: 128, freeMemoryMB: 384, totalMemoryMB: 0 })).toBe(0);
   });
 
+  it('should explain the ten-request simulation independently', () => {
+    component.simulateTechnologiesLoad();
+    fixture.detectChanges();
+
+    const explanation = fixture.nativeElement.querySelector('.technology-panel .simulation-explanation');
+
+    expect(explanation.textContent).toContain('10 veces');
+    expect(explanation.textContent).toContain('conexión reactiva');
+  });
+
   it('should render technology load rows after simulating load', () => {
     component.simulateTechnologiesLoad();
     fixture.detectChanges();
