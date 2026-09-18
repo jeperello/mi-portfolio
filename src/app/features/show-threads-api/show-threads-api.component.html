@@ -1,30 +1,24 @@
 <section class="api-showcase">
-  <a routerLink="/" 
-           appTracker="btn-back-to-blog-header"
-           class="back-link">← Volver a Proyectos</a>
+  <a routerLink="/" appTracker="btn-back-to-blog-header" class="back-link">← Volver a Proyectos</a>
   <!-- Cabecera Hero -->
   <div class="description-row hero-section">
     <h1>Virtual Threads vs Hilos Tradicionales</h1>
-    <app-expandable-description
-      label="Ver detalles del proyecto"
-      expandedLabel="Ocultar detalles"
-      [forceOpen]="isWarming"
-    >
+    <app-expandable-description label="Ver detalles del proyecto" expandedLabel="Ocultar detalles"
+      [forceOpen]="isWarming">
       <div actions class="project-header-actions">
-        <a href="https://github.com/jeperello/log-ingestion-engin" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           appTracker="btn-repo-threads-api"
-           class="repo-button">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        <a href="https://github.com/jeperello/log-ingestion-engin" target="_blank" rel="noopener noreferrer"
+          appTracker="btn-repo-threads-api" class="repo-button">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+            </path>
           </svg>
           Ver Repositorio
         </a>
-        <a routerLink="/blog/2" 
-           appTracker="btn-view-analysis-threads"
-           class="repo-button">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <a routerLink="/blog/2" appTracker="btn-view-analysis-threads" class="repo-button">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="18" y1="20" x2="18" y2="10"></line>
             <line x1="12" y1="20" x2="12" y2="4"></line>
             <line x1="6" y1="20" x2="6" y2="14"></line>
@@ -34,21 +28,20 @@
       </div>
 
       <p class="subtitle">
-        Java 21 Project Loom: ¿Cuántos hilos puede aguantar tu servidor sin morir? 
+        Java 21 Project Loom: ¿Cuántos hilos puede aguantar tu servidor sin morir?
         Compara la eficiencia de los hilos virtuales frente a los pesados hilos de plataforma.
       </p>
     </app-expandable-description>
   </div>
 
   <!-- Despertador de API -->
-  <app-api-warming *ngIf="isWarming" 
-    mainMessage="Arrancando el Motor de Ingesta..." 
+  <app-api-warming *ngIf="isWarming" mainMessage="Arrancando el Motor de Ingesta..."
     subMessage="Los Virtual Threads necesitan un café antes de procesar millones de logs ☕">
   </app-api-warming>
 
   <!-- Panel de Batalla -->
   <div class="battle-arena" *ngIf="!isWarming">
-    
+
     <!-- Configuración Global -->
     <div class="showcase-card control-center">
       <h3>🚀 Centro de Control de Estrés</h3>
@@ -57,23 +50,16 @@
           <label for="log-amount">Carga de Logs (Sugerido: 1000 - 5000):</label>
           <div class="compare-actions">
             <div class="input-wrapper">
-              <input #logCountInput id="log-amount" type="number" value="1000" class="log-input" min="1" max="5000" step="100" [disabled]="isComparisonActive">
+              <input #logCountInput id="log-amount" type="number" value="1000" class="log-input" min="1" max="5000"
+                step="100" [disabled]="isComparisonActive">
               <span class="input-unit">logs</span>
             </div>
-            <button class="button button-compare"
-                    appTracker="btn-compare-rendimientos"
-                    type="button"
-                    [disabled]="isComparisonActive"
-                    (click)="compareLogs(logCountInput.value)">
+            <button class="button button-compare" appTracker="btn-compare-rendimientos" type="button"
+              [disabled]="isComparisonActive" (click)="compareLogs(logCountInput.value)">
               Comparar rendimientos
             </button>
           </div>
         </div>
-      </div>
-
-      <div *ngIf="comparisonMessage" class="comparison-status" [class.is-finished]="comparisonState === 'finished'">
-        <span class="comparison-label">Estado de comparación</span>
-        <p>{{ comparisonMessage }}</p>
       </div>
 
       <div *ngIf="comparisonSummary" class="comparison-summary">
@@ -90,10 +76,12 @@
         </div>
         <p class="summary-winner">
           {{ comparisonSummary.winner === 'virtual'
-            ? 'Virtual Threads fue un ' + formatImprovementPercent(comparisonSummary.improvementPercent) + ' más rápido que Platform Threads.'
-            : comparisonSummary.winner === 'platform'
-              ? 'Platform Threads fue un ' + formatImprovementPercent(comparisonSummary.improvementPercent) + ' más rápido que Virtual Threads.'
-              : 'La comparación no muestra un ganador claro.' }}
+          ? 'Virtual Threads fue un ' + formatImprovementPercent(comparisonSummary.improvementPercent) + ' más rápido
+          que Platform Threads.'
+          : comparisonSummary.winner === 'platform'
+          ? 'Platform Threads fue un ' + formatImprovementPercent(comparisonSummary.improvementPercent) + ' más rápido
+          que Virtual Threads.'
+          : 'La comparación no muestra un ganador claro.' }}
         </p>
       </div>
 
@@ -103,10 +91,8 @@
           <div class="engine-icon">🚜</div>
           <h4>Platform Threads</h4>
           <p class="engine-desc">Hilos del SO. Pesados (1MB c/u). Límite rápido.</p>
-          <button class="button button-platform" 
-                  appTracker="btn-ingest-logs-platform"
-                  [disabled]="isComparisonActive"
-                  (click)="ingestLogs(logCountInput.value, 'platform')">
+          <button class="button button-platform" appTracker="btn-ingest-logs-platform" [disabled]="isComparisonActive"
+            (click)="ingestLogs(logCountInput.value, 'platform')">
             Lanzar con Platform
           </button>
         </div>
@@ -118,10 +104,8 @@
           <div class="engine-icon">🚀</div>
           <h4>Virtual Threads</h4>
           <p class="engine-desc">Ligeros (Project Loom). ¡Millones en el mismo hardware!</p>
-          <button class="button button-virtual" 
-                  appTracker="btn-ingest-logs-virtual"
-                  [disabled]="isComparisonActive"
-                  (click)="ingestLogs(logCountInput.value, 'virtual')">
+          <button class="button button-virtual" appTracker="btn-ingest-logs-virtual" [disabled]="isComparisonActive"
+            (click)="ingestLogs(logCountInput.value, 'virtual')">
             Lanzar con Virtual
           </button>
         </div>
@@ -130,27 +114,29 @@
       <!-- Alertas -->
       <div *ngIf="successMessage" class="alert success anim-fade-in">
         <span>✅ {{ successMessage }}</span>
-        <button (click)="successMessage = null" 
-                appTracker="btn-close-alert-success"
-                class="close-alert">&times;</button>
+        <button (click)="successMessage = null" appTracker="btn-close-alert-success"
+          class="close-alert">&times;</button>
       </div>
       <div *ngIf="errorMessage" class="alert error anim-fade-in">
         <span>⚠️ {{ errorMessage }}</span>
-        <button (click)="errorMessage = null" 
-                appTracker="btn-close-alert-error"
-                class="close-alert">&times;</button>
+        <button (click)="errorMessage = null" appTracker="btn-close-alert-error" class="close-alert">&times;</button>
       </div>
     </div>
 
     <!-- Panel de Resultados en Tiempo Real -->
-    <div class="showcase-card live-stats">
+    <div id="performance-monitor" class="showcase-card live-stats">
       <div class="card-header">
         <h3>📊 Monitor de Rendimiento</h3>
-        <button (click)="resetMetrics()" 
+        <!--<button (click)="resetMetrics()" 
                 appTracker="btn-clear-threads-metrics"
                 class="button-mini-danger">Limpiar</button>
+      -->
+        <div *ngIf="comparisonMessage" class="comparison-status" [class.is-finished]="comparisonState === 'finished'">
+          <span class="comparison-label">Estado de comparación</span>
+          <p>{{ comparisonMessage }}</p>
+        </div>
       </div>
-      
+
       <div class="stats-visualizer" *ngIf="metrics.length > 0">
         <div class="stat-box">
           <span class="label">Hilos Activos</span>
@@ -189,7 +175,7 @@
           </tbody>
         </table>
       </div>
-      
+
       <div *ngIf="metrics.length === 0" class="empty-state">
         <div class="spinner-small"></div>
         <p>Sincronizando con el servidor...</p>

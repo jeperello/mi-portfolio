@@ -121,7 +121,15 @@ export class ShowThreadsApiComponent implements OnInit, OnDestroy {
     this.comparisonRuns = [];
     this.comparisonMessage = `Comparación iniciada: lanzando Platform Threads con ${count} logs.`;
 
+    this.scrollToPerformanceMonitor();
     this.runComparisonStep(count, 'platform');
+  }
+
+  private scrollToPerformanceMonitor(): void {
+    const monitor = document.getElementById('performance-monitor');
+    if (monitor) {
+      monitor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   private clearComparisonPoll(): void {
