@@ -21,6 +21,7 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
 
   @ViewChild('technologiesPanel') technologiesPanel?: ElementRef<HTMLElement>;
   @ViewChild('advantagesPanel') advantagesPanel?: ElementRef<HTMLElement>;
+  @ViewChild('metricsPanel') metricsPanel?: ElementRef<HTMLElement>;
 
   metrics: ApiMetrics[] = [];
   technologies: ApiDescription[] = [];
@@ -148,6 +149,32 @@ export class ShowApiReactiveComponent implements OnInit, OnDestroy {
     this.advantageSimulationMessage = `La misma request de ventajas ahora se ejecuta ${this.numberOfConcurrentRequests} veces. Cada ejecución abre su propia conexión reactiva.`;
     this.runLoadTest('Ventajas', () => this.reactiveApiService.getAdvantagesStream(), 'advantages');
     this.scrollToPanel('advantages');
+  }
+
+  scrollToMetrics(): void {
+    if (!this.metricsPanel) {
+      return;
+    }
+
+    const element = this.metricsPanel.nativeElement as HTMLElement & {
+      scrollIntoView?: (options?: ScrollIntoViewOptions) => void;
+    };
+
+    if (typeof element.scrollIntoView === 'function') {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+      return;
+    }
+
+    if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+      const rect = element.getBoundingClientRect();
+      window.scrollTo({
+        top: window.scrollY + rect.top - 24,
+        behavior: 'smooth'
+      });
+    }
   }
 
   private scrollToPanel(target: 'technologies' | 'advantages'): void {

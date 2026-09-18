@@ -217,6 +217,35 @@
   justify-content: center;
 }
 
+.inline-panel-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1rem 0.9rem;
+}
+
+.inline-metrics-link {
+  appearance: none;
+  border: 1px solid rgba(56, 189, 248, 0.38);
+  border-radius: 999px;
+  background: rgba(14, 116, 144, 0.08);
+  color: var(--accent-color);
+  padding: 0.42rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.inline-metrics-link:hover {
+  background: rgba(14, 116, 144, 0.14);
+  transform: translateY(-1px);
+}
+
+.inline-metrics-link:active {
+  transform: translateY(0);
+}
+
 .panel-actions .button {
   width: 100%;
   padding: 0.85rem 1.25rem;

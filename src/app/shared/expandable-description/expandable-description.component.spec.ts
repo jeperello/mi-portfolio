@@ -34,6 +34,17 @@ describe('ExpandableDescriptionComponent', () => {
     expect(drawer.classList.contains('open')).toBe(false);
   });
 
+  it('should force the drawer open while warming is active', () => {
+    componentRef.setInput('forceOpen', true);
+    fixture.detectChanges();
+
+    expect(component.isExpanded()).toBe(true);
+    const button = fixture.nativeElement.querySelector('.expandable-toggle-btn');
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+    const drawer = fixture.nativeElement.querySelector('.expandable-drawer');
+    expect(drawer.classList.contains('open')).toBe(true);
+  });
+
   it('should toggle expansion state on click', () => {
     const button: HTMLButtonElement = fixture.nativeElement.querySelector('.expandable-toggle-btn');
     button.click();
