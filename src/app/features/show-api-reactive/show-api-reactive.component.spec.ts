@@ -59,8 +59,9 @@ describe('ShowApiReactiveComponent', () => {
     component.simulateTechnologiesLoad();
     fixture.detectChanges();
 
-    const explanation = fixture.nativeElement.querySelector('.technology-panel .simulation-explanation');
+    const explanation = fixture.nativeElement.querySelector('.technology-panel .panel-explanation');
 
+    expect(explanation).not.toBeNull();
     expect(explanation.textContent).toContain('10 veces');
     expect(explanation.textContent).toContain('conexión reactiva');
   });
