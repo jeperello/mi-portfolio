@@ -5,7 +5,11 @@
   <!-- Cabecera Hero -->
   <div class="description-row hero-section">
     <h1>Virtual Threads vs Hilos Tradicionales</h1>
-    <app-expandable-description label="Ver detalles del proyecto" expandedLabel="Ocultar detalles">
+    <app-expandable-description
+      label="Ver detalles del proyecto"
+      expandedLabel="Ocultar detalles"
+      [forceOpen]="isWarming"
+    >
       <div actions class="project-header-actions">
         <a href="https://github.com/jeperello/log-ingestion-engin" 
            target="_blank" 
